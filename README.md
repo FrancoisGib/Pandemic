@@ -40,8 +40,10 @@
 # Journal de bord
 
 ## Semaine 1
+Modélisation du jeu, création de diagrammes UML sur lucid.
 
 ## Semaine 2
+Création de la base de plusieurs classes telles que Player, Town, et les différentes Cards
 
 ## Semaine 3
 
