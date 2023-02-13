@@ -1,7 +1,6 @@
 package pandemic;
 
 import java.util.List;
-import java.util.ArrayList;
 
 /* The class that defines a player in the game */
 public abstract class Player {
@@ -13,7 +12,7 @@ public abstract class Player {
 	protected Town town;
 	
 	/* The list of cards the Player has */
-	protected List<PlayerCard> cards;
+	protected List<PlayerCardsStack> cards;
 	
 	
 	

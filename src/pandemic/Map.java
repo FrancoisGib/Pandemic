@@ -2,128 +2,89 @@ package pandemic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
+/** The game's Map who control the towns of the game */
 public class Map {
-	
+
 	/* The list of towns in the game */
 	private List<Town> towns;
-	
-	/* The list of diseases in the game */
-	private List<Disease> diseases;
-	
-	/* The list of players in the game */
-	private List<Player> players;
-	
-	/* The stack of player cards in the game */
-	private PlayerCardsStack playerCards;
-	
-	/* The stack of infection cards in the game */
-	private InfectionCardsStack infectionCards;
-	
-	/* The game's global infection state */
-	private int globalInfection;
-	
-	/* The number of clusters in the game */
-	private int cluster;
-	
+	private JsonReader reader;
+
 	/**
-	 * Builds the game's map 
-	 *  
-	 * @param The array of towns to add in the game
-	 * @param The array of diseases to add in the game
-	 * @param The array of players to add in the game
-	 * @param The stack of players cards to add in the game
-	 * @param The stack of infection cards to add in the game
-	 * @param The global infection state of the game
+	 * Builds the game's map
+	 * 
+	 * @param reader The json reader of the map
 	 */
-	public Map(ArrayList<Town> towns, ArrayList<Disease> diseases, ArrayList<Player> players, PlayerCardsStack playerCards, InfectionCardsStack infectionCards, int globalInfection) {
-		this.towns = towns;
-		this.diseases = diseases;
-		this.players = players;
-		this.playerCards = playerCards;
-		this.infectionCards = infectionCards;
-		this.globalInfection = globalInfection;
-		this.cluster = 0;
+	public Map(JsonReader reader) {
+		this.towns = new ArrayList<Town>();
+		this.reader = reader;
 	}
-	
+
 	/**
-	 * Give the towns of the game 
-	 *  
+	 * Initialize the map's towns by adding all maps and their neihbors in the towns
+	 * array
+	 * 
+	 * @throws NoSuchTownException The exception if one of the is missing (if the
+	 *                             json file has mistakes)
+	 */
+	public void initMap() throws NoSuchTownException {
+		this.reader.setTowns();
+		this.reader.setNeighbors();
+
+		HashMap<String, Integer> townsArray = this.reader.getTowns();
+
+		for (HashMap.Entry<String, Integer> entry : townsArray.entrySet()) {
+			Town town = new Town(entry.getKey(), entry.getValue());
+			this.towns.add(town);
+		}
+
+		HashMap<String, List<String>> neighbors = this.reader.getNeighbors();
+
+		for (Town town : towns) {
+			String name = town.getName();
+			List<String> townNeighbors = neighbors.get(name);
+			for (String neighborName : townNeighbors) {
+				Town addedTown = getTownByName(neighborName);
+				town.addNeighbor(addedTown);
+			}
+		}
+	}
+
+	/**
+	 * Give the towns of the game
+	 * 
 	 * @return The list of towns in the game
 	 */
 	public List<Town> getTowns() {
 		return this.towns;
 	}
-	
+
 	/**
-	 * Give the diseases in the game 
-	 *  
-	 * @return The list of diseases in the game
+	 * Get a town by it's index
+	 * 
+	 * @param i The index of the town to get
+	 * @return The town at the i index in the towns array
 	 */
-	public List<Disease> getDiseases() {
-		return this.diseases;
+	public Town getTown(int i) {
+		return this.towns.get(i);
 	}
-	
+
 	/**
-	 * Give the players of the game
-	 *  
-	 * @return The list of players in the game
+	 * 
+	 * 
+	 * @param name The name of the town to get
+	 * @return The town who has the string name has name in the towns array
+	 * @throws NoSuchTownException The exception if there is no town with that name
+	 *                             in the towns array
 	 */
-	public List<Player> getPlayers() {
-		return this.players;
-	}
-	
-	/**
-	 * Give the player cards stack of the game
-	 *  
-	 * @return The player cards stack in the game
-	 */
-	public PlayerCardsStack getPlayerCards() {
-		return this.playerCards;
-	}
-	
-	/**
-	 * Give the infection cards stack of the game
-	 *  
-	 * @return The infection cards stack in the game
-	 */
-	public InfectionCardsStack getInfectionCards() {
-		return this.infectionCards;
-	}
-	
-	/**
-	 * Update the global infection state of the game.
-	 *  
-	 * @return The updated global infection state of the game
-	 */
-	public int updateInfectionState() {
-		int sum = 0;
-		for(Town town : this.towns) {
-			sum += town.getInfectionState();
+	public Town getTownByName(String name) throws NoSuchTownException {
+		for (Town town : towns) {
+			if (town.getName().equals(name)) {
+				return town;
+			}
 		}
-		return sum;
+		throw new NoSuchTownException("No such town in the towns array");
 	}
-	
-	
-	/**
-	 * Give the global infection state of the game
-	 *  
-	 * @return The global infection state of the game
-	 */
-	public int getGlobalInfectionState() {
-		return this.globalInfection;
-	}
-	
-	/**
-	 * Give the number of clusters state of the game
-	 *  
-	 * @return The global infection state of the game
-	 */
-	public int getCluster() {
-		return this.globalInfection;
-	}
-	
-	
-	
-	
+
 }

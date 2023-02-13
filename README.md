@@ -43,9 +43,10 @@
 Modélisation du jeu, création de diagrammes UML sur lucid.
 
 ## Semaine 2
-Création de la base de plusieurs classes telles que Player, Town, et les différentes Cards
+Création très succincte de la base de plusieurs classes telles que Player, Town, et les différentes cartes du jeu.
 
 ## Semaine 3
+Travail exclusif sur la Map ainsi que sur les villes (Town), implémentation de celles-ci ainsi que début d'implémentation de leur classe de test
 
 ## Semaine 4
 

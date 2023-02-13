@@ -73,7 +73,7 @@ public class Town {
 	 * 
 	 * @param neighbor, the neighbor to add into the list
 	 */
-	public void addNeighbors(Town neighbor) {
+	public void addNeighbor(Town neighbor) {
 		this.neighbors.add(neighbor);
 	}
 
@@ -105,5 +105,8 @@ public class Town {
 		this.researchCenter = true;
 	}
 
+	public boolean hasResearchCenter() {
+		return this.researchCenter;
+	}
 	
 }
