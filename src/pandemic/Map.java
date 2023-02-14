@@ -14,11 +14,11 @@ public class Map {
 	/**
 	 * Builds the game's map
 	 * 
-	 * @param reader The json reader of the map
+	 * @param the name of the towns file
 	 */
-	public Map(JsonReader reader) {
+	public Map(String filename) {
 		this.towns = new ArrayList<Town>();
-		this.reader = reader;
+		this.reader = new JsonReader(filename);
 	}
 
 	/**
@@ -26,7 +26,7 @@ public class Map {
 	 * array
 	 * 
 	 * @throws NoSuchTownException The exception if one of the is missing (if the
-	 *                             json file has mistakes)
+	 *                             JsonReader file has mistakes)
 	 */
 	public void initMap() throws NoSuchTownException {
 		this.reader.setTowns();
@@ -38,9 +38,8 @@ public class Map {
 			Town town = new Town(entry.getKey(), entry.getValue());
 			this.towns.add(town);
 		}
-
 		HashMap<String, List<String>> neighbors = this.reader.getNeighbors();
-
+		
 		for (Town town : towns) {
 			String name = town.getName();
 			List<String> townNeighbors = neighbors.get(name);
