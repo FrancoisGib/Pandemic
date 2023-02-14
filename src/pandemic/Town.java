@@ -3,30 +3,28 @@ package pandemic;
 import java.util.List;
 import java.util.ArrayList;
 
-
 /* The class that defines a town in the infection game */
 public class Town {
-	
+
 	/* The Town's infection state */
 	private int infectionState;
-	
+
 	/* The name of the Town */
 	private String name;
-	
+
 	/* The list of neighbors the Town has */
 	private List<Town> neighbors;
-	
+
 	/* The sector of the Town */
 	private int sector;
-	
+
 	/* true if the Town has a research center, else false */
 	private boolean researchCenter;
-	
-	
+
 	/**
-	 * Builds a Town 
+	 * Builds a Town
 	 * 
-	 * @param name, the name of the Town
+	 * @param name,   the name of the Town
 	 * @param sector, the sector of the Town
 	 */
 	public Town(String name, int sector) {
@@ -36,8 +34,7 @@ public class Town {
 		this.sector = sector;
 		this.researchCenter = false;
 	}
-	
-	
+
 	/**
 	 * Give the Town's infection state
 	 * 
@@ -46,7 +43,6 @@ public class Town {
 	public int getInfectionState() {
 		return infectionState;
 	}
-
 
 	/**
 	 * Update the infection state with the specified parameter infectionState
@@ -57,7 +53,6 @@ public class Town {
 		this.infectionState = infectionState;
 	}
 
-
 	/**
 	 * Get the Town's neighbors
 	 * 
@@ -66,7 +61,6 @@ public class Town {
 	public List<Town> getNeighbors() {
 		return neighbors;
 	}
-
 
 	/**
 	 * Add a neighbor into the Town's neighbors list
@@ -77,16 +71,14 @@ public class Town {
 		this.neighbors.add(neighbor);
 	}
 
-
 	/**
 	 * Give the name of the Town
 	 * 
-	 * @return the Town's name 
+	 * @return the Town's name
 	 */
 	public String getName() {
 		return name;
 	}
-
 
 	/**
 	 * Give the Town's sector
@@ -97,16 +89,20 @@ public class Town {
 		return sector;
 	}
 
-
 	/**
-	 *  Create a research center in the Town
+	 * Builds a research center in the Town.
 	 */
 	public void buildResearchCenter() {
 		this.researchCenter = true;
 	}
 
+	/**
+	 * Tell if a town has a research center.
+	 * 
+	 * @return boolean, true if the town has a research center, else false.
+	 */
 	public boolean hasResearchCenter() {
 		return this.researchCenter;
 	}
-	
+
 }

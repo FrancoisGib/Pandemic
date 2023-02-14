@@ -14,7 +14,7 @@ public class Map {
 	/**
 	 * Builds the game's map
 	 * 
-	 * @param the name of the towns file
+	 * @param filename the name of the towns file
 	 */
 	public Map(String filename) {
 		this.towns = new ArrayList<Town>();
@@ -22,15 +22,13 @@ public class Map {
 	}
 
 	/**
-	 * Initialize the map's towns by adding all maps and their neihbors in the towns
-	 * array
+	 * Initialize the map's towns by adding all maps and their neighbors in the towns array
 	 * 
 	 * @throws NoSuchTownException The exception if one of the is missing (if the
 	 *                             JsonReader file has mistakes)
 	 */
 	public void initMap() throws NoSuchTownException {
 		this.reader.setTowns();
-		this.reader.setNeighbors();
 
 		HashMap<String, Integer> townsArray = this.reader.getTowns();
 
@@ -38,8 +36,10 @@ public class Map {
 			Town town = new Town(entry.getKey(), entry.getValue());
 			this.towns.add(town);
 		}
+
+		this.reader.setNeighbors();
 		HashMap<String, List<String>> neighbors = this.reader.getNeighbors();
-		
+
 		for (Town town : towns) {
 			String name = town.getName();
 			List<String> townNeighbors = neighbors.get(name);
@@ -70,10 +70,10 @@ public class Map {
 	}
 
 	/**
-	 * 
+	 * Get a town by it's name in the towns list
 	 * 
 	 * @param name The name of the town to get
-	 * @return The town who has the string name has name in the towns array
+	 * @return The town who has the string name has name in the towns list
 	 * @throws NoSuchTownException The exception if there is no town with that name
 	 *                             in the towns array
 	 */
@@ -84,6 +84,24 @@ public class Map {
 			}
 		}
 		throw new NoSuchTownException("No such town in the towns array");
+	}
+
+	/**
+	 * Give all towns datas in a String
+	 * 
+	 * @return all the datas in the towns list
+	 */
+	public String toString() {
+		String res = "";
+		for (Town town : this.towns) {
+			List<Town> townNeighbors = town.getNeighbors();
+			String stringNeighbors = "";
+			for (Town neighbor : townNeighbors) {
+				stringNeighbors += neighbor.getName() + " / ";
+			}
+			res += town.getName() + " sector : " + town.getSector() + " neighbors : " + stringNeighbors + "\n";
+		}
+		return res;
 	}
 
 }

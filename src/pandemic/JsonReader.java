@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,33 +31,35 @@ public class JsonReader {
 		}
 	    }
 	/**
+	 * Sets all the towns and their sector into an hashmap
+	 * 
 	 * @return Map with corresponding to each town with a value that is a Sector
 	 */
 	public void setTowns(){
 		Iterator<String> entries = phonebook.keys();
-	    while (entries.hasNext()) {
-	    	String entryKey = entries.next();
-	    	JSONObject entry = phonebook.getJSONObject(entryKey);
-	    	Iterator<String> datakeys = entry.keys();
-	    	while (datakeys.hasNext()) {
-	    		if(entryKey.equals("cities")) {
-	    			towns.put(datakeys.next(),entry.getInt(datakeys.next()));
-	    		}
-	    		else {
-	    			datakeys.next();
-	    		}
-	    	}
-	    }
-	    }
+		String entryKey = entries.next();
+		JSONObject entry = phonebook.getJSONObject(entryKey);
+		Iterator<String> datakeys = entry.keys();
+		while (datakeys.hasNext()) {
+			String data = datakeys.next();
+			towns.put(data,entry.getInt(data));
+		}
+	}
 	
-	
+	/**
+	 * Give all towns name and sector into an hashmap
+	 * 
+	 * @return The hashmap with all towns name and sector
+	 */
 	public HashMap<String,Integer> getTowns() {
 		return this.towns;
 	}
 	
 	
 	/**
-	 * @return a map with keys corresponding to each town with a value that is a list of neighbors
+	 * Sets all the towns neighbors into an hashmap
+	 * 
+	 * @return a map with keys corresponding to each town with a value that is a list of neighbors.
 	 */
 	public void setNeighbors(){
     	
@@ -66,47 +67,37 @@ public class JsonReader {
 		Iterator<String> entries = phonebook.keys();
 		entries.next();
 	    String entryKey = entries.next();
-	    	System.out.println(entryKey);
-	    	JSONObject entry = phonebook.getJSONObject(entryKey);
-	    	Iterator<String> datakeys = entry.keys();
-
+	    JSONObject entry = phonebook.getJSONObject(entryKey);
+	    
+	    Iterator<String> datakeys = entry.keys();
+	    
+	    
 	    	while (datakeys.hasNext()) {
-	    		System.out.println(datakeys.next());
+	    		String name = datakeys.next();
+	    		ArrayList<String> list = new ArrayList<String>();
+	    		JSONArray jsonArray = entry.getJSONArray(name);
+	    		for(int i=0; i < jsonArray.length(); i++) {
+	    			list.add((String) jsonArray.get(i));
+	    		}
+	    		this.neighbors.put(name, list);
 	    	}
 	    	
-	 
-		
-		/*
-    	Iterator<String> entries = phonebook.keys();
-	    while (entries.hasNext()) {
-	    	String entryKey = entries.next();
-	    	JSONObject entry = phonebook.getJSONObject(entryKey);
-	    	Iterator<String> datakeys = entry.keys();
-	    	while (datakeys.hasNext()) {
-	    		if(entryKey.equals("neighbors")) {
-	    			JSONArray x = entry.getJSONArray(datakeys.next());
-	    			List<String> list = new ArrayList<String>();
-	    			for (int i = 0; i < x.length(); i++) {
-	    	    	    String value = (String) x.get(i);
-	    	    	    list.add(value);
-	    			}
-	    		neighbors.put(datakeys.next(),list);
-	    		}
-	    		else {
-	    			datakeys.next();
-	    		}
-	    	}
-	    }*/
     	
 		
 	}
 	
-	
+	/**
+	 * Give all towns name and neighbors into an hashmap.
+	 * 
+	 * @return The hashmap with all towns name and neighbors.
+	 */
 	public HashMap<String,List<String>> getNeighbors() {
 		return this.neighbors;
 	}
 	
 	/**
+	 * Give the json filename.
+	 * 
 	 * @return the filename
 	 */
 	public String getFilename() {
