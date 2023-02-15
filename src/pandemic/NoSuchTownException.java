@@ -5,7 +5,7 @@ public class NoSuchTownException extends Exception {
 	
 	/** Builds an NoSuchTownException exception
 	 * 
-	 * @param s, the exception's message
+	 * @param s The exception's message
 	 */
     public NoSuchTownException(String s) {
         super(s);

@@ -19,7 +19,7 @@ public class Map {
 	/**
 	 * Initialize the map's towns by adding all maps and their neighbors in the towns array
 	 * 
-	 * @param filename, the name of the file to read
+	 * @param filename The name of the file to read
 	 * @exception NoSuchTownException The exception if one of the is missing (if the JsonReader file has mistakes)
 	 * @exception FileNotFoundException The exception if the specified file doesn't exist
 	 */
@@ -53,7 +53,7 @@ public class Map {
 	/**
 	 * Initialize the map's towns by adding all maps and their neighbors in the towns array
 	 * 
-	 * @param towns, the arrayList of towns to set
+	 * @param towns The arrayList of towns to set
 	 */
 	public void setMap(ArrayList<Town> towns) {
 		this.towns = towns;
@@ -71,7 +71,7 @@ public class Map {
 	/**
 	 * Get a town by it's index
 	 * 
-	 * @param i, the index of the town to get
+	 * @param i The index of the town to get
 	 * @return The town at the i index in the towns array
 	 */
 	public Town getTown(int i) {
@@ -81,7 +81,7 @@ public class Map {
 	/**
 	 * Get a town by it's name in the towns list
 	 * 
-	 * @param name, the name of the town to get
+	 * @param name The name of the town to get
 	 * @return The town who has the string name has name in the towns list
 	 * @exception NoSuchTownException The exception if there is no town with that name in the towns array                    
 	 */
@@ -97,7 +97,7 @@ public class Map {
 	/**
 	 * Get the neighbors of the town passed in parameter
 	 * 
-	 * @param town, the town to search neighbors
+	 * @param town The town to search neighbors
 	 * @return All the neighbors of the town passed in parameters
 	 */
 	public ArrayList<Town> getTownNeighbors(Town town) {
@@ -107,9 +107,9 @@ public class Map {
 	/**
 	 * Tell if two towns are neighbors or not
 	 * 
-	 * @param town1, the first town
-	 * @param town2, the second town
-	 * @return True if the two towns are neighbors, else false
+	 * @param town1 The first town
+	 * @param town2 The second town
+	 * @return true if the two towns are neighbors, else false
 	 */
 	public boolean areNeighbors(Town town1, Town town2) {
 		return town1.getNeighbors().contains(town2);
@@ -118,7 +118,7 @@ public class Map {
 	/**
 	 * Give all towns information in a String
 	 * 
-	 * @return all the information in the towns list
+	 * @return All the information in the towns list
 	 */
 	public String toString() {
 		String res = "";

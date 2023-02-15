@@ -23,8 +23,8 @@ public class Town {
 	/**
 	 * Builds a Town
 	 * 
-	 * @param name, the name of the Town
-	 * @param sector, the sector of the Town
+	 * @param name The name of the Town
+	 * @param sector The sector of the Town
 	 */
 	public Town(String name, int sector) {
 		this.infectionState = 0;
@@ -37,7 +37,7 @@ public class Town {
 	/**
 	 * Give the Town's infection state
 	 * 
-	 * @return the infection state of the Town
+	 * @return The infection state of the Town
 	 */
 	public int getInfectionState() {
 		return infectionState;
@@ -46,7 +46,7 @@ public class Town {
 	/**
 	 * Set the infection state to the specified parameter infectionState
 	 * 
-	 * @param infectionState, the infection state to apply
+	 * @param infectionState The infection state to apply
 	 */
 	public void setInfectionState(int infectionState) {
 		this.infectionState = infectionState;
@@ -61,7 +61,7 @@ public class Town {
 	/**
 	 * Get the Town's neighbors
 	 * 
-	 * @return the list of the Town's neighbors
+	 * @return The list of the Town's neighbors
 	 */
 	public ArrayList<Town> getNeighbors() {
 		return neighbors;
@@ -70,7 +70,7 @@ public class Town {
 	/**
 	 * Add a neighbor into the Town's neighbors list
 	 * 
-	 * @param neighbor, the neighbor to add into the list
+	 * @param neighbor The neighbor to add into the list
 	 */
 	public void addNeighbor(Town neighbor) {
 		this.neighbors.add(neighbor);
@@ -79,7 +79,7 @@ public class Town {
 	/**
 	 * Give the name of the Town
 	 * 
-	 * @return the Town's name
+	 * @return The Town's name
 	 */
 	public String getName() {
 		return name;
@@ -88,7 +88,7 @@ public class Town {
 	/**
 	 * Give the Town's sector
 	 * 
-	 * @return the sector number
+	 * @return The sector number
 	 */
 	public int getSector() {
 		return sector;
@@ -104,7 +104,7 @@ public class Town {
 	/**
 	 * Tell if a town has a research center.
 	 * 
-	 * @return boolean, true if the town has a research center, else false.
+	 * @return true if the town has a research center, else false.
 	 */
 	public boolean hasResearchCenter() {
 		return this.researchCenter;
