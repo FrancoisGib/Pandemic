@@ -1,0 +1,22 @@
+{
+    "cities": {
+        "ville-1": 1,
+        "ville-2": 2,
+        "ville-3": 3
+    },
+    "neighbors": {
+        "ville-1": [
+            "ville-2",
+            "ville-3"
+
+        ],
+        "ville-2": [
+            "ville-1",
+            "ville-3"
+        ],
+        "ville-3": [
+            "ville-1",
+            "ville-2"
+        ]
+    }
+}
