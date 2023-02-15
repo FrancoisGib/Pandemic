@@ -1,5 +1,6 @@
 package pandemic;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -7,47 +8,55 @@ import java.util.HashMap;
 /** The game's Map who control the towns of the game */
 public class Map {
 
-	/* The list of towns in the game */
-	private List<Town> towns;
-	private JsonReader reader;
+	/** The list of towns in the game */
+	private ArrayList<Town> towns;
 
-	/**
-	 * Builds the game's map
-	 * 
-	 * @param filename the name of the towns file
-	 */
-	public Map(String filename) {
+	/** Builds the game's map */
+	public Map() {
 		this.towns = new ArrayList<Town>();
-		this.reader = new JsonReader(filename);
 	}
 
 	/**
 	 * Initialize the map's towns by adding all maps and their neighbors in the towns array
 	 * 
-	 * @throws NoSuchTownException The exception if one of the is missing (if the
-	 *                             JsonReader file has mistakes)
+	 * @param filename, the name of the file to read
+	 * @exception NoSuchTownException The exception if one of the is missing (if the JsonReader file has mistakes)
+	 * @exception FileNotFoundException The exception if the specified file doesn't exist
 	 */
-	public void initMap() throws NoSuchTownException {
-		this.reader.setTowns();
+	public void setMapWithJSON(String filename) throws NoSuchTownException, FileNotFoundException {
+		TownsJsonReader reader = new TownsJsonReader(filename);
+		reader.setTowns();
 
-		HashMap<String, Integer> townsArray = this.reader.getTowns();
+		HashMap<String, Integer> townsArray = reader.getTowns();
 
 		for (HashMap.Entry<String, Integer> entry : townsArray.entrySet()) {
 			Town town = new Town(entry.getKey(), entry.getValue());
 			this.towns.add(town);
 		}
 
-		this.reader.setNeighbors();
-		HashMap<String, List<String>> neighbors = this.reader.getNeighbors();
+		reader.setNeighbors();
+		HashMap<String, ArrayList<String>> neighbors = reader.getNeighbors();
 
 		for (Town town : towns) {
 			String name = town.getName();
-			List<String> townNeighbors = neighbors.get(name);
+			ArrayList<String> townNeighbors = neighbors.get(name);
+			if (townNeighbors == null) {
+				throw new NoSuchTownException("No such town in the towns array");
+			}
 			for (String neighborName : townNeighbors) {
 				Town addedTown = getTownByName(neighborName);
 				town.addNeighbor(addedTown);
 			}
 		}
+	}
+	
+	/**
+	 * Initialize the map's towns by adding all maps and their neighbors in the towns array
+	 * 
+	 * @param towns, the arrayList of towns to set
+	 */
+	public void setMap(ArrayList<Town> towns) {
+		this.towns = towns;
 	}
 
 	/**
@@ -55,14 +64,14 @@ public class Map {
 	 * 
 	 * @return The list of towns in the game
 	 */
-	public List<Town> getTowns() {
+	public ArrayList<Town> getTowns() {
 		return this.towns;
 	}
 
 	/**
 	 * Get a town by it's index
 	 * 
-	 * @param i The index of the town to get
+	 * @param i, the index of the town to get
 	 * @return The town at the i index in the towns array
 	 */
 	public Town getTown(int i) {
@@ -72,24 +81,44 @@ public class Map {
 	/**
 	 * Get a town by it's name in the towns list
 	 * 
-	 * @param name The name of the town to get
+	 * @param name, the name of the town to get
 	 * @return The town who has the string name has name in the towns list
-	 * @throws NoSuchTownException The exception if there is no town with that name
-	 *                             in the towns array
+	 * @exception NoSuchTownException The exception if there is no town with that name in the towns array                    
 	 */
 	public Town getTownByName(String name) throws NoSuchTownException {
 		for (Town town : towns) {
-			if (town.getName().equals(name)) {
+			if (name.equals(town.getName())) {
 				return town;
 			}
 		}
 		throw new NoSuchTownException("No such town in the towns array");
 	}
-
+	
 	/**
-	 * Give all towns datas in a String
+	 * Get the neighbors of the town passed in parameter
 	 * 
-	 * @return all the datas in the towns list
+	 * @param town, the town to search neighbors
+	 * @return All the neighbors of the town passed in parameters
+	 */
+	public ArrayList<Town> getTownNeighbors(Town town) {
+		return town.getNeighbors();
+	}
+	
+	/**
+	 * Tell if two towns are neighbors or not
+	 * 
+	 * @param town1, the first town
+	 * @param town2, the second town
+	 * @return True if the two towns are neighbors, else false
+	 */
+	public boolean areNeighbors(Town town1, Town town2) {
+		return town1.getNeighbors().contains(town2);
+	}
+	
+	/**
+	 * Give all towns information in a String
+	 * 
+	 * @return all the information in the towns list
 	 */
 	public String toString() {
 		String res = "";
@@ -103,5 +132,4 @@ public class Map {
 		}
 		return res;
 	}
-
 }

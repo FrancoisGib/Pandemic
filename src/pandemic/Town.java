@@ -1,30 +1,29 @@
 package pandemic;
 
-import java.util.List;
 import java.util.ArrayList;
 
-/* The class that defines a town in the infection game */
+/** The class that defines a town in the infection game */
 public class Town {
 
-	/* The Town's infection state */
+	/** The Town's infection state */
 	private int infectionState;
 
-	/* The name of the Town */
+	/** The name of the Town */
 	private String name;
 
-	/* The list of neighbors the Town has */
-	private List<Town> neighbors;
+	/** The list of neighbors the Town has */
+	private ArrayList<Town> neighbors;
 
-	/* The sector of the Town */
+	/** The sector of the Town */
 	private int sector;
 
-	/* true if the Town has a research center, else false */
+	/** true if the Town has a research center, else false */
 	private boolean researchCenter;
 
 	/**
 	 * Builds a Town
 	 * 
-	 * @param name,   the name of the Town
+	 * @param name, the name of the Town
 	 * @param sector, the sector of the Town
 	 */
 	public Town(String name, int sector) {
@@ -45,20 +44,26 @@ public class Town {
 	}
 
 	/**
-	 * Update the infection state with the specified parameter infectionState
+	 * Set the infection state to the specified parameter infectionState
 	 * 
 	 * @param infectionState, the infection state to apply
 	 */
-	public void updateInfectionState(int infectionState) {
+	public void setInfectionState(int infectionState) {
 		this.infectionState = infectionState;
 	}
+	
+	/** Update the infection state by adding 1 to it */
+	public void updateInfectionState() {
+		this.infectionState = this.infectionState + 1;
+	}
+	
 
 	/**
 	 * Get the Town's neighbors
 	 * 
 	 * @return the list of the Town's neighbors
 	 */
-	public List<Town> getNeighbors() {
+	public ArrayList<Town> getNeighbors() {
 		return neighbors;
 	}
 
