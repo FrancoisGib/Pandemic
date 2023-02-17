@@ -3,7 +3,7 @@ package pandemic;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class MapMain {
+public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
 		try {
 			Map map = new Map();
