@@ -14,6 +14,8 @@
 
 # Commandes
 
+Les commandes sont à éxécuter dans le dossier du projet. (Pas classes ou src).
+
 ## Compilation :
 
 ```
@@ -66,8 +68,6 @@ jar cvfm appli.jar manifest.txt -C classes pandemic -C classes org
 ```
 java -jar appli.jar
 ```
-
-
 
 # Livrables
 
