@@ -11,6 +11,25 @@
 
 [Le sujet 2023](https://www.fil.univ-lille.fr/portail/index.php?dipl=L&sem=S4&ue=Projet&label=Documents)
 
+
+# Commandes
+
+## Compilation
+```
+javac -classpath jars/json.jar:src -d classes src/pandemic/Main.java
+```
+
+## Execution
+```
+java -cp jars/json.jar:classes pandemic.Main
+```
+
+## Documentation
+```
+javadoc -classpath jars/json.jar:src -d docs -subpackages pandemic
+```
+
+
 # Livrables
 
 ## Livrable 1
