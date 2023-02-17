@@ -14,20 +14,59 @@
 
 # Commandes
 
-## Compilation
+## Compilation :
+
 ```
 javac -classpath jars/json.jar:src -d classes src/pandemic/Main.java
 ```
 
-## Execution
+## Execution :
+
 ```
 java -cp jars/json.jar:classes pandemic.Main
 ```
 
-## Documentation
+## Documentation :
+
 ```
 javadoc -classpath jars/json.jar:src -d docs -subpackages pandemic
 ```
+
+## Tests :
+
+### Compilation :
+
+```
+javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/*.java
+```
+
+### Execution :
+
+```
+java -jar jars/test.jar \
+-cp classes:test:jars/json.jar --scan-classpath --disable-banner
+```
+
+## JAR :
+
+### Extraire :
+
+```
+cd classes; jar xvf ../jars/json.jar; cd ..
+```
+
+### Créer JAR :
+
+```
+jar cvfm appli.jar manifest.txt -C classes pandemic -C classes org
+```
+
+### Execution :
+
+```
+java -jar appli.jar
+```
+
 
 
 # Livrables
@@ -83,9 +122,10 @@ Répartition des tâches à réaliser.
 Création très succincte de la base de plusieurs classes telles que Player, Town, et les différentes cartes du jeu.
 
 ## Semaine 3
-Travail exclusif sur la Map ainsi que sur les villes (Town), implémentation de celles-ci ainsi que début d'implémentation de leur classe de test
+Travail exclusif sur la Map ainsi que sur les villes (Town), implémentation de celles-ci ainsi que début d'implémentation de leur classe de test.
 
 ## Semaine 4
+Finitions sur map et town, rédaction du readme pour le livrable 1.
 
 ## Semaine 5
 
