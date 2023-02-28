@@ -84,7 +84,7 @@ A partir de la deuxième semaine, nous nous sommes répartis le travail :
 Nous n'avons pas rencontré de difficultés particulières pour cette partie du projet, car les classes Town et Map sont relativement simples, là partie la plus difficile a été de trouver la meilleure façon d'initialiser toutes les villes avec le TownsJsonReader.
 Nous avons choisi de faire une classe abstraite JsonReader et d'en créer une spécifique TownJsonReader afin de pouvoir rajouter des extensions sur les villes.
 
-Pour montrer comment fonctionne Map, nous avons fait une classe MapMain qui affiche dans la console toutes les données exploités dans ville48.json.
+Pour montrer comment fonctionne Map, nous avons fait une classe Main qui affiche dans la console toutes les données exploités dans ville48.json.
 
 ### Atteinte des objectifs
 La carte gère toute les villes du jeu, il y a deux façons d'implémenter les données des villes dans le jeu :

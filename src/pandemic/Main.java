@@ -2,6 +2,7 @@ package pandemic;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
@@ -9,6 +10,13 @@ public class Main {
 			Map map = new Map();
 			map.setMapWithJSON("json/villes48.json");
 			System.out.println(map.toString());
+			Town a = map.getTown(0);
+
+			Globetrotter g2 = new Globetrotter("a", a);
+			HashSet<Town> hash = g2.getTowns();
+			for (Town t: hash) {
+				System.out.println(t.getName());
+			}
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error in the json file");
@@ -29,5 +37,6 @@ public class Main {
 		Map map2 = new Map();
 		map2.setMap(towns);
 		System.out.println(map2.toString());
+
 	}
 }
