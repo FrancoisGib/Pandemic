@@ -1,5 +1,6 @@
 package pandemic.cards;
 
+<<<<<<< HEAD
 import pandemic.Disease;
 
 public abstract class Card {
@@ -26,4 +27,8 @@ public abstract class Card {
 	}
 	
 	public abstract void pickCard();
+=======
+public class Card {
+    
+>>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 }
