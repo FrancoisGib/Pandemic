@@ -1,6 +1,5 @@
 package pandemic;
-
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /** The class that defines a town in the infection game */
 public class Town {
@@ -12,7 +11,7 @@ public class Town {
 	private String name;
 
 	/** The list of neighbors the Town has */
-	private ArrayList<Town> neighbors;
+	private HashSet<Town> neighbors;
 
 	/** The sector of the Town */
 	private int sector;
@@ -29,7 +28,7 @@ public class Town {
 	public Town(String name, int sector) {
 		this.infectionState = 0;
 		this.name = name;
-		this.neighbors = new ArrayList<Town>();
+		this.neighbors = new HashSet<Town>();
 		this.sector = sector;
 		this.researchCenter = false;
 	}
@@ -63,7 +62,7 @@ public class Town {
 	 * 
 	 * @return The list of the Town's neighbors
 	 */
-	public ArrayList<Town> getNeighbors() {
+	public HashSet<Town> getNeighbors() {
 		return neighbors;
 	}
 

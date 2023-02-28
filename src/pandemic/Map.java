@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /** The game's Map who control the towns of the game */
 public class Map {
@@ -100,7 +101,7 @@ public class Map {
 	 * @param town The town to search neighbors
 	 * @return All the neighbors of the town passed in parameters
 	 */
-	public ArrayList<Town> getTownNeighbors(Town town) {
+	public HashSet<Town> getTownNeighbors(Town town) {
 		return town.getNeighbors();
 	}
 	
@@ -123,7 +124,7 @@ public class Map {
 	public String toString() {
 		String res = "";
 		for (Town town : this.towns) {
-			List<Town> townNeighbors = town.getNeighbors();
+			HashSet<Town> townNeighbors = town.getNeighbors();
 			String stringNeighbors = "";
 			for (Town neighbor : townNeighbors) {
 				stringNeighbors += neighbor.getName() + " / ";

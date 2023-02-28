@@ -48,7 +48,7 @@ public abstract class Player {
 		return false;
 	}
 	
-	public void move() {
-		
+	public HashSet<Town> getTowns() {
+		return this.town.getNeighbors();
 	}
 }

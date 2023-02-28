@@ -12,11 +12,14 @@ public class Main {
 			System.out.println(map.toString());
 			Town a = map.getTown(0);
 
-			Globetrotter g2 = new Globetrotter("a", a);
+			Player g2 = new Globetrotter("a", a);
 			HashSet<Town> hash = g2.getTowns();
+			String res = "";
 			for (Town t: hash) {
-				System.out.println(t.getName());
+				res += t.getName() + " / ";
 			}
+			System.out.println(res);
+			System.out.println(hash.size());
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error in the json file");
