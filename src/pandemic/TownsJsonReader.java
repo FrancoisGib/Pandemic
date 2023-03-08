@@ -1,20 +1,12 @@
 package pandemic;
 
 import java.io.FileNotFoundException;
-<<<<<<< HEAD
-=======
-import java.io.FileReader;
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-<<<<<<< HEAD
-=======
-import org.json.JSONTokener;
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 
 /** The TownsJsonReader class, it reads the towns' datas of a json file */
 public class TownsJsonReader extends JsonReader {
@@ -27,11 +19,7 @@ public class TownsJsonReader extends JsonReader {
 	/**
 	 * Builds a JsonReader who read a json file
 	 * 
-<<<<<<< HEAD
 	 * @param filename The name of the file to read
-=======
-	 * @param filename, the name of the file to read
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 	 * @exception FileNotFoundException The exception if the specified file doesn't exist
 	 */
 	public TownsJsonReader(String filename) throws FileNotFoundException{

@@ -3,10 +3,6 @@ package pandemic;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
-import java.util.HashSet;
-=======
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,11 +30,7 @@ public class TownTest {
 	
 	@Test
 	public void addNeighborTest() {
-<<<<<<< HEAD
-		HashSet<Town> list = new HashSet<Town>();
-=======
 		ArrayList<Town> list = new ArrayList<Town>();
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 		list.add(this.town2);
 		
 		assertFalse(list.equals(this.town1.getNeighbors()));

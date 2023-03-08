@@ -1,12 +1,8 @@
 package pandemic;
 
-<<<<<<< HEAD
 import java.util.*;
 
 import pandemic.cards.Card;
-=======
-import java.util.List;
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 
 /* The class that defines a player in the game */
 public abstract class Player {
@@ -17,7 +13,6 @@ public abstract class Player {
 	/* The town where the Player is */
 	protected Town town;
 	
-<<<<<<< HEAD
 	
 	protected List<Card> cards;
 	
@@ -53,14 +48,12 @@ public abstract class Player {
 		return false;
 	}
 	
-	public HashSet<Town> getTowns() {
-		return this.town.getNeighbors();
+	public ArrayList<Town> getPossibleMove() {
+		return town.getNeighbors();
 	}
-=======
-	/* The list of cards the Player has */
-	protected List<PlayerCardsStack> cards;
+
+	public boolean move(Town town) {
+		this.town = 
+	}
 	
-	
-	
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
 }

@@ -1,13 +1,12 @@
 package pandemic.cards;
-
-<<<<<<< HEAD
+import pandemic.Town;
 import pandemic.Disease;
 
-public abstract class Card {
-	private String town;
+public class Card {
+	private Town town;
 	private Disease disease;
 	
-	public Card(String town,Disease disease) {
+	public Card(Town town , Disease disease) {
 		this.town = town;
 		this.disease = disease;
 	}
@@ -16,19 +15,22 @@ public abstract class Card {
 	 * @return the town
 	 */
 	public String getTownName() {
-		return town;
+		return this.town.getName();
+	}
+
+	public Town getTown() {
+		return this.town;
+	}
+
+	public String getDiseaseName() {
+		return this.disease.getName();
 	}
 
 	/**
 	 * @return the  disease
 	 */
 	public Disease getDisease() {
-		return disease;
+		return this.disease;
 	}
-	
-	public abstract void pickCard();
-=======
-public class Card {
-    
->>>>>>> 352eef3fbdfecc1c15e20a751005f81ddf898923
+
 }
