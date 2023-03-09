@@ -52,8 +52,12 @@ public abstract class Player {
 		return town.getNeighbors();
 	}
 
-	public boolean move(Town town) {
-		this.town = 
+	public Town getTown() {
+		return this.town;
 	}
 	
+	public String getTownName() {
+		return this.town.getName();
+	}
+
 }

@@ -42,14 +42,16 @@ public class Main {
 				System.out.println("Ville : " + card.getTownName() + " et la maladie est : "+ card.getDiseaseName());
 			}
 
-			/*Globetrotter g2 = new Globetrotter("a", a);
-			HashSet<Town> hash = g2.getTowns();
-			for (Town t: hash) {
+			Globetrotter g2 = new Globetrotter("a", a);
+			ArrayList<Town> hash = g2.getTowns();
+			/*for (Town t: hash) {
 				System.out.println(t.getName());
 			}*/
-
-
-
+			System.out.println(g2.getTownName());
+			g2.move();
+			System.out.println(g2.getTownName());
+			g2.move();
+			System.out.println(g2.getTownName());
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error in the json file");
