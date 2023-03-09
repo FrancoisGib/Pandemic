@@ -6,7 +6,7 @@ import java.util.HashSet;
 import pandemic.cards.Card;
 
 public class Main {
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) {
 		try {
 			Map map = new Map();
 			map.setMapWithJSON("json/villes48.json");
@@ -39,7 +39,7 @@ public class Main {
 
 			while (!cardsStack.hasCardsLeft()) {
 				Card card = cardsStack.pickCard();
-				System.out.println("Ville : " + card.getTownName() + " et la maladie est : "+ card.getDiseaseName());
+				System.out.println(card.getTownName() + ", la maladie de ce secteur est : "+ card.getDiseaseName());
 			}
 
 			Globetrotter g2 = new Globetrotter("a", a);
@@ -47,14 +47,12 @@ public class Main {
 			/*for (Town t: hash) {
 				System.out.println(t.getName());
 			}*/
-			System.out.println(g2.getTownName());
+			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
 			g2.move();
-			System.out.println(g2.getTownName());
-			g2.move();
-			System.out.println(g2.getTownName());
+			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
 		}
 		catch(NoSuchTownException e) {
-			System.out.println("Error in the json file");
+			System.out.println("Error");
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("File not found");

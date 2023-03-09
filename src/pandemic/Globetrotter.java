@@ -2,6 +2,8 @@ package pandemic;
 
 import java.util.*;
 
+import javax.swing.text.AttributeSet.FontAttribute;
+
 /* The class that defines a player in the game */
 public class Globetrotter extends Player {
 	/* The list of cards the Player has */
@@ -42,17 +44,31 @@ public class Globetrotter extends Player {
 		return this.towns;
 	}
 
-	public void move() {
+	public void move() throws NoSuchTownException {
 		System.out.println("Choose a city to move on, here the list of cities :\n\n");
 		int i = 0;
-		for (Town town : towns) {
-			System.out.println("Ville "+ i+1 + " : " + town.getName() + " / ");
+		String res = "";
+		for (Town town : this.towns) {
+			res += (town.getName() + " / ");
 			i++;
 		}
-		System.out.println("Enter a number !");
+		System.out.println(res);
+		System.out.println("Enter a town name !");
 		Scanner sc = new Scanner(System.in); 
-		int townNumber = sc.nextInt()-1;  
-		this.town = towns.get(townNumber);
+		String townName = sc.nextLine();
+		boolean found = false;
+		i = 0;
+		while (i < this.towns.size() && !found) {
+			Town newTown = this.towns.get(i);
+			if (townName.equals(newTown.getName())) {
+				this.town = newTown;
+				found = true;
+			}
+			i++;
+		}
 		sc.close();
+		if (!found) {
+			throw new NoSuchTownException("This town doesn't exist");
+		}
 	}
 }
