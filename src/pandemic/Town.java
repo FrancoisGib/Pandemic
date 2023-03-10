@@ -52,6 +52,12 @@ public class Town {
 		this.infectionState = infectionState;
 	}
 	
+	public void decreaseInfectionState() {
+		if (this.infectionState > 0) {
+			this.infectionState--;
+		}
+	}
+	
 	/** Update the infection state by adding 1 to it */
 	public void updateInfectionState() {
 		this.infectionState = this.infectionState + 1;

@@ -49,11 +49,11 @@ public class Main {
 
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
-			g2.move(sc);
+			g2.chooseAction(sc);
 			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
-			g2.move(sc);
-			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
+			g2.chooseAction(sc);
 			sc.close();
+			
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error");

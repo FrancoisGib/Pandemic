@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import pandemic.Town;
 import pandemic.cards.Card;
+import pandemic.Disease;
 import pandemic.NoSuchTownException;
 
 /* The class that defines a player in the game */
@@ -25,6 +26,10 @@ public abstract class Player {
 		this.name = name;
 		this.town = town;
 		this.cards = new ArrayList<Card>();
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 	
 	public void movableTowns(Town town, HashSet<Town> movableTowns) {
@@ -82,7 +87,7 @@ public abstract class Player {
 		}
 		System.out.println(res + "\n");
 		System.out.println("Enter a town name !\n");
-		String townName = sc.nextLine();
+		String townName = sc.next();
 		boolean found = false;
 		Iterator<Town> it = movableTowns.iterator();
 		while (it.hasNext() && !found) {
@@ -96,5 +101,32 @@ public abstract class Player {
 			throw new NoSuchTownException("This town doesn't exist");
 		}
 	}
+	
+	public void chooseAction(Scanner sc) throws NoSuchTownException {
+		System.out.println("Choose an action by entering a number !\n");
+		System.out.println("1 -> Move to another city\n2 -> Build a research center in your current city\n3 -> Find a cure\n4 -> Treat a disease\n5 -> Do nothing ");
+		int actionNumber = sc.nextInt();
+		switch(actionNumber) {
+			case 1:
+				this.move(sc);
+				System.out.println("Le joueur " + this.getName() +" est sur la ville : " + this.getTownName());
+				break;
+			case 2:
+				this.town.buildResearchCenter();
+				System.out.println("A research center has been built in " + this.town.getName());
+				break;
+			case 3:
+			
+				System.out.println("A cure has been discovered for the ");
+				break;
+			case 4:
+				this.town.decreaseInfectionState();
+				System.out.println("The current town infection state has been decreased by one, the current town infection state is now " + this.town.getInfectionState());
+				break;
+			case 5:
+				System.out.println("You chose to do nothing during this round.");
+				break;
+		}
+	}	
 
 }
