@@ -3,6 +3,9 @@ package pandemic;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import pandemic.JsonReader.TownsJsonReader;
+
 import java.util.HashMap;
 
 /** The game's Map who control the towns of the game */

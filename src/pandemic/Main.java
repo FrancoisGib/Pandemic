@@ -2,8 +2,11 @@ package pandemic;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Scanner;
+
 import pandemic.cards.Card;
+import pandemic.player.Globetrotter;
+import pandemic.player.Player;
 
 public class Main {
 	public static void main(String[] args) {
@@ -11,7 +14,7 @@ public class Main {
 			Map map = new Map();
 			map.setMapWithJSON("json/villes48.json");
 			System.out.println(map.toString());
-			Town a = map.getTown(0);
+			Town mainTown = map.getTown(0);
 
 			ArrayList<Town> towns = map.getTowns();
 			Disease d1 = new Disease("Ebola");
@@ -42,14 +45,15 @@ public class Main {
 				System.out.println(card.getTownName() + ", la maladie de ce secteur est : "+ card.getDiseaseName());
 			}
 
-			Globetrotter g2 = new Globetrotter("a", a);
-			ArrayList<Town> hash = g2.getTowns();
-			/*for (Town t: hash) {
-				System.out.println(t.getName());
-			}*/
+			Player g2 = new Globetrotter("Globetrotter", mainTown);
+
+			Scanner sc = new Scanner(System.in);
 			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
-			g2.move();
+			g2.move(sc);
 			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
+			g2.move(sc);
+			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
+			sc.close();
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error");
