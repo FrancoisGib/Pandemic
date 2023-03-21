@@ -1,7 +1,9 @@
-package pandemic;
+package pandemic.cards;
 
 import java.util.*;
-import pandemic.cards.*;
+
+import pandemic.Disease;
+import pandemic.Town;
 
 /* the class that defines a card stack in the game */
 public class CardsStack {

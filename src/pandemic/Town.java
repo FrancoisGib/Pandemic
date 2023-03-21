@@ -1,12 +1,13 @@
 package pandemic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /** The class that defines a town in the infection game */
 public class Town {
 
 	/** The Town's infection state */
-	private int infectionState;
+	private HashMap<Disease, Integer> infectionState;
 
 	/** The name of the Town */
 	private String name;
@@ -20,6 +21,8 @@ public class Town {
 	/** true if the Town has a research center, else false */
 	private boolean researchCenter;
 
+	private boolean infectionCluster;
+
 	/**
 	 * Builds a Town
 	 * 
@@ -27,11 +30,12 @@ public class Town {
 	 * @param sector The sector of the Town
 	 */
 	public Town(String name, int sector) {
-		this.infectionState = 0;
+		this.infectionState = new HashMap<Disease, Integer>();
 		this.name = name;
 		this.neighbors = new ArrayList<Town>();
 		this.sector = sector;
 		this.researchCenter = false;
+		this.infectionCluster = false;
 	}
 
 	/**
@@ -39,8 +43,11 @@ public class Town {
 	 * 
 	 * @return The infection state of the Town
 	 */
-	public int getInfectionState() {
-		return infectionState;
+	public int getInfectionState(Disease disease) throws NoSuchDiseaseException {
+		if (this.infectionState.containsKey(disease)) {
+			return this.infectionState.get(disease);
+		}
+		throw new NoSuchDiseaseException("This town is not infected by " + disease.getName());
 	}
 
 	/**
@@ -48,19 +55,32 @@ public class Town {
 	 * 
 	 * @param infectionState The infection state to apply
 	 */
-	public void setInfectionState(int infectionState) {
-		this.infectionState = infectionState;
+	public void setInfectionState(int infectionState, Disease disease) {
+		if (this.infectionState.containsKey(disease)) {
+			this.infectionState.replace(disease, infectionState);
+		}
+		else {
+			this.infectionState.put(disease, infectionState);
+		}
 	}
 	
-	public void decreaseInfectionState() {
-		if (this.infectionState > 0) {
-			this.infectionState--;
+	public void decreaseInfectionState(Disease disease) throws NoSuchDiseaseException {
+		if (this.infectionState.containsKey(disease)) {
+			this.infectionState.replace(disease, this.getInfectionState(disease)-1);
+		}
+		else {
+			throw new NoSuchDiseaseException("This town is not infected by " + disease.getName());
 		}
 	}
 	
 	/** Update the infection state by adding 1 to it */
-	public void updateInfectionState() {
-		this.infectionState = this.infectionState + 1;
+	public void updateInfectionState(Disease disease) throws NoSuchDiseaseException {
+		if (this.infectionState.containsKey(disease)) {
+			this.infectionState.replace(disease, this.getInfectionState(disease));
+		}
+		else {
+			this.infectionState.put(disease, 1);
+		}
 	}
 	
 	/**
@@ -115,4 +135,15 @@ public class Town {
 		return this.researchCenter;
 	}
 
+	public HashMap<Disease, Integer> getAllInfectionState() {
+		return this.infectionState;
+	}
+
+	public void setInfectionCluster() {
+        this.infectionCluster = true;
+    }
+
+    public boolean isCluster() {
+        return this.infectionCluster;
+    }
 }

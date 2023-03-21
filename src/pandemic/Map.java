@@ -135,4 +135,28 @@ public class Map {
 		}
 		return res;
 	}
+
+	public String toStringInfectionState() {
+		String res = "";
+		for (Town town : this.towns) {
+			res += town.getName() + " infection state : ";
+			HashMap<Disease, Integer> diseases = town.getAllInfectionState();
+			for (Disease disease : diseases.keySet()) {
+				res += disease.getName() + " : " + diseases.get(disease) + " / ";
+			}
+			res += "\n";
+				
+		}
+		return res;
+	}
+
+    public int getClustersNumber() {
+		int cpt = 0;
+        for (Town town : this.towns) {
+            if (town.isCluster()) {
+				cpt++;
+			}
+        }
+		return cpt;
+    }
 }

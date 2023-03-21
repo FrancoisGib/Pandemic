@@ -128,12 +128,17 @@ Travail exclusif sur la Map ainsi que sur les villes (Town), implémentation de 
 Finitions sur map et town, rédaction du readme pour le livrable 1.
 
 ## Semaine 5
+Commencement du code de Player ainsi que Cards.
 
 ## Semaine 6
+Création de CardsStack et finition de Card et de ses sous-classes.
 
 ## Semaine 7
+Finitions de la classe Player ainsi que l'initialisation des rôles comme Globetrotter.
 
 ## Semaine 8
+Correction de Town pour pouvoir y mettre plusieurs maladies (nous pensions qu'une ville pouvait être infectée que par une maladie).
+Changements dans CardStack ainsi que création de l'exception NoSuchDiseaseException (similaire à NoSuchTownException mais pour les maladies).
 
 ## Semaine 9
 

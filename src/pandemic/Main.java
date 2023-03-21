@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import pandemic.cards.Card;
+import pandemic.cards.CardsStack;
 import pandemic.player.Globetrotter;
 import pandemic.player.Player;
 
@@ -56,10 +57,13 @@ public class Main {
 			
 		}
 		catch(NoSuchTownException e) {
-			System.out.println("Error");
+			System.out.println("Error with the towns");
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("File not found");
+		}
+		catch(NoSuchDiseaseException e) {
+			System.out.println("Error with the diseases");
 		}
 
 	}
