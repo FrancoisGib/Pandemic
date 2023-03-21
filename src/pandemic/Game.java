@@ -46,11 +46,16 @@ public class Game {
             this.infectionCardsStack.discardCard(card); // A enlever, c'est pour tester.
             Town town = this.map.getTownByName(card.getTownName());
             Disease disease = card.getDisease();
-            if (town.getInfectionState(disease)==3) {
-                town.setInfectionCluster();
+            if (town.isInfected(disease)) {
+                if (town.getInfectionState(disease)==3) {
+                    town.setInfectionCluster();
+                }
+                else {
+                    town.updateInfectionState(disease);
+                }
             }
             else {
-                town.updateInfectionState(disease);
+                town.setInfectionState(1, disease);
             }
         }
     }

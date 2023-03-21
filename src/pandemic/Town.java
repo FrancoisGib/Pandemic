@@ -146,4 +146,11 @@ public class Town {
     public boolean isCluster() {
         return this.infectionCluster;
     }
+
+	public boolean isInfected(Disease disease) {
+		if (!this.infectionState.containsKey(disease)) {
+			return false;
+		}
+		return true;
+	}
 }
