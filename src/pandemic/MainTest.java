@@ -73,9 +73,13 @@ public class MainTest {
             Game game = new Game(map, players, diseases, playerCardsStack, infectionCardsStack);
             System.out.println(game.getMap().toStringInfectionState());
 
-
 			game.startInfectionPhase();
+            System.out.println(game.getGlobalInfectionState());
             System.out.println(game.getMap().toStringInfectionState());
+            game.startInfectionPhase();
+            System.out.println(game.getGlobalInfectionState());
+            System.out.println(game.getMap().toStringInfectionState());
+
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error with the towns");

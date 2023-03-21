@@ -159,4 +159,15 @@ public class Map {
         }
 		return cpt;
     }
+
+	public int getGlobalInfectionState() {
+		int sum = 0;
+		for (Town town : towns) {
+			ArrayList<Integer> infectionStates = new ArrayList<Integer>(town.getAllInfectionState().values());
+			for (Integer state : infectionStates) {
+				sum += state;
+			}
+		}
+		return sum;
+	}
 }

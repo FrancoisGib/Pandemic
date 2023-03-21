@@ -5,7 +5,8 @@ import pandemic.player.*;
 import pandemic.cards.*;
 
 public class Game {
-    public static final int MAX_CLUSTERS_NUMBER = 8;
+    private static final int MAX_CLUSTERS_NUMBER = 8;
+    private static final int INITIAL_INFECTION_STATE = 2;
 
     private int globalInfectionState;
 
@@ -22,7 +23,7 @@ public class Game {
     private CardsStack infectionCardsStack;
 
     public Game(Map map, ArrayList<Player> players, ArrayList<Disease> diseases, CardsStack playerCardsStack, CardsStack infectionCardsStack) {
-        this.globalInfectionState = 2;
+        this.globalInfectionState = INITIAL_INFECTION_STATE;
         this.clustersNumber = 0;
         this.map = map;
         this.players = players;
@@ -41,9 +42,9 @@ public class Game {
 
 
     public void startInfectionPhase() throws NoSuchTownException, NoSuchDiseaseException {
-        for (int i = 0; i < this.globalInfectionState; i++) {
+        int tempo = this.globalInfectionState; // Sinon problème avec le for qui va changer et donc problèmes avec les cartes
+        for (int i = 0; i < tempo; i++) {
             Card card = this.infectionCardsStack.pickCard();
-            this.infectionCardsStack.discardCard(card); // A enlever, c'est pour tester.
             Town town = this.map.getTownByName(card.getTownName());
             Disease disease = card.getDisease();
             if (town.isInfected(disease)) {
@@ -51,10 +52,12 @@ public class Game {
                     town.setInfectionCluster();
                 }
                 else {
+                    this.globalInfectionState ++;
                     town.updateInfectionState(disease);
                 }
             }
             else {
+                this.globalInfectionState ++;
                 town.setInfectionState(1, disease);
             }
         }
@@ -66,6 +69,11 @@ public class Game {
 
     public int getClustersNumber() {
         return this.map.getClustersNumber();
+    }
+
+    public int processGlobalInfectionState() {
+        this.globalInfectionState = this.map.getGlobalInfectionState();
+        return this.globalInfectionState + INITIAL_INFECTION_STATE;
     }
 
     public boolean gameEnded() {
