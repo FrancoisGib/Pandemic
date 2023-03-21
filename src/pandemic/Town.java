@@ -76,7 +76,7 @@ public class Town {
 	/** Update the infection state by adding 1 to it */
 	public void updateInfectionState(Disease disease) throws NoSuchDiseaseException {
 		if (this.infectionState.containsKey(disease)) {
-			this.infectionState.replace(disease, this.getInfectionState(disease));
+			this.infectionState.replace(disease, this.getInfectionState(disease)+1);
 		}
 		else {
 			this.infectionState.put(disease, 1);

@@ -43,6 +43,7 @@ public class Game {
     public void startInfectionPhase() throws NoSuchTownException, NoSuchDiseaseException {
         for (int i = 0; i < this.globalInfectionState; i++) {
             Card card = this.infectionCardsStack.pickCard();
+            this.infectionCardsStack.discardCard(card); // A enlever, c'est pour tester.
             Town town = this.map.getTownByName(card.getTownName());
             Disease disease = card.getDisease();
             if (town.getInfectionState(disease)==3) {
@@ -77,5 +78,9 @@ public class Game {
 
     public Map getMap() {
         return this.map;
+    }
+
+    public CardsStack getInfectionCardsStack() {
+        return this.infectionCardsStack;
     }
 }

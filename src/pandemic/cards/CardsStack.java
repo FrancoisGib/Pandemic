@@ -37,6 +37,9 @@ public class CardsStack {
 
     /* pick the top card of stack */
     public Card pickCard(){
+        if (this.stack.isEmpty()) {
+            this.resetStack();
+        }
         return this.stack.pop();
     }
 
