@@ -1,6 +1,8 @@
 package pandemic.cards;
 
-import java.util.*;
+import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Random;
 
 /* the class that defines a card stack in the game */
 public class CardsStack {
@@ -26,6 +28,7 @@ public class CardsStack {
         while (!cards.isEmpty()) {
             int i = random.nextInt(cards.size());
             Card card = cards.remove(i);
+
             this.stack.push(card);
         }
     }
@@ -37,7 +40,11 @@ public class CardsStack {
     /* pick the top card of stack */
     public Card pickCard() {
         if (!this.stack.empty()) {
-            return this.stack.pop();
+            Card card = this.stack.pop();
+            if (this.discard && card.getTown() != null) {
+                this.discardStack.push(card);
+            }
+            return card;
         } else {
             if (this.discard) {
                 this.resetStack();
@@ -48,18 +55,16 @@ public class CardsStack {
         return null;
     }
 
-    public void discardCard(Card card) {
-        this.discardStack.add(card);
-    }
-
     /* if the stack is empty, reset it with mixed cards from the discard */
     public void resetStack() {
         while (!this.stack.isEmpty()) {
-            this.discardStack.add(this.stack.pop());
+            Card c = this.stack.pop();
+            this.discardStack.push(c);
         }
         ArrayList<Card> cards = new ArrayList<Card>();
         while (!this.discardStack.empty()) {
-            cards.add(this.discardStack.pop());
+            Card card = this.discardStack.pop();
+            cards.add(card);
         }
         this.initStack(cards);
     }
@@ -67,9 +72,11 @@ public class CardsStack {
     public void mergeStacks(ArrayList<Stack<Card>> mergedStacks) {
         for (Stack<Card> cardStack : mergedStacks) {
             while (!cardStack.isEmpty()) {
-                this.discardStack.add(cardStack.pop());
+                Card card = cardStack.pop();
+                this.discardStack.push(card);
             }
         }
+        System.out.println(this.discardStack.size());
         this.resetStack(); // shuffle the new stack
     }
 

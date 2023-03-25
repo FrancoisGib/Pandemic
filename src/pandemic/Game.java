@@ -1,6 +1,7 @@
 package pandemic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
 
@@ -31,21 +32,41 @@ public class Game {
         this.map = map;
         this.players = players;
         this.diseases = diseases;
-        this.playerCardsStack = null;
-        this.infectionCardsStack = null;
+        this.initGame();
     }
 
     public void initGame() {
-        initPlayersHand();
-        initInitialTown();
+        this.initCards();
+        this.initPlayersHand();
+        this.initInitialTown();
+        this.initialInfection();
     }
 
     public void initCards() {
         ArrayList<Town> towns = this.map.getTowns();
         ArrayList<Card> playerCards = new ArrayList<Card>();
+
         for (Town town : towns) {
-            
+            int sector = town.getSector();
+
+            boolean found = false;
+            Iterator<Disease> it = this.diseases.iterator();
+            Disease disease = null;
+
+            while (!found && it.hasNext()) {
+                disease = it.next();
+                if (disease.getSector() == sector) {
+                    found = true;
+                }
+            }
+            town.setInfectionState(0, disease);
+            Card card = new Card(town, disease);
+            playerCards.add(card);
         }
+        ArrayList<Card> infectionCards = new ArrayList<>(playerCards);
+
+        this.playerCardsStack = new CardsStack(playerCards, true);
+        this.infectionCardsStack = new CardsStack(infectionCards, false);
     }
 
     public void initPlayersHand() {
@@ -57,7 +78,7 @@ public class Game {
         }   
         ArrayList<Stack<Card>> splitCards = this.playerCardsStack.splitCards(4);
         for (Stack<Card> cStack : splitCards) {
-            cStack.add(null)
+            cStack.add(new Card());
         }
         this.playerCardsStack.mergeStacks(splitCards);
     }
@@ -69,6 +90,16 @@ public class Game {
         for (Player player : this.players) {
             player.setTown(initialTown);
         }
+    }
+
+    public void initialInfection() {
+        for (int i = 3; i > 0; i--) {
+            for (int j = 0; j < 3; j++) {
+                Card card = this.infectionCardsStack.pickCard();
+                card.getTown().setInfectionState(i, card.getDisease());
+            }
+        }
+        this.computeGlobalInfectionState();
     }
 
     public int getGlobalInfectionState() {
@@ -109,7 +140,7 @@ public class Game {
         return this.map.getClustersNumber();
     }
 
-    public int processGlobalInfectionState() {
+    public int computeGlobalInfectionState() {
         this.globalInfectionState = this.map.getGlobalInfectionState();
         return this.globalInfectionState + INITIAL_INFECTION_STATE;
     }
@@ -127,5 +158,13 @@ public class Game {
 
     public CardsStack getInfectionCardsStack() {
         return this.infectionCardsStack;
+    }
+
+    public CardsStack getPlayerCardsStack() {
+        return this.playerCardsStack;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return this.players;
     }
 }

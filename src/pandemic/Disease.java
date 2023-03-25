@@ -5,9 +5,12 @@ public class Disease {
 
     private boolean cured;
 
-    public Disease(String name) {
+    private int sector;
+
+    public Disease(String name, int sector) {
         this.name = name;
         this.cured = false;
+        this.sector = sector;
     }
 
     public String getName() {
@@ -20,5 +23,9 @@ public class Disease {
             return true;
         }
         return false;
+    }
+
+    public int getSector() {
+        return this.sector;
     }
 }

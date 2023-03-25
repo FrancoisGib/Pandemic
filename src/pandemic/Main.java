@@ -1,58 +1,36 @@
 package pandemic;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Arrays;
 
-import pandemic.cards.Card;
-import pandemic.cards.CardsStack;
-import pandemic.player.Globetrotter;
-import pandemic.player.Player;
+import java.io.FileNotFoundException;
+
+import pandemic.player.*;
 
 public class Main {
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		try {
 			Map map = new Map();
 			map.setMapWithJSON("json/villes48.json");
-			System.out.println(map.toString());
-			Town mainTown = map.getTown(0);
+			Disease d1 = new Disease("EBOLA", 0);
+			Disease d2 = new Disease("SIDA", 1);
+			Disease d3 = new Disease("CORONAVIRUS", 2);
+			Disease d4 = new Disease("CHIKUNGUNYA", 3);
+            ArrayList<Disease> diseases = new ArrayList<Disease>(Arrays.asList(d1, d2, d3, d4));
 
-			ArrayList<Town> towns = map.getTowns();
-			Disease d1 = new Disease("Ebola");
-			Disease d2 = new Disease("Sida");
-			Disease d3 = new Disease("Coronavirus");
-			Disease d4 = new Disease("Chikungunya");
+			Player p1 = new Globetrotter("Globetrotter");
+			Player p2 = new Expert("Expert");
+			Player p3 = new Scientist("Scientist");
+			Player p4 = new Doctor("Doctor");
+            ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3, p4));
 
-			ArrayList<Card> cards = new ArrayList<Card>();
-			for (Town town : towns) {
-				int sector = town.getSector();
-				if (sector == 1) {
-					cards.add(new Card(town, d1));
-				}
-				if (sector == 2) {
-					cards.add(new Card(town, d2));
-				}
-				if (sector == 3) {
-					cards.add(new Card(town, d3));
-				}
-				if (sector == 4) {
-					cards.add(new Card(town, d4));
-				}
+
+			Game game = new Game(map, players, diseases);
+			System.out.println(map.getTowns().size());
+			for (int i = 0; i < 1; i++) {
+				game.startInfectionPhase();
 			}
-			CardsStack cardsStack = new CardsStack(cards, true);
-
-			while (!cardsStack.hasCardsLeft()) {
-				Card card = cardsStack.pickCard();
-				System.out.println(card.getTownName() + ", la maladie de ce secteur est : "+ card.getDiseaseName());
-			}
-
-			Player g2 = new Globetrotter("Globetrotter", mainTown);
-
-			Scanner sc = new Scanner(System.in);
-			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
-			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
-			sc.close();
-			
+			System.out.println(game.getGlobalInfectionState());
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error with the towns");

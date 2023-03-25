@@ -11,9 +11,9 @@ public class Card {
 		this.disease = disease;
 	}
 
-	public Card(Disease disease) {
+	public Card() {
 		this.town = null;
-		this.disease = disease;
+		this.disease = null;
 	}
 
 	/**

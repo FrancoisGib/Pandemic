@@ -51,6 +51,16 @@ public abstract class Player {
 		}
 		return cpt;
 	}
+
+	public int getCardsNumberByDisease(Disease disease) {
+		int cpt = 0;
+		for(Card card : cards) {
+			if (card.getDisease() == disease) {
+				cpt++;
+			}
+		}
+		return cpt;
+	}
 	
 	public boolean buildResearchCenter() {
 		if (this.getCurrentTownCardsNumber() > 0 && !this.town.hasResearchCenter()) {
@@ -61,7 +71,7 @@ public abstract class Player {
 	}
 	
 	public boolean discoverCure(Scanner sc) {
-		if (this.town.hasResearchCenter() && this.getCurrentTownCardsNumber() > 4) {
+		if (this.town.hasResearchCenter()) {
 			HashMap<Disease, Integer> diseases = this.town.getAllInfectionState();
 			System.out.println("Choose a disease to find a cure :");
 			HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();
@@ -71,7 +81,28 @@ public abstract class Player {
 			}
 			String diseaseName = sc.next();
 			Disease chosenDisease = diseasesByName.get(diseaseName);
-			return chosenDisease.cure();
+			if (chosenDisease == null) {
+				System.out.println("This disease does not exist or the town is not infected by it, retry");
+				return this.discoverCure(sc);
+			}
+			else if (this.getCardsNumberByDisease(chosenDisease) > 4) {
+				boolean cured = chosenDisease.cure();
+				if (cured) {
+					System.out.println("The disease " + chosenDisease.getName() + " has been cured");
+					return true;
+				}
+				else {
+					System.out.println("The disease " + chosenDisease.getName() + " was already cured");
+					chooseAction(sc);
+				}
+			}
+			else {
+				System.out.println("This town is not infected by this disease, retry");
+				return this.discoverCure(sc);
+			}
+		}
+		else {
+			System.out.println("The town you're on doesn't have a research center, build one to find a cure.");
 		}
 		return false;
 	}
@@ -155,10 +186,12 @@ public abstract class Player {
 				System.out.println("You chose to do nothing during this round.");
 				break;
 		}
-	}	
+	}
 
 	public void pickPlayerCard(CardsStack cards) {
 		Card card = cards.pickCard();
-		this.cards.add(card);
+		if (card != null) {
+			this.cards.add(card);
+		}
 	}
 }
