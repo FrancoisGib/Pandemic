@@ -28,7 +28,6 @@ public class CardsStack {
         while (!cards.isEmpty()) {
             int i = random.nextInt(cards.size());
             Card card = cards.remove(i);
-
             this.stack.push(card);
         }
     }
@@ -88,7 +87,9 @@ public class CardsStack {
         }
         int j = 0;
         while (!this.stack.isEmpty()) {
-            cardStack.get(j % (n-1)).add(this.stack.pop());
+            Card card = this.stack.pop();
+            cardStack.get(j % (n - 1)).add(card);
+            j++;
         }
         return cardStack;
     }

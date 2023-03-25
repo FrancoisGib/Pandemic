@@ -190,7 +190,7 @@ public abstract class Player {
 
 	public void pickPlayerCard(CardsStack cards) {
 		Card card = cards.pickCard();
-		if (card != null) {
+		if (card.getTown() != null) {
 			this.cards.add(card);
 		}
 	}

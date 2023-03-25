@@ -24,13 +24,16 @@ public class Main {
 			Player p4 = new Doctor("Doctor");
             ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3, p4));
 
-
 			Game game = new Game(map, players, diseases);
-			System.out.println(map.getTowns().size());
-			for (int i = 0; i < 1; i++) {
-				game.startInfectionPhase();
+
+			for (int i = 0; i < 2; i++) {
+				game.pickInfectionCard();
+				game.propagation();
 			}
+			System.out.println(map.toStringInfectionState());
+
 			System.out.println(game.getGlobalInfectionState());
+			System.out.println(game.getClustersNumber());
 		}
 		catch(NoSuchTownException e) {
 			System.out.println("Error with the towns");

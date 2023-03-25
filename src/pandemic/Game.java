@@ -1,12 +1,15 @@
 package pandemic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
+import java.util.Map.Entry;
 
 import pandemic.player.*;
 import pandemic.cards.*;
+
 
 public class Game {
     private static final int MAX_CLUSTERS_NUMBER = 8;
@@ -75,7 +78,7 @@ public class Game {
             for (int i = 0; i < cpt; i++) {
                 player.pickPlayerCard(this.playerCardsStack);
             }
-        }   
+        }
         ArrayList<Stack<Card>> splitCards = this.playerCardsStack.splitCards(4);
         for (Stack<Card> cStack : splitCards) {
             cStack.add(new Card());
@@ -111,29 +114,27 @@ public class Game {
     }
 
     public void startInfectionPhase() {
-        int tempo = this.globalInfectionState; // Sinon problème avec le for qui va changer et donc problèmes avec les cartes
+        int tempo = this.globalInfectionState; // Sinon problème avec le for qui va changer et donc problèmes avec les
+                                               // cartes
         for (int i = 0; i < tempo; i++) {
             Card card = this.infectionCardsStack.pickCard();
             Town town = this.map.getTownByName(card.getTownName());
             Disease disease = card.getDisease();
             if (town.isInfected(disease)) {
-                if (town.getInfectionState(disease)==3) {
+                if (town.getInfectionState(disease) == 3 && !town.isCluster()) {
                     town.setInfectionCluster();
-                }
-                else {
-                    this.globalInfectionState ++;
+                } else {;
                     town.updateInfectionState(disease);
                 }
-            }
-            else {
-                this.globalInfectionState ++;
+            } else {;
                 town.setInfectionState(1, disease);
             }
         }
+        this.computeGlobalInfectionState();
     }
 
     public void updateClustersNumbers() {
-        this.clustersNumber = this.getClustersNumber();
+        this.clustersNumber = this.getClustersNumber()+1;
     }
 
     public int getClustersNumber() {
@@ -166,5 +167,37 @@ public class Game {
 
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+
+    public void pickInfectionCard() {
+        Card card = this.infectionCardsStack.pickCard();
+        this.infectionCardsStack.pickCard().getTown().updateInfectionState(card.getDisease());
+        this.computeGlobalInfectionState();
+    }
+
+    public void propagation() {
+        HashMap<Town, Disease> propTowns = new HashMap<Town, Disease>();
+
+        for (Town town : this.map.getTowns()) {
+            if (town.isCluster()) {
+                Disease d = town.getClusterDisease();
+                for (Town neighbor : town.getNeighbors()) {
+                    if (propTowns.containsKey(neighbor)) {
+                        propTowns.replace(town, d);
+                    }
+                    else {
+                        propTowns.put(neighbor, d);
+                    }
+                }
+            }
+        }
+        Iterator<Entry<Town, Disease>> iterator = propTowns.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+			Entry<Town, Disease> mapEntry = (Entry<Town, Disease>) iterator.next();
+            Disease d = mapEntry.getValue();
+            Town t = mapEntry.getKey();
+            t.updateInfectionState(d);
+		}
     }
 }

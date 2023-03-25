@@ -2,6 +2,8 @@ package pandemic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Iterator;
 
 /** The class that defines a town in the infection game */
 public class Town {
@@ -26,7 +28,7 @@ public class Town {
 	/**
 	 * Builds a Town
 	 * 
-	 * @param name The name of the Town
+	 * @param name   The name of the Town
 	 * @param sector The sector of the Town
 	 */
 	public Town(String name, int sector) {
@@ -59,31 +61,41 @@ public class Town {
 	public void setInfectionState(int infectionState, Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			this.infectionState.replace(disease, infectionState);
-		}
-		else {
+		} else {
 			this.infectionState.put(disease, infectionState);
 		}
+		if (infectionState == 3 && !this.infectionCluster) {
+			this.setInfectionCluster();
+		}
 	}
-	
+
 	public void decreaseInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
-			this.infectionState.replace(disease, this.getInfectionState(disease)-1);
-		}
-		else {
+			if (this.infectionState.get(disease) > 0) {
+				this.infectionState.replace(disease, this.getInfectionState(disease) - 1);
+			} else {
+				System.out.println("The global infection state for this disease is 0 in this town");
+			}
+		} else {
 			System.out.println("This town is not infected by " + disease.getName() + " , nothing happened");
 		}
 	}
-	
+
 	/** Update the infection state by adding 1 to it */
 	public void updateInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
-			this.infectionState.replace(disease, this.getInfectionState(disease)+1);
-		}
-		else {
+			int inf = this.infectionState.get(disease);
+			if (inf < 3) {
+				this.infectionState.replace(disease, inf + 1);
+			}
+		} else {
 			this.infectionState.put(disease, 1);
 		}
+		if (this.infectionState.get(disease) == 3 && !this.infectionCluster) {
+			this.setInfectionCluster();
+		}
 	}
-	
+
 	/**
 	 * Get the Town's neighbors
 	 * 
@@ -141,17 +153,29 @@ public class Town {
 	}
 
 	public void setInfectionCluster() {
-        this.infectionCluster = true;
-    }
+		this.infectionCluster = true;
+	}
 
-    public boolean isCluster() {
-        return this.infectionCluster;
-    }
+	public boolean isCluster() {
+		return this.infectionCluster;
+	}
 
 	public boolean isInfected(Disease disease) {
 		if (!this.infectionState.containsKey(disease)) {
 			return false;
 		}
 		return true;
+	}
+
+	public Disease getClusterDisease() {
+		Iterator<Entry<Disease, Integer>> iterator = this.infectionState.entrySet().iterator();
+		boolean found = false;
+		while (iterator.hasNext() && !found) {
+			Entry<Disease, Integer> mapEntry = (Entry<Disease, Integer>) iterator.next();
+			if (mapEntry.getValue() == 3) {
+				return mapEntry.getKey();
+			}
+		}
+		return null;
 	}
 }
