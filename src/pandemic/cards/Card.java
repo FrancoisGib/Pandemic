@@ -5,9 +5,14 @@ import pandemic.Disease;
 public class Card {
 	private Town town;
 	private Disease disease;
-	
-	public Card(Town town , Disease disease) {
+
+	public Card(Town town, Disease disease) {
 		this.town = town;
+		this.disease = disease;
+	}
+
+	public Card(Disease disease) {
+		this.town = null;
 		this.disease = disease;
 	}
 
@@ -32,5 +37,4 @@ public class Card {
 	public Disease getDisease() {
 		return this.disease;
 	}
-
 }

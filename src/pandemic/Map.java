@@ -88,13 +88,13 @@ public class Map {
 	 * @return The town who has the string name has name in the towns list
 	 * @exception NoSuchTownException The exception if there is no town with that name in the towns array                    
 	 */
-	public Town getTownByName(String name) throws NoSuchTownException {
+	public Town getTownByName(String name) {
 		for (Town town : towns) {
 			if (name.equals(town.getName())) {
 				return town;
 			}
 		}
-		throw new NoSuchTownException("No such town in the towns array");
+		return null;
 	}
 	
 	/**

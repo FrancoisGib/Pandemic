@@ -49,8 +49,8 @@ public class MainTest {
 				}
             }
 
-            CardsStack playerCardsStack = new CardsStack(playerCards);
-            CardsStack infectionCardsStack = new CardsStack(infectionCards);
+            CardsStack playerCardsStack = new CardsStack(playerCards, true);
+            CardsStack infectionCardsStack = new CardsStack(infectionCards, false);
 
             int i = (int)Math.random()*12;
 			Player p1 = new Doctor("Docteur", towns.get(i));
@@ -87,9 +87,5 @@ public class MainTest {
 		catch(FileNotFoundException e) {
 			System.out.println("File not found");
 		}
-		catch(NoSuchDiseaseException e) {
-			System.out.println("Error with the diseases");
-		}
-
 	}
 }

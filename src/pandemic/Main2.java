@@ -1,8 +1,6 @@
 package pandemic;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
 import java.io.FileNotFoundException;
 
 import pandemic.cards.*;
@@ -47,8 +45,8 @@ public class Main2 {
 				}
 			}
 
-            CardsStack playerCardsStack = new CardsStack(new ArrayList<Card>());
-			CardsStack infectionCardsStack = new CardsStack(cards);
+            CardsStack playerCardsStack = new CardsStack(new ArrayList<Card>(), true);
+			CardsStack infectionCardsStack = new CardsStack(cards, false);
 
             Town mainTown = map.getTown(0);
 			Player g2 = new Globetrotter("Globetrotter", mainTown);
@@ -75,9 +73,5 @@ public class Main2 {
 		catch(FileNotFoundException e) {
 			System.out.println("File not found");
 		}
-		catch(NoSuchDiseaseException e) {
-			System.out.println("Error with the diseases");
-		}
-
 	}
 }

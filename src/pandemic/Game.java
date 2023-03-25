@@ -1,6 +1,9 @@
 package pandemic;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Stack;
+
 import pandemic.player.*;
 import pandemic.cards.*;
 
@@ -22,14 +25,50 @@ public class Game {
 
     private CardsStack infectionCardsStack;
 
-    public Game(Map map, ArrayList<Player> players, ArrayList<Disease> diseases, CardsStack playerCardsStack, CardsStack infectionCardsStack) {
+    public Game(Map map, ArrayList<Player> players, ArrayList<Disease> diseases) {
         this.globalInfectionState = INITIAL_INFECTION_STATE;
         this.clustersNumber = 0;
         this.map = map;
         this.players = players;
         this.diseases = diseases;
-        this.playerCardsStack = playerCardsStack;
-        this.infectionCardsStack = infectionCardsStack;
+        this.playerCardsStack = null;
+        this.infectionCardsStack = null;
+    }
+
+    public void initGame() {
+        initPlayersHand();
+        initInitialTown();
+    }
+
+    public void initCards() {
+        ArrayList<Town> towns = this.map.getTowns();
+        ArrayList<Card> playerCards = new ArrayList<Card>();
+        for (Town town : towns) {
+            
+        }
+    }
+
+    public void initPlayersHand() {
+        int cpt = 4 - this.players.size() + 2; // Number of cards per player initially.
+        for (Player player : this.players) {
+            for (int i = 0; i < cpt; i++) {
+                player.pickPlayerCard(this.playerCardsStack);
+            }
+        }   
+        ArrayList<Stack<Card>> splitCards = this.playerCardsStack.splitCards(4);
+        for (Stack<Card> cStack : splitCards) {
+            cStack.add(null)
+        }
+        this.playerCardsStack.mergeStacks(splitCards);
+    }
+
+    public void initInitialTown() {
+        Random random = new Random();
+        int initialTownIndex = random.nextInt(map.getTowns().size());
+        Town initialTown = this.map.getTown(initialTownIndex);
+        for (Player player : this.players) {
+            player.setTown(initialTown);
+        }
     }
 
     public int getGlobalInfectionState() {
@@ -40,8 +79,7 @@ public class Game {
         return this.players.get(i);
     }
 
-
-    public void startInfectionPhase() throws NoSuchTownException, NoSuchDiseaseException {
+    public void startInfectionPhase() {
         int tempo = this.globalInfectionState; // Sinon problème avec le for qui va changer et donc problèmes avec les cartes
         for (int i = 0; i < tempo; i++) {
             Card card = this.infectionCardsStack.pickCard();
@@ -81,12 +119,6 @@ public class Game {
             return false;
         }
         return true;
-    }
-
-    public void run() {
-        while (!gameEnded()) {
-            break; // TODO
-        }
     }
 
     public Map getMap() {

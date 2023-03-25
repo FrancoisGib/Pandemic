@@ -43,11 +43,12 @@ public class Town {
 	 * 
 	 * @return The infection state of the Town
 	 */
-	public int getInfectionState(Disease disease) throws NoSuchDiseaseException {
+	public int getInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			return this.infectionState.get(disease);
 		}
-		throw new NoSuchDiseaseException("This town is not infected by " + disease.getName());
+		System.out.println("This town is not infected by " + disease.getName());
+		return -1;
 	}
 
 	/**
@@ -64,17 +65,17 @@ public class Town {
 		}
 	}
 	
-	public void decreaseInfectionState(Disease disease) throws NoSuchDiseaseException {
+	public void decreaseInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			this.infectionState.replace(disease, this.getInfectionState(disease)-1);
 		}
 		else {
-			throw new NoSuchDiseaseException("This town is not infected by " + disease.getName());
+			System.out.println("This town is not infected by " + disease.getName() + " , nothing happened");
 		}
 	}
 	
 	/** Update the infection state by adding 1 to it */
-	public void updateInfectionState(Disease disease) throws NoSuchDiseaseException {
+	public void updateInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			this.infectionState.replace(disease, this.getInfectionState(disease)+1);
 		}

@@ -8,8 +8,8 @@ import pandemic.Town;
 /* The class that defines a player in the game */
 public class Globetrotter extends Player {
 
-	public Globetrotter(String name, Town town) {
-		super(name,town);
+	public Globetrotter(String name) {
+		super(name);
 	}
 	
 	public void movableTowns(Town town, HashSet<Town> movableTowns) {

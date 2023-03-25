@@ -39,7 +39,7 @@ public class Main {
 					cards.add(new Card(town, d4));
 				}
 			}
-			CardsStack cardsStack = new CardsStack(cards);
+			CardsStack cardsStack = new CardsStack(cards, true);
 
 			while (!cardsStack.hasCardsLeft()) {
 				Card card = cardsStack.pickCard();
@@ -50,9 +50,7 @@ public class Main {
 
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
-			g2.chooseAction(sc);
 			System.out.println("Le joueur est sur la ville : " + g2.getTownName());
-			g2.chooseAction(sc);
 			sc.close();
 			
 		}
@@ -62,9 +60,5 @@ public class Main {
 		catch(FileNotFoundException e) {
 			System.out.println("File not found");
 		}
-		catch(NoSuchDiseaseException e) {
-			System.out.println("Error with the diseases");
-		}
-
 	}
 }

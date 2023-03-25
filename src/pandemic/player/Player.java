@@ -8,9 +8,8 @@ import java.util.Scanner;
 
 import pandemic.Town;
 import pandemic.cards.Card;
+import pandemic.cards.CardsStack;
 import pandemic.Disease;
-import pandemic.NoSuchDiseaseException;
-import pandemic.NoSuchTownException;
 
 /* The class that defines a player in the game */
 public abstract class Player {
@@ -23,10 +22,14 @@ public abstract class Player {
 	
 	protected ArrayList<Card> cards;
 	
-	public Player(String name, Town town) {
+	public Player(String name) {
 		this.name = name;
-		this.town = town;
+		this.town = null;
 		this.cards = new ArrayList<Card>();
+	}
+
+	public void setTown(Town town) {
+		this.town = town;
 	}
 	
 	public String getName() {
@@ -57,9 +60,18 @@ public abstract class Player {
 		return false;
 	}
 	
-	public boolean discoverCure() {
+	public boolean discoverCure(Scanner sc) {
 		if (this.town.hasResearchCenter() && this.getCurrentTownCardsNumber() > 4) {
-			return true;
+			HashMap<Disease, Integer> diseases = this.town.getAllInfectionState();
+			System.out.println("Choose a disease to find a cure :");
+			HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();
+			for (Disease disease : diseases.keySet()) {
+				diseasesByName.put(disease.getName(), disease);
+				System.out.println(disease.getName() + " / ");
+			}
+			String diseaseName = sc.next();
+			Disease chosenDisease = diseasesByName.get(diseaseName);
+			return chosenDisease.cure();
 		}
 		return false;
 	}
@@ -76,7 +88,7 @@ public abstract class Player {
 		return this.town.getName();
 	}
 
-	public void move(Scanner sc) throws NoSuchTownException {
+	public void move(Scanner sc) {
 		System.out.println("Choose a city to move on, here the list of cities :\n\n");
 		String res = "";
 		HashSet<Town> movableTowns = new HashSet<Town>();
@@ -88,6 +100,7 @@ public abstract class Player {
 		}
 		System.out.println(res + "\n");
 		System.out.println("Enter a town name !\n");
+
 		String townName = sc.next();
 		boolean found = false;
 		Iterator<Town> it = movableTowns.iterator();
@@ -99,11 +112,12 @@ public abstract class Player {
 			}
 		}
 		if (!found) {
-			throw new NoSuchTownException("This town doesn't exist");
+			System.out.println("This town doesn't exist, retry");
+			this.move(sc);
 		}
 	}
 
-	public void treatDisease(Scanner sc) throws NoSuchDiseaseException {
+	public void treatDisease(Scanner sc) {
 		HashMap<Disease, Integer> diseases = this.town.getAllInfectionState();
 		System.out.println("Choose a disease to treat :");
 		HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();
@@ -117,7 +131,7 @@ public abstract class Player {
 		System.out.println("The current town infection state for the disease " + diseaseName + "has been decreased by 1, it is now of " + this.town.getInfectionState(chosenDisease));
 	}
 	
-	public void chooseAction(Scanner sc) throws NoSuchTownException, NoSuchDiseaseException {
+	public void chooseAction(Scanner sc) {
 		System.out.println("Choose an action by entering a number !\n");
 		System.out.println("1 -> Move to another city\n2 -> Build a research center in your current city\n3 -> Find a cure\n4 -> Treat a disease\n5 -> Do nothing ");
 		int actionNumber = sc.nextInt();
@@ -131,6 +145,7 @@ public abstract class Player {
 				System.out.println("A research center has been built in " + this.town.getName());
 				break;
 			case 3: // Discover a cure
+				this.discoverCure(sc);
 				System.out.println("A cure has been discovered for the ");
 				break;
 			case 4: // Treat a disease
@@ -142,4 +157,8 @@ public abstract class Player {
 		}
 	}	
 
+	public void pickPlayerCard(CardsStack cards) {
+		Card card = cards.pickCard();
+		this.cards.add(card);
+	}
 }
