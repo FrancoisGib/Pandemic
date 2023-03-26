@@ -234,8 +234,11 @@ public class Game {
             for (Player player : this.players) {
                 this.print(player);
                 player.chooseAction(sc);
+                this.print(player);
                 player.chooseAction(sc);
+                this.print(player);
                 player.chooseAction(sc);
+                this.print(player);
                 player.chooseAction(sc);
                 boolean i = player.pickPlayerCard(playerCardsStack);
                 boolean j = player.pickPlayerCard(playerCardsStack);

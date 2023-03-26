@@ -3,6 +3,7 @@ package pandemic;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import pandemic.JsonReader.TownsJsonReader;
 
@@ -139,15 +140,19 @@ public class Map {
 	public String toStringInfectionState() {
 		String res = "";
 		for (Town town : this.towns) {
-			res += town.getName() + " infection state : ";
+			int cpt = 0;
+			String townRes = "";
 			HashMap<Disease, Integer> diseases = town.getAllInfectionState();
 			for (Disease disease : diseases.keySet()) {
 				if (diseases.get(disease) > 0) {
-					res += disease.getName() + " : " + diseases.get(disease) + " / ";
+					cpt++;
+					townRes += disease.getName() + " : " + diseases.get(disease) + " / ";
 				}
 			}
-			res += "\n";
-				
+			if (cpt > 0) {
+				res += town.getName() + " infection state : " + townRes + "\n";
+				cpt = 0;
+			}
 		}
 		return res;
 	}

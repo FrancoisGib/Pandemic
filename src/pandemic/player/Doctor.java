@@ -12,15 +12,33 @@ public class Doctor extends Player {
 
     public void treatDisease(Scanner sc) {
 		HashMap<Disease, Integer> diseases = this.town.getAllInfectionState();
-		System.out.println("Choose a disease to treat :");
 		HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();
+		int cpt = 0;
+		String res = "";
 		for (Disease disease : diseases.keySet()) {
-			diseasesByName.put(disease.getName(), disease);
-			System.out.println(disease.getName() + " / ");
+			if (diseases.get(disease) > 0) {
+				cpt++;
+				diseasesByName.put(disease.getName(), disease);
+				res += disease.getName() + " / ";
+			}
 		}
-		String diseaseName = sc.next();
-		Disease chosenDisease = diseasesByName.get(diseaseName);
-		this.town.setInfectionState(0, chosenDisease);
-		System.out.println("The current town infection state for the disease " + diseaseName + "has been decreased by 1, it is now of " + this.town.getInfectionState(chosenDisease));
+		if (cpt > 0) {
+			System.out.println("Choose a disease to treat :" + res + "exit");
+			String diseaseName = sc.next();
+			if (diseaseName.equals("exit")) {
+				this.chooseAction(sc);
+			}
+			Disease chosenDisease = diseasesByName.get(diseaseName);
+			if (chosenDisease != null) {
+				this.town.setInfectionState(0, chosenDisease);
+				System.out.println("\nThe infection state in this town is now 0");
+			}
+			else {
+				System.out.println("\nThere's no disease of that name to treat");
+				treatDisease(sc);
+			}
+		} else {
+			System.out.println("\nThere's no disease to treat in that town");
+		}
 	}
 }

@@ -73,14 +73,14 @@ public class Town {
 		if (this.infectionState.containsKey(disease)) {
 			if (this.infectionState.get(disease) > 0) {
 				this.infectionState.replace(disease, this.getInfectionState(disease) - 1);
-				System.out.println("The current town infection state for the disease " + disease.getName()
+				System.out.println("\nThe current town infection state for the disease " + disease.getName()
 				+ " has been decreased by 1, it is now of " + this.getInfectionState(disease));
 			} else {
-				System.out.println("The global infection state for this disease is 0 in this town");
+				System.out.println("\nThe global infection state for this disease is 0 in this town");
 
 			}
 		} else {
-			System.out.println("This town is not infected by " + disease.getName() + " , nothing happened");
+			System.out.println("\nThis town is not infected by " + disease.getName() + " , nothing happened");
 		}
 	}
 
@@ -138,8 +138,12 @@ public class Town {
 	/**
 	 * Builds a research center in the Town.
 	 */
-	public void buildResearchCenter() {
+	public boolean buildResearchCenter() {
+		if (this.researchCenter) {
+			return false;
+		}
 		this.researchCenter = true;
+		return true;
 	}
 
 	/**
@@ -171,12 +175,14 @@ public class Town {
 	}
 
 	public Disease getClusterDisease() {
-		Iterator<Entry<Disease, Integer>> iterator = this.infectionState.entrySet().iterator();
-		boolean found = false;
-		while (iterator.hasNext() && !found) {
-			Entry<Disease, Integer> mapEntry = (Entry<Disease, Integer>) iterator.next();
-			if (mapEntry.getValue() == 3) {
-				return mapEntry.getKey();
+		if (this.isCluster()) {
+			Iterator<Entry<Disease, Integer>> iterator = this.infectionState.entrySet().iterator();
+			boolean found = false;
+			while (iterator.hasNext() && !found) {
+				Entry<Disease, Integer> mapEntry = (Entry<Disease, Integer>) iterator.next();
+				if (mapEntry.getValue() == 3) {
+					return mapEntry.getKey();
+				}
 			}
 		}
 		return null;

@@ -43,10 +43,10 @@ public abstract class Player {
 		}
 	}
 
-	public int getCurrentTownCardsNumber() {
+	public int getTownCardsNumber(Town town) {
 		int cpt = 0;
 		for (Card card : cards) {
-			if (card.getTownName().equals(this.town.getName())) {
+			if (card.getTownName().equals(town.getName())) {
 				cpt++;
 			}
 		}
@@ -64,9 +64,14 @@ public abstract class Player {
 	}
 
 	public boolean buildResearchCenter() {
-		if (this.getCurrentTownCardsNumber() > 0 && !this.town.hasResearchCenter()) {
-			this.town.buildResearchCenter();
-			return true;
+		if (this.getTownCardsNumber(this.town) > 0 && !this.town.hasResearchCenter()) {
+			boolean res = this.town.buildResearchCenter();
+			if (res) {
+				ArrayList<Card> townCards = this.getCardsByTown(this.town);
+				Card removedCard = townCards.get(0);
+				this.discardCard(removedCard);
+			}
+			return res;
 		}
 		return false;
 	}
@@ -87,6 +92,9 @@ public abstract class Player {
 				return this.discoverCure(sc);
 			} else if (this.getCardsNumberByDisease(chosenDisease) > 4) {
 				boolean cured = chosenDisease.cure();
+				for (Card card : this.getCardsByDisease(chosenDisease)) { // Discard the cards used to cure the disease
+					this.discardCard(card);
+				}
 				if (cured) {
 					System.out.println("The disease " + chosenDisease.getName() + " has been cured");
 					return true;
@@ -126,11 +134,18 @@ public abstract class Player {
 				res += (town.getName() + " / ");
 			}
 		}
+		res += "exit";
+
 		System.out.println(res + "\n");
 		System.out.println("Enter a town name !\n");
 
 		String townName = sc.next();
 		boolean found = false;
+
+		if (townName.equals("exit")) {
+			found = true;
+			this.chooseAction(sc);
+		}
 		Iterator<Town> it = movableTowns.iterator();
 		while (it.hasNext() && !found) {
 			Town newTown = it.next();
@@ -162,10 +177,11 @@ public abstract class Player {
 			System.out.println(res);
 			String diseaseName = sc.next();
 			Disease chosenDisease = diseasesByName.get(diseaseName);
-			this.town.decreaseInfectionState(chosenDisease);
-		}
-		else {
-			System.out.println("There's no disease to treat in that town");
+			if (chosenDisease != null) {
+				this.town.decreaseInfectionState(chosenDisease);
+			}
+		} else {
+			System.out.println("\nThere's no disease to treat in that town");
 		}
 	}
 
@@ -212,8 +228,33 @@ public abstract class Player {
 		return true;
 	}
 
+	public ArrayList<Card> getCardsByTown(Town town) {
+		ArrayList<Card> townCards = new ArrayList<Card>();
+		for (Card card : this.cards) {
+			if (card.getTown() == town) {
+				townCards.add(card);
+			}
+		}
+		return townCards;
+	}
+
+	public ArrayList<Card> getCardsByDisease(Disease disease) {
+		ArrayList<Card> diseaseCards = new ArrayList<Card>();
+		for (Card card : this.cards) {
+			if (card.getDisease() == disease) {
+				diseaseCards.add(card);
+			}
+		}
+		return diseaseCards;
+	} 
+
+	public boolean discardCard(Card card) {
+		return this.cards.remove(card);
+	}
+
 	public String cardToString() {
-		String res = "Cards you have : ";
+
+		String res = "Cards you have by disease : ";
 		HashMap<Disease, Integer> cardCount = new HashMap<Disease, Integer>();
 		for (Card card : cards) {
 			Disease d = card.getDisease();
@@ -225,10 +266,19 @@ public abstract class Player {
 			}
 		}
 		Iterator<Entry<Disease, Integer>> iterator = cardCount.entrySet().iterator();
-
 		while (iterator.hasNext()) {
 			Entry<Disease, Integer> mapEntry = (Entry<Disease, Integer>) iterator.next();
 			res += mapEntry.getKey().getName() + " = " + mapEntry.getValue() + " / ";
+		}
+		res += "\n\n Cards you have by town : ";
+
+		HashSet<Town> allTowns = new HashSet<Town>();
+		for (Card card : cards) {
+			Town t = card.getTown();
+			if (!allTowns.contains(t)) {
+				allTowns.add(t);
+				res += t.getName() + " : " + this.getCardsByTown(t).size() + " / ";
+			}
 		}
 		return res;
 	}

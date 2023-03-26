@@ -6,7 +6,7 @@ public class Scientist extends Player {
     }
 
     public boolean discoverCure() {
-		if (this.town.hasResearchCenter() && this.getCurrentTownCardsNumber() > 3) {
+		if (this.town.hasResearchCenter() && this.getTownCardsNumber(this.town) > 3) {
 			return true;
 		}
 		return false;
