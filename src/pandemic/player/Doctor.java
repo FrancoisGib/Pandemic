@@ -5,11 +5,23 @@ import java.util.HashMap;
 
 import pandemic.Disease;
 
+/* The class that defines a Doctor in the game, it is inherited of the Player class */
 public class Doctor extends Player {
+
+	/**
+	 * Builds a Doctor for the game
+	 *
+	 * @param name The name of the doctor
+	 */
     public Doctor(String name) {
         super(name);
     }
 
+	/**
+	 * Treat a disease by deleting all cubes of infection in the doctor's town
+	 * 
+	 * @param sc The scanner to choose which disease to treat
+	 */
     public void treatDisease(Scanner sc) {
 		HashMap<Disease, Integer> diseases = this.town.getAllInfectionState();
 		HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();

@@ -13,23 +13,41 @@ import pandemic.player.*;
 import pandemic.cards.*;
 
 public class Game {
+
+    /* The number of clusters before the game is lost */
     private static final int MAX_CLUSTERS_NUMBER = 8;
+
+    /* The initial infection state */
     private static int INITIAL_INFECTION_STATE = 2;
 
+    /* The current global infection state */
     private int globalInfectionState;
 
+    /* The current number of clusters */
     private int clustersNumber;
 
+    /* The map of the game, which handles all towns changes */
     private Map map;
 
+    /* The players of the game */
     private ArrayList<Player> players;
 
+    /* The diseases of the game */
     private ArrayList<Disease> diseases;
 
+    /* The player cards stack which handles the player cards */
     private CardsStack playerCardsStack;
 
+    /* The infection cards stack which handles the infection cards */
     private CardsStack infectionCardsStack;
 
+    /**
+     * Builds a game to be played
+     * 
+     * @param map      The map of the game, to handle the towns
+     * @param players  The players of the game
+     * @param diseases The diseases of the game
+     */
     public Game(Map map, ArrayList<Player> players, ArrayList<Disease> diseases) {
         this.globalInfectionState = INITIAL_INFECTION_STATE;
         this.clustersNumber = 0;
@@ -39,6 +57,10 @@ public class Game {
         this.initGame();
     }
 
+    /**
+     * Initialize the game by initializing cards, players' hands, initial town and
+     * the initial infection of the game
+     */
     public void initGame() {
         this.initCards();
         this.initPlayersHand();
@@ -46,6 +68,9 @@ public class Game {
         this.initialInfection();
     }
 
+    /**
+     * Initialize the two cardsStacks of the game
+     */
     public void initCards() {
         ArrayList<Town> towns = this.map.getTowns();
         ArrayList<Card> playerCards = new ArrayList<Card>();
@@ -73,6 +98,9 @@ public class Game {
         this.infectionCardsStack = new CardsStack(infectionCards, false);
     }
 
+    /**
+     * Initialize the players' hands
+     */
     public void initPlayersHand() {
         int cpt = 4 - this.players.size() + 2; // Number of cards per player initially.
         for (Player player : this.players) {
@@ -87,6 +115,9 @@ public class Game {
         this.playerCardsStack.mergeStacks(splitCards);
     }
 
+    /**
+     * Move all the players on a random town in the map
+     */
     public void initInitialTown() {
         Random random = new Random();
         int initialTownIndex = random.nextInt(map.getTowns().size());
@@ -96,6 +127,9 @@ public class Game {
         }
     }
 
+    /**
+     * Make the initial infection of the game
+     */
     public void initialInfection() {
         for (int i = 3; i > 0; i--) {
             for (int j = 0; j < 3; j++) {
@@ -106,17 +140,32 @@ public class Game {
         this.computeGlobalInfectionState();
     }
 
+    /**
+     * Get the global infection state of the game
+     * 
+     * @return The global infection state
+     */
     public int getGlobalInfectionState() {
         return this.globalInfectionState;
     }
 
+    /**
+     * Get the player at the i index in the players ArrayList
+     * 
+     * @param i The players' index of the player to get
+     * @return The player picked
+     */
     public Player getPlayer(int i) {
         return this.players.get(i);
     }
 
+    /**
+     * Starts an infection phase in the game
+     * 
+     * @param n The number of cards to pick in the infection cards
+     */
     public void startInfectionPhase(int n) {
-        int tempo = n; // Sinon problème avec le for qui va changer et donc problèmes avec les
-                                               // cartes
+        int tempo = n; // Sinon problème avec le for qui va changer et donc problèmes avec les cartes
         for (int i = 0; i < tempo; i++) {
             if (this.infectionCardsStack.stackSize() > 0) {
                 Card card = this.infectionCardsStack.pickCard();
@@ -136,28 +185,53 @@ public class Game {
         this.computeGlobalInfectionState();
     }
 
+    /**
+     * Update the number of clusters in the game by adding one to it
+     */
     public void updateClustersNumbers() {
         this.clustersNumber = this.getClustersNumber() + 1;
     }
 
+    /**
+     * Get the number of clusters in the game
+     * 
+     * @return The number of clusters in the game
+     */
     public int getClustersNumber() {
         return this.map.getClustersNumber();
     }
 
+    /**
+     * Compute all infection states and return the new global infection state
+     * 
+     * @return The new global infection state of the game
+     */
     public int computeGlobalInfectionState() {
         this.globalInfectionState = this.map.getGlobalInfectionState() + INITIAL_INFECTION_STATE;
         return this.globalInfectionState;
     }
 
+    /**
+     * Tell if the game is lost or not
+     * 
+     * @return True if the game is lost, else false
+     */
     public boolean loose() {
-        if (this.clustersNumber > MAX_CLUSTERS_NUMBER || this.infectionCardsStack.discardSize() + this.infectionCardsStack.stackSize() == 0) {
+        if (this.clustersNumber > MAX_CLUSTERS_NUMBER
+                || this.infectionCardsStack.discardSize() + this.infectionCardsStack.stackSize() == 0) {
             System.out.println("Loose " + this.clustersNumber);
-            System.out.println("Loose nb cartes infections " + this.infectionCardsStack.discardSize() + this.infectionCardsStack.stackSize());
+            System.out.println("Loose nb cartes infections " + this.infectionCardsStack.discardSize()
+                    + this.infectionCardsStack.stackSize());
             return true;
         }
         return false;
     }
 
+    /**
+     * Tell if the game is won or not
+     * 
+     * @return True if the game is won, else false
+     */
     public boolean win() {
         for (Disease disease : this.diseases) {
             if (!disease.isCured()) {
@@ -167,22 +241,46 @@ public class Game {
         return true;
     }
 
+    /**
+     * Get the game's map
+     * 
+     * @return The map of the game
+     */
     public Map getMap() {
         return this.map;
     }
 
+    /**
+     * Get the infection cards stack of the game
+     * 
+     * @return The infection cards stack of the game
+     */
     public CardsStack getInfectionCardsStack() {
         return this.infectionCardsStack;
     }
 
+    /**
+     * Get the player cards stack of the game
+     * 
+     * @return The player cards stack of the game
+     */
     public CardsStack getPlayerCardsStack() {
         return this.playerCardsStack;
     }
 
+    /**
+     * Get all the players in the game
+     * 
+     * @return All the players in the game
+     */
     public ArrayList<Player> getPlayers() {
         return this.players;
     }
 
+    /**
+     * Pick an infection card in the infection cards stack and then make the actions
+     * associated
+     */
     public void pickInfectionCard() {
         Card card = this.infectionCardsStack.pickCard();
         if (card != null) {
@@ -191,26 +289,27 @@ public class Game {
         }
     }
 
+    /**
+     * Propagate the diseases from the clusters to the neighboring towns
+     */
     public void propagation() {
         HashMap<Town, ArrayList<Disease>> propTowns = new HashMap<Town, ArrayList<Disease>>();
         for (Town town : this.map.getTowns()) {
             if (town.isCluster()) {
                 ArrayList<Disease> clusterDiseases = town.getClusterDisease();
-                if (clusterDiseases != null) {
-                    for (Town neighbor : town.getNeighbors()) {
-                        for (Disease d : clusterDiseases) {
-                            if (propTowns.containsKey(neighbor)) {
-                                ArrayList<Disease> townDiseases = propTowns.get(neighbor);
-                                townDiseases.add(d);
-                            } else {
-                                propTowns.put(neighbor, new ArrayList<Disease>(Arrays.asList(d)));
-                            }   
+                for (Town neighbor : town.getNeighbors()) {
+                    for (Disease d : clusterDiseases) {
+                        if (propTowns.containsKey(neighbor)) {
+                            ArrayList<Disease> townDiseases = propTowns.get(neighbor);
+                            townDiseases.add(d);
+                        } else {
+                            propTowns.put(neighbor, new ArrayList<Disease>(Arrays.asList(d)));
                         }
                     }
                 }
             }
-            this.computeGlobalInfectionState();
         }
+        this.computeGlobalInfectionState();
         Iterator<Entry<Town, ArrayList<Disease>>> iterator = propTowns.entrySet().iterator();
 
         while (iterator.hasNext()) {
@@ -223,6 +322,11 @@ public class Game {
         }
     }
 
+    /**
+     * Print the state of the game for the player p
+     * 
+     * @param p The player who is playing
+     */
     public void print(Player p) {
         System.out.println(this.map.toStringInfectionState());
         System.out.println("_____________________________________\n");
@@ -236,6 +340,11 @@ public class Game {
         System.out.println("_____________________________________\n");
     }
 
+    /**
+     * Run the game while the game is not won or lost
+     * 
+     * @param sc The scanner of the game to make all decisions
+     */
     public void run(Scanner sc) {
         boolean cardFinal = false;
         while (!this.loose() && !this.win() && !cardFinal) {

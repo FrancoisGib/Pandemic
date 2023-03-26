@@ -95,6 +95,9 @@ La carte gère toute les villes du jeu, il y a deux façons d'implémenter les d
 Nous n'avons pas de difficultés à résoudre pour cette partie du projet, cependant il est probable que certaines classes subissent des modifications durant l'avancement du projet.
 
 ## Livrable 2
+Modélisation des cartes, des joueurs et des rôles
+
+Nous avons choisi de réaliser les cartes avec une classe Card et la gestion des cartes dans le jeu est 
 
 ### Atteinte des objectifs
 

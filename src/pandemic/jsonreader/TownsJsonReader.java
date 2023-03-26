@@ -1,4 +1,4 @@
-package pandemic.JsonReader;
+package pandemic.jsonreader;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

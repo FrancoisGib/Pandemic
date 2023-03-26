@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pandemic.JsonReader.TownsJsonReader;
+import pandemic.jsonreader.TownsJsonReader;
 
 import java.util.HashMap;
 
@@ -85,8 +85,7 @@ public class Map {
 	 * Get a town by it's name in the towns list
 	 * 
 	 * @param name The name of the town to get
-	 * @return The town who has the string name has name in the towns list
-	 * @exception NoSuchTownException The exception if there is no town with that name in the towns array                    
+	 * @return The town who has the string name has name in the towns list              
 	 */
 	public Town getTownByName(String name) {
 		for (Town town : towns) {
@@ -136,6 +135,11 @@ public class Map {
 		return res;
 	}
 
+	/**
+	 * Give a String that describes the infections states in all the towns of the map
+	 * 
+	 * @return The String describing all the states
+	 */
 	public String toStringInfectionState() {
 		String res = "";
 		for (Town town : this.towns) {
@@ -156,6 +160,11 @@ public class Map {
 		return res;
 	}
 
+	/**
+	 * Get the number of clusters in the map
+	 * 
+	 * @return The number of clusters
+	 */
     public int getClustersNumber() {
 		int cpt = 0;
         for (Town town : this.towns) {
@@ -166,6 +175,11 @@ public class Map {
 		return cpt;
     }
 
+	/**
+	 * Get the global infection state by summing all the infections state from the towns
+	 * 
+	 * @return
+	 */
 	public int getGlobalInfectionState() {
 		int sum = 0;
 		for (Town town : towns) {
