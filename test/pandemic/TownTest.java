@@ -58,14 +58,12 @@ public class TownTest {
 
 	@Test
 	public void getAllInfectionStateTest() {
+		this.town1.setInfectionState(1, this.d1);
 		HashMap<Disease, Integer> infectionStates = this.town1.getAllInfectionState();
 		assertSame(1, infectionStates.get(this.d1));
-		assertSame(0, infectionStates.get(this.d2));
 
-		this.town1.updateInfectionState(this.d1);
-		infectionStates = this.town1.getAllInfectionState();
-		assertFalse(null == infectionStates.get(this.d2));
-		assertSame(1, infectionStates.get(this.d2));
+		this.town1.setInfectionState(0, this.d2);
+		assertSame(0, infectionStates.get(this.d2));
 	}
 
 	@Test
@@ -77,6 +75,7 @@ public class TownTest {
 
 	@Test
 	public void isInfectedTest() {
+		this.town1.setInfectionState(1, this.d1);
 		assertTrue(this.town1.isInfected(this.d1));
 		this.town1.decreaseInfectionState(this.d1);
 		assertFalse(this.town1.isInfected(this.d1));
@@ -84,7 +83,7 @@ public class TownTest {
 
 	@Test
 	public void getClusterDiseaseTest() {
-		this.town1.updateInfectionState(this.d2);
+		this.town1.setInfectionState(3, this.d2);
 		ArrayList<Disease> clusters = this.town1.getClusterDisease();
 		assertTrue(clusters.contains(this.d2));
 		this.town1.setInfectionState(3, this.d1);
