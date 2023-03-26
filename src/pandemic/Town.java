@@ -174,16 +174,17 @@ public class Town {
 		return true;
 	}
 
-	public Disease getClusterDisease() {
+	public ArrayList<Disease> getClusterDisease() {
 		if (this.isCluster()) {
 			Iterator<Entry<Disease, Integer>> iterator = this.infectionState.entrySet().iterator();
-			boolean found = false;
-			while (iterator.hasNext() && !found) {
+			ArrayList<Disease> clusterDiseases = new ArrayList<Disease>();
+			while (iterator.hasNext()) {
 				Entry<Disease, Integer> mapEntry = (Entry<Disease, Integer>) iterator.next();
 				if (mapEntry.getValue() == 3) {
-					return mapEntry.getKey();
+					clusterDiseases.add(mapEntry.getKey());
 				}
 			}
+			return clusterDiseases;
 		}
 		return null;
 	}

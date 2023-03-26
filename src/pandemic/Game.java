@@ -1,6 +1,7 @@
 package pandemic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -191,27 +192,34 @@ public class Game {
     }
 
     public void propagation() {
-        HashMap<Town, Disease> propTowns = new HashMap<Town, Disease>();
-
+        HashMap<Town, ArrayList<Disease>> propTowns = new HashMap<Town, ArrayList<Disease>>();
         for (Town town : this.map.getTowns()) {
             if (town.isCluster()) {
-                Disease d = town.getClusterDisease();
-                for (Town neighbor : town.getNeighbors()) {
-                    if (propTowns.containsKey(neighbor)) {
-                        propTowns.replace(town, d);
-                    } else {
-                        propTowns.put(neighbor, d);
+                ArrayList<Disease> clusterDiseases = town.getClusterDisease();
+                if (clusterDiseases != null) {
+                    for (Town neighbor : town.getNeighbors()) {
+                        for (Disease d : clusterDiseases) {
+                            if (propTowns.containsKey(neighbor)) {
+                                ArrayList<Disease> townDiseases = propTowns.get(neighbor);
+                                townDiseases.add(d);
+                            } else {
+                                propTowns.put(neighbor, new ArrayList<Disease>(Arrays.asList(d)));
+                            }   
+                        }
                     }
                 }
             }
+            this.computeGlobalInfectionState();
         }
-        Iterator<Entry<Town, Disease>> iterator = propTowns.entrySet().iterator();
+        Iterator<Entry<Town, ArrayList<Disease>>> iterator = propTowns.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            Entry<Town, Disease> mapEntry = (Entry<Town, Disease>) iterator.next();
-            Disease d = mapEntry.getValue();
+            Entry<Town, ArrayList<Disease>> mapEntry = (Entry<Town, ArrayList<Disease>>) iterator.next();
+            ArrayList<Disease> diseasesList = mapEntry.getValue();
             Town t = mapEntry.getKey();
-            t.updateInfectionState(d);
+            for (Disease d : diseasesList) {
+                t.updateInfectionState(d);
+            }
         }
     }
 

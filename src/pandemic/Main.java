@@ -9,9 +9,17 @@ import pandemic.player.*;
 
 public class Main {
     public static void main(String[] args) {
+		Map map = new Map();
 		try {
-			Map map = new Map();
 			map.setMapWithJSON("json/villes48.json");
+		}
+		catch(NoSuchTownException e) {
+			System.out.println("Error with the towns");
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
+		finally {
 			Disease d1 = new Disease("EBOLA", 0);
 			Disease d2 = new Disease("SIDA", 1);
 			Disease d3 = new Disease("CORONAVIRUS", 2);
@@ -26,20 +34,13 @@ public class Main {
 
 			Game game = new Game(map, players, diseases);
 
-			for (int i = 0; i < 2; i++) {
-				game.pickInfectionCard();
+			for (int i = 0; i < 1000; i++) {
 				game.propagation();
 			}
 			System.out.println(map.toStringInfectionState());
 
 			System.out.println(game.getGlobalInfectionState());
 			System.out.println(game.getClustersNumber());
-		}
-		catch(NoSuchTownException e) {
-			System.out.println("Error with the towns");
-		}
-		catch(FileNotFoundException e) {
-			System.out.println("File not found");
 		}
 	}
 }

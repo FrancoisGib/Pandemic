@@ -3,7 +3,6 @@ package pandemic;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import pandemic.JsonReader.TownsJsonReader;
 
