@@ -20,7 +20,7 @@ public class Doctor extends Player {
 		}
 		String diseaseName = sc.next();
 		Disease chosenDisease = diseasesByName.get(diseaseName);
-		this.town.decreaseInfectionState(chosenDisease);
+		this.town.setInfectionState(0, chosenDisease);
 		System.out.println("The current town infection state for the disease " + diseaseName + "has been decreased by 1, it is now of " + this.town.getInfectionState(chosenDisease));
 	}
 }

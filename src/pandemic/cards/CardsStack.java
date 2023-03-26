@@ -39,18 +39,13 @@ public class CardsStack {
     /* pick the top card of stack */
     public Card pickCard() {
         if (!this.stack.empty()) {
-            Card card = this.stack.pop();
-            if (this.discard && card.getTown() != null) {
-                this.discardStack.push(card);
-            }
-            return card;
+            return this.stack.pop();
         } else {
-            if (this.discard) {
+            if (this.discard && !this.discardStack.isEmpty()) {
                 this.resetStack();
                 return this.pickCard();
             }
         }
-        System.out.println("Plus de carte disponible");
         return null;
     }
 
@@ -66,6 +61,10 @@ public class CardsStack {
             cards.add(card);
         }
         this.initStack(cards);
+    }
+
+    public void discardCard(Card card) {
+        this.discardStack.push(card);
     }
 
     public void mergeStacks(ArrayList<Stack<Card>> mergedStacks) {
@@ -92,5 +91,13 @@ public class CardsStack {
             j++;
         }
         return cardStack;
+    }
+
+    public int stackSize() {
+        return this.stack.size();
+    }
+
+    public int discardSize() {
+        return this.discardStack.size();
     }
 }

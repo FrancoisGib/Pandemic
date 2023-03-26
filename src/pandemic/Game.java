@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import pandemic.player.*;
 import pandemic.cards.*;
 
-
 public class Game {
     private static final int MAX_CLUSTERS_NUMBER = 8;
-    private static final int INITIAL_INFECTION_STATE = 2;
+    private static int INITIAL_INFECTION_STATE = 2;
 
     private int globalInfectionState;
 
@@ -113,28 +113,30 @@ public class Game {
         return this.players.get(i);
     }
 
-    public void startInfectionPhase() {
-        int tempo = this.globalInfectionState; // Sinon problème avec le for qui va changer et donc problèmes avec les
+    public void startInfectionPhase(int n) {
+        int tempo = n; // Sinon problème avec le for qui va changer et donc problèmes avec les
                                                // cartes
         for (int i = 0; i < tempo; i++) {
-            Card card = this.infectionCardsStack.pickCard();
-            Town town = this.map.getTownByName(card.getTownName());
-            Disease disease = card.getDisease();
-            if (town.isInfected(disease)) {
-                if (town.getInfectionState(disease) == 3 && !town.isCluster()) {
-                    town.setInfectionCluster();
-                } else {;
-                    town.updateInfectionState(disease);
+            if (this.infectionCardsStack.stackSize() > 0) {
+                Card card = this.infectionCardsStack.pickCard();
+                Town town = this.map.getTownByName(card.getTownName());
+                Disease disease = card.getDisease();
+                if (town.isInfected(disease)) {
+                    if (town.getInfectionState(disease) == 3 && !town.isCluster()) {
+                        town.setInfectionCluster();
+                    } else {
+                        town.updateInfectionState(disease);
+                    }
+                } else {
+                    town.setInfectionState(1, disease);
                 }
-            } else {;
-                town.setInfectionState(1, disease);
             }
         }
         this.computeGlobalInfectionState();
     }
 
     public void updateClustersNumbers() {
-        this.clustersNumber = this.getClustersNumber()+1;
+        this.clustersNumber = this.getClustersNumber() + 1;
     }
 
     public int getClustersNumber() {
@@ -142,13 +144,24 @@ public class Game {
     }
 
     public int computeGlobalInfectionState() {
-        this.globalInfectionState = this.map.getGlobalInfectionState();
-        return this.globalInfectionState + INITIAL_INFECTION_STATE;
+        this.globalInfectionState = this.map.getGlobalInfectionState() + INITIAL_INFECTION_STATE;
+        return this.globalInfectionState;
     }
 
-    public boolean gameEnded() {
-        if (this.clustersNumber < MAX_CLUSTERS_NUMBER) {
-            return false;
+    public boolean loose() {
+        if (this.clustersNumber > MAX_CLUSTERS_NUMBER || this.infectionCardsStack.discardSize() + this.infectionCardsStack.stackSize() == 0) {
+            System.out.println("Loose " + this.clustersNumber);
+            System.out.println("Loose nb cartes infections " + this.infectionCardsStack.discardSize() + this.infectionCardsStack.stackSize());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean win() {
+        for (Disease disease : this.diseases) {
+            if (!disease.isCured()) {
+                return false;
+            }
         }
         return true;
     }
@@ -171,8 +184,10 @@ public class Game {
 
     public void pickInfectionCard() {
         Card card = this.infectionCardsStack.pickCard();
-        this.infectionCardsStack.pickCard().getTown().updateInfectionState(card.getDisease());
-        this.computeGlobalInfectionState();
+        if (card != null) {
+            this.infectionCardsStack.pickCard().getTown().updateInfectionState(card.getDisease());
+            this.computeGlobalInfectionState();
+        }
     }
 
     public void propagation() {
@@ -184,8 +199,7 @@ public class Game {
                 for (Town neighbor : town.getNeighbors()) {
                     if (propTowns.containsKey(neighbor)) {
                         propTowns.replace(town, d);
-                    }
-                    else {
+                    } else {
                         propTowns.put(neighbor, d);
                     }
                 }
@@ -194,10 +208,47 @@ public class Game {
         Iterator<Entry<Town, Disease>> iterator = propTowns.entrySet().iterator();
 
         while (iterator.hasNext()) {
-			Entry<Town, Disease> mapEntry = (Entry<Town, Disease>) iterator.next();
+            Entry<Town, Disease> mapEntry = (Entry<Town, Disease>) iterator.next();
             Disease d = mapEntry.getValue();
             Town t = mapEntry.getKey();
             t.updateInfectionState(d);
-		}
+        }
+    }
+
+    public void print(Player p) {
+        System.out.println(this.map.toStringInfectionState());
+        System.out.println("_____________________________________\n");
+        System.out.println("\n Player to play : " + p.getName() + "\n");
+
+        System.out.println("\n The number of cluster is : " + this.getClustersNumber() + "\n");
+        System.out.println(" The global infection state is : " + this.getGlobalInfectionState() + "\n");
+        Town town = p.getTown();
+        System.out.println(" " + town.toString() + "\n");
+        System.out.println(" " + p.cardToString() + "\n\n");
+        System.out.println("_____________________________________\n");
+    }
+
+    public void run(Scanner sc) {
+        boolean cardFinal = false;
+        while (!this.loose() && !this.win() && !cardFinal) {
+            for (Player player : this.players) {
+                this.print(player);
+                player.chooseAction(sc);
+                player.chooseAction(sc);
+                player.chooseAction(sc);
+                player.chooseAction(sc);
+                boolean i = player.pickPlayerCard(playerCardsStack);
+                boolean j = player.pickPlayerCard(playerCardsStack);
+                if (!i || !j) {
+                    cardFinal = true;
+                    System.out.println("You have lost");
+                    break;
+                } else {
+                    this.startInfectionPhase(1);
+                    INITIAL_INFECTION_STATE++;
+                }
+            }
+            this.propagation();
+        }
     }
 }

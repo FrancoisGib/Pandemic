@@ -28,4 +28,8 @@ public class Disease {
     public int getSector() {
         return this.sector;
     }
+
+    public boolean isCured() {
+        return this.cured;
+    }
 }

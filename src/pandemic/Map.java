@@ -142,7 +142,9 @@ public class Map {
 			res += town.getName() + " infection state : ";
 			HashMap<Disease, Integer> diseases = town.getAllInfectionState();
 			for (Disease disease : diseases.keySet()) {
-				res += disease.getName() + " : " + diseases.get(disease) + " / ";
+				if (diseases.get(disease) > 0) {
+					res += disease.getName() + " : " + diseases.get(disease) + " / ";
+				}
 			}
 			res += "\n";
 				
