@@ -3,8 +3,10 @@ package pandemic;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import pandemic.jsonreader.TownsJsonReader;
+
 import java.util.HashMap;
-import java.util.HashSet;
 
 /** The game's Map who control the towns of the game */
 public class Map {
@@ -83,16 +85,15 @@ public class Map {
 	 * Get a town by it's name in the towns list
 	 * 
 	 * @param name The name of the town to get
-	 * @return The town who has the string name has name in the towns list
-	 * @exception NoSuchTownException The exception if there is no town with that name in the towns array                    
+	 * @return The town who has the string name has name in the towns list              
 	 */
-	public Town getTownByName(String name) throws NoSuchTownException {
+	public Town getTownByName(String name) {
 		for (Town town : towns) {
 			if (name.equals(town.getName())) {
 				return town;
 			}
 		}
-		throw new NoSuchTownException("No such town in the towns array");
+		return null;
 	}
 	
 	/**
@@ -101,7 +102,7 @@ public class Map {
 	 * @param town The town to search neighbors
 	 * @return All the neighbors of the town passed in parameters
 	 */
-	public HashSet<Town> getTownNeighbors(Town town) {
+	public ArrayList<Town> getTownNeighbors(Town town) {
 		return town.getNeighbors();
 	}
 	
@@ -124,7 +125,7 @@ public class Map {
 	public String toString() {
 		String res = "";
 		for (Town town : this.towns) {
-			HashSet<Town> townNeighbors = town.getNeighbors();
+			List<Town> townNeighbors = town.getNeighbors();
 			String stringNeighbors = "";
 			for (Town neighbor : townNeighbors) {
 				stringNeighbors += neighbor.getName() + " / ";
@@ -132,5 +133,61 @@ public class Map {
 			res += town.getName() + " sector : " + town.getSector() + " neighbors : " + stringNeighbors + "\n";
 		}
 		return res;
+	}
+
+	/**
+	 * Give a String that describes the infections states in all the towns of the map
+	 * 
+	 * @return The String describing all the states
+	 */
+	public String toStringInfectionState() {
+		String res = "";
+		for (Town town : this.towns) {
+			int cpt = 0;
+			String townRes = "";
+			HashMap<Disease, Integer> diseases = town.getAllInfectionState();
+			for (Disease disease : diseases.keySet()) {
+				if (diseases.get(disease) > 0) {
+					cpt++;
+					townRes += disease.getName() + " : " + diseases.get(disease) + " / ";
+				}
+			}
+			if (cpt > 0) {
+				res += town.getName() + " infection state : " + townRes + "\n";
+				cpt = 0;
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Get the number of clusters in the map
+	 * 
+	 * @return The number of clusters
+	 */
+    public int getClustersNumber() {
+		int cpt = 0;
+        for (Town town : this.towns) {
+            if (town.isCluster()) {
+				cpt++;
+			}
+        }
+		return cpt;
+    }
+
+	/**
+	 * Get the global infection state by summing all the infections state from the towns
+	 * 
+	 * @return
+	 */
+	public int getGlobalInfectionState() {
+		int sum = 0;
+		for (Town town : towns) {
+			ArrayList<Integer> infectionStates = new ArrayList<Integer>(town.getAllInfectionState().values());
+			for (Integer state : infectionStates) {
+				sum += state;
+			}
+		}
+		return sum;
 	}
 }

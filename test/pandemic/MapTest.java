@@ -1,10 +1,9 @@
 package pandemic;
 
-import static org.junit.Assert.*;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,8 +48,8 @@ public class MapTest {
 		assertSame(townsList, map2.getTowns());
 	}
 	
-	@Test(expected=NoSuchTownException.class)
-	public void getTownByNameTest() throws NoSuchTownException {
+	@Test
+	public void getTownByNameTest() {
 		String townName = this.town1.getName();
 		ArrayList<Town> townList = new ArrayList<Town>();
 		townList.add(town1);
@@ -58,7 +57,7 @@ public class MapTest {
 		assertSame(this.town1, this.map1.getTownByName(townName));
 		
 		String wrongTownName = "town2";
-		this.map1.getTownByName(wrongTownName);
+		assertEquals(null, this.map1.getTownByName(wrongTownName));
 	}
 	
 	@Test

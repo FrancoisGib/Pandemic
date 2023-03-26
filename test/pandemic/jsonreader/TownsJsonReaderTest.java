@@ -1,19 +1,19 @@
-package pandemic;
+package pandemic.jsonreader;
 
-import static org.junit.Assert.*;
+import pandemic.*;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class TownsJsonReaderTest {
 	
 	@Test(expected=FileNotFoundException.class)
 	public void initTest() throws FileNotFoundException {
-		String filename = "wrongPath.json";
-		new TownsJsonReader(filename);
+		new TownsJsonReader("wrongPath.json");
 	}
 
 	@Test

@@ -2,12 +2,13 @@ package pandemic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import java.io.FileNotFoundException;
 
 import pandemic.player.*;
 
-public class Main {
+public class Main2 {
     public static void main(String[] args) {
 		Map map = new Map();
 		try {
@@ -34,17 +35,7 @@ public class Main {
 
 			Game game = new Game(map, players, diseases);
 
-			for (Player p : players) {
-				p.pickPlayerCard(game.getPlayerCardsStack()); // Les joueurs tirent 2 cartes
-			}
-
-			game.pickInfectionCard(); // Pick les deux cartes infection
-			game.pickInfectionCard();
-
-			System.out.println(map.toStringInfectionState()); // Les villes non-infectés ne sont pas affichés
-
-			System.out.println("Le global infection state est : " + game.getGlobalInfectionState());
-			System.out.println("Le nombre de clusters est de : " + game.getClustersNumber());
+			game.run(new Scanner(System.in));
 		}
 	}
 }
