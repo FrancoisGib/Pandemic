@@ -157,4 +157,8 @@ public class CardsStack {
     public int discardSize() {
         return this.discardStack.size();
     }
+
+    public Stack<Card> getDiscardStack() {
+        return this.discardStack;
+    }
 }

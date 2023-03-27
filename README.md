@@ -22,6 +22,12 @@ Les commandes sont à éxécuter dans le dossier du projet. (Pas classes ou src)
 javac -classpath jars/json.jar:src -d classes src/pandemic/Main.java
 ```
 
+Ou à partir du Makefile :
+
+```
+make main
+```
+
 ## Execution :
 
 ```
@@ -39,7 +45,17 @@ javadoc -classpath jars/json.jar:src -d docs -subpackages pandemic
 ### Compilation :
 
 ```
+javac -classpath jars/json.jar:src -d classes src/pandemic/Main2.java
 javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/*.java
+javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/jsonreader/*.java
+javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/cards/*.java
+javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/player/*.java
+```
+
+Ou à partir du Makefile :
+
+```
+make test_compil
 ```
 
 ### Execution :
@@ -47,6 +63,12 @@ javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/*.java
 ```
 java -jar jars/test.jar \
 -cp classes:test:jars/json.jar --scan-classpath --disable-banner
+```
+
+Ou à partir du Makefile :
+
+```
+make test
 ```
 
 ## JAR :
@@ -84,8 +106,6 @@ A partir de la deuxième semaine, nous nous sommes répartis le travail :
 Nous n'avons pas rencontré de difficultés particulières pour cette partie du projet, car les classes Town et Map sont relativement simples, là partie la plus difficile a été de trouver la meilleure façon d'initialiser toutes les villes avec le TownsJsonReader.
 Nous avons choisi de faire une classe abstraite JsonReader et d'en créer une spécifique TownJsonReader afin de pouvoir rajouter des extensions sur les villes.
 
-Pour montrer comment fonctionne Map, nous avons fait une classe Main qui affiche dans la console toutes les données exploités dans ville48.json.
-
 ### Atteinte des objectifs
 La carte gère toute les villes du jeu, il y a deux façons d'implémenter les données des villes dans le jeu :
 - Avec un fichier JSON, il faudra alors utiliser la fonction setMapWithJSON(String filename) qui va créer un TownsJsonReader qui va lire les données des villes dans le fichier JSON, si le fichier n'existe pas, la fonction lance une FileNotFoundException.
@@ -97,11 +117,22 @@ Nous n'avons pas de difficultés à résoudre pour cette partie du projet, cepen
 ## Livrable 2
 Modélisation des cartes, des joueurs et des rôles
 
-Nous avons choisi de réaliser les cartes avec une classe Card et la gestion des cartes dans le jeu est 
+Nous avons choisi de réaliser les cartes avec une classe Card et la gestion des cartes dans le jeu est assuré par la classe CardsStack dans le package cards.
+Les joueurs sont représentés par une classe abstraite Player et les différents rôles hérites donc de cette classe, on a les rôles Doctor, Globetrotter, Expert et Scientist.
 
 ### Atteinte des objectifs
+L'initialisation du jeu se fait dans la classe Game, il faut l'initialiser avec une map, des joueurs et des maladies.
+
+Se fait ensuite une succession d'actions qui initialiseront le jeu :
+- initCards -> Initialise les cartes du jeu et met en place les paquets de carte.
+- initPlayersHand -> Initialise la main de chacun des joueurs et sépare les cartes joueurs en 4 paquets, puis les rassemble en ajoutant 4 cartes epidémie et enfin mélange le paquet de cartes.
+- initInitialTown -> Choisi une ville parmi toutes les villes et place tous les joueurs dessus.
+- initialInfection -> Réalise l'infection initiale du jeu en prenant 9 cartes dans le paquet des cartes infection avec ce schéma d'infection : 3 premières : 1 cube, 3 suivantes : 2 cube, 3 dernières : 3 cubes.
+
+Après cette succession d'actions, le jeu peut enfin commencer.
 
 ### Difficultés restant à résoudre
+Nous n'avons pas de difficultés restantes à résoudre, cependant comme indiqué lors du dernier livrable, nous avons dû modifier quelques classes comme Town ou Map car les villes peuvent être infectées par plusieurs maladies à la fois. Nous avons déjà implémenté les rôles ainsi que les actions, mais celles-ci seront sûrement modifiés par la suite.
 
 ## Livrable 3
 

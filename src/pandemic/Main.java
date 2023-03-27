@@ -34,13 +34,17 @@ public class Main {
 
 			Game game = new Game(map, players, diseases);
 
-			for (int i = 0; i < 1000; i++) {
-				game.propagation();
+			for (Player p : players) {
+				p.pickPlayerCard(game.getPlayerCardsStack()); // Les joueurs tirent 2 cartes
 			}
-			System.out.println(map.toStringInfectionState());
 
-			System.out.println(game.getGlobalInfectionState());
-			System.out.println(game.getClustersNumber());
+			game.pickInfectionCard(); // Pick les deux cartes infection
+			game.pickInfectionCard();
+
+			System.out.println(map.toStringInfectionState()); // Les villes non-infectés ne sont pas affichés
+
+			System.out.println("Le global infection state est : " + game.getGlobalInfectionState());
+			System.out.println("Le nombre de clusters est de : " + game.getClustersNumber());
 		}
 	}
 }
