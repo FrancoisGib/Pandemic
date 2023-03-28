@@ -9,21 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
-<<<<<<< HEAD
 import org.junit.Before;
 import org.junit.Test;
-public class CardsStackTest {
-    private CardsStack cardStack1;
-    private CardsStack cardStack2;
-    private CardsStack cardStack3;
-    private ArrayList<Card> cards;
-    private Card c1;
-    private Card c2;
-=======
-import javax.security.sasl.SaslException;
 
-import org.junit.Before;
-import org.junit.Test;
+
 public class CardsStackTest {
     private CardsStack cardsStack1;
     private CardsStack cardsStack2;
@@ -34,7 +23,6 @@ public class CardsStackTest {
     private Card c3;
     private Card c4;
     private Card c5;
->>>>>>> 75db201ae81e83e39501a56f79263f7599c7909e
 
     @Before
     public void init(){
@@ -48,7 +36,6 @@ public class CardsStackTest {
         Disease d3 = new Disease("SIDA",3);
         Disease d4 = new Disease("CHIKUNGUNYA",4);
         Disease d5 = new Disease("GRIPPE",4);
-<<<<<<< HEAD
         Card c1 = new Card(t1,d1);
         Card c2 = new Card(t2,d2);
         Card c3 = new Card(t3,d3);
@@ -77,8 +64,6 @@ public class CardsStackTest {
    @Test
    public void TestStackSize(){
     assertEquals(0,this.cardStack3.stackSize());
-   }
-=======
         this.c1 = new Card(t1,d1);
         this.c2 = new Card(t2,d2);
         this.c3 = new Card(t3,d3);
@@ -158,5 +143,5 @@ public class CardsStackTest {
             }
         }
     }
->>>>>>> 75db201ae81e83e39501a56f79263f7599c7909e
+
 }
