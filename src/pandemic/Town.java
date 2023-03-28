@@ -60,7 +60,7 @@ public class Town {
 	 * @param infectionState The infection state to apply
 	 * @param disease        The disease to set the town infection state for
 	 */
-	public void setInfectionState(int infectionState, Disease disease) {
+	public boolean setInfectionState(int infectionState, Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			this.infectionState.replace(disease, infectionState);
 		} else {
@@ -69,6 +69,7 @@ public class Town {
 		if (infectionState == 3 && !this.infectionCluster) {
 			this.setInfectionCluster();
 		}
+		return true;
 	}
 
 	/**
@@ -76,19 +77,14 @@ public class Town {
 	 * 
 	 * @param disease The disease to decrease the town infection state
 	 */
-	public void decreaseInfectionState(Disease disease) {
+	public boolean decreaseInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			if (this.infectionState.get(disease) > 0) {
 				this.infectionState.replace(disease, this.getInfectionState(disease) - 1);
-				System.out.println("\nThe current town infection state for the disease " + disease.getName()
-						+ " has been decreased by 1, it is now of " + this.getInfectionState(disease));
-			} else {
-				System.out.println("\nThe global infection state for this disease is 0 in this town");
-
+				return true;
 			}
-		} else {
-			System.out.println("\nThis town is not infected by " + disease.getName() + " , nothing happened");
 		}
+		return false;
 	}
 
 	/**
@@ -99,14 +95,14 @@ public class Town {
 	public void updateInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			int inf = this.infectionState.get(disease);
-			if (inf < 3) {
+			if (inf == 3 && !this.infectionCluster) {
+				this.setInfectionCluster();
+			}
+			else if (inf < 3) {
 				this.infectionState.replace(disease, inf + 1);
 			}
 		} else {
 			this.infectionState.put(disease, 1);
-		}
-		if (this.infectionState.get(disease) == 3 && !this.infectionCluster) {
-			this.setInfectionCluster();
 		}
 	}
 

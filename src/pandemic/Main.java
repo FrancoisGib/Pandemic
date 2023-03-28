@@ -26,10 +26,10 @@ public class Main {
 			Disease d4 = new Disease("CHIKUNGUNYA", 3);
             ArrayList<Disease> diseases = new ArrayList<Disease>(Arrays.asList(d1, d2, d3, d4));
 
-			Player p1 = new Globetrotter("Globetrotter");
-			Player p2 = new Expert("Expert");
-			Player p3 = new Scientist("Scientist");
-			Player p4 = new Doctor("Doctor");
+			Player p1 = new Player("Globetrotter", Role.GLOBETROTTER);
+			Player p2 = new Player("Expert", Role.GLOBETROTTER);
+			Player p3 = new Player("Scientist", Role.GLOBETROTTER);
+			Player p4 = new Player("Doctor", Role.GLOBETROTTER);
             ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3, p4));
 
 			Game game = new Game(map, players, diseases);

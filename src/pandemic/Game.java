@@ -1,15 +1,17 @@
 package pandemic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Stack;
 import java.util.Map.Entry;
-import java.util.Scanner;
 
-import pandemic.player.*;
+import pandemic.player.Player;
+import pandemic.actions.Action;
 import pandemic.cards.*;
 
 public class Game {
@@ -41,6 +43,8 @@ public class Game {
     /* The infection cards stack which handles the infection cards */
     private CardsStack infectionCardsStack;
 
+    private ArrayList<Action> actions;
+
     /**
      * Builds a game to be played
      * 
@@ -48,10 +52,11 @@ public class Game {
      * @param players  The players of the game
      * @param diseases The diseases of the game
      */
-    public Game(Map map, ArrayList<Player> players, ArrayList<Disease> diseases) {
+    public Game(Map map, ArrayList<Player> players, ArrayList<Disease> diseases, ArrayList<Action> actions) {
         this.globalInfectionState = INITIAL_INFECTION_STATE;
         this.clustersNumber = 0;
         this.map = map;
+        this.actions = actions;
         this.players = players;
         this.diseases = diseases;
         this.initGame();
@@ -63,6 +68,7 @@ public class Game {
      */
     public void initGame() {
         this.initCards();
+        this.initActions();
         this.initPlayersHand();
         this.initInitialTown();
         this.initialInfection();
@@ -74,14 +80,11 @@ public class Game {
     public void initCards() {
         ArrayList<Town> towns = this.map.getTowns();
         ArrayList<Card> playerCards = new ArrayList<Card>();
-
         for (Town town : towns) {
             int sector = town.getSector();
-
             boolean found = false;
             Iterator<Disease> it = this.diseases.iterator();
             Disease disease = null;
-
             while (!found && it.hasNext()) {
                 disease = it.next();
                 if (disease.getSector() == sector) {
@@ -93,9 +96,14 @@ public class Game {
             playerCards.add(card);
         }
         ArrayList<Card> infectionCards = new ArrayList<>(playerCards);
-
         this.playerCardsStack = new CardsStack(playerCards, true);
         this.infectionCardsStack = new CardsStack(infectionCards, false);
+    }
+
+    public void initActions() {
+        for (Player player : this.players) {
+            player.setActions(this.actions);
+        }
     }
 
     /**
@@ -138,6 +146,7 @@ public class Game {
             }
         }
         this.computeGlobalInfectionState();
+        this.computeClustersNumber();
     }
 
     /**
@@ -182,14 +191,16 @@ public class Game {
                 }
             }
         }
+        this.propagation();
         this.computeGlobalInfectionState();
+        this.computeClustersNumber();
     }
 
     /**
      * Update the number of clusters in the game by adding one to it
      */
-    public void updateClustersNumbers() {
-        this.clustersNumber = this.getClustersNumber() + 1;
+    public void computeClustersNumber() {
+        this.clustersNumber = this.map.getClustersNumber();
     }
 
     /**
@@ -198,7 +209,7 @@ public class Game {
      * @return The number of clusters in the game
      */
     public int getClustersNumber() {
-        return this.map.getClustersNumber();
+        return this.clustersNumber;
     }
 
     /**
@@ -206,9 +217,8 @@ public class Game {
      * 
      * @return The new global infection state of the game
      */
-    public int computeGlobalInfectionState() {
+    public void computeGlobalInfectionState() {
         this.globalInfectionState = this.map.getGlobalInfectionState() + INITIAL_INFECTION_STATE;
-        return this.globalInfectionState;
     }
 
     /**
@@ -309,9 +319,7 @@ public class Game {
                 }
             }
         }
-        this.computeGlobalInfectionState();
         Iterator<Entry<Town, ArrayList<Disease>>> iterator = propTowns.entrySet().iterator();
-
         while (iterator.hasNext()) {
             Entry<Town, ArrayList<Disease>> mapEntry = (Entry<Town, ArrayList<Disease>>) iterator.next();
             ArrayList<Disease> diseasesList = mapEntry.getValue();
@@ -320,6 +328,8 @@ public class Game {
                 t.updateInfectionState(d);
             }
         }
+        this.computeGlobalInfectionState();
+        this.computeClustersNumber();
     }
 
     /**
@@ -345,7 +355,8 @@ public class Game {
      * 
      * @param sc The scanner of the game to make all decisions
      */
-    public void run(Scanner sc) {
+    public void run() throws IOException {
+        Scanner sc = new Scanner(System.in);
         boolean cardFinal = false;
         while (!this.loose() && !this.win() && !cardFinal) {
             for (Player player : this.players) {
@@ -362,13 +373,16 @@ public class Game {
                 if (!i || !j) {
                     cardFinal = true;
                     System.out.println("You have lost");
-                    break;
                 } else {
                     this.startInfectionPhase(1);
                     INITIAL_INFECTION_STATE++;
                 }
+                if (this.loose() || this.win()) {
+                    System.exit(0);
+                }
             }
-            this.propagation();
+            this.startInfectionPhase(this.globalInfectionState);
         }
+        sc.close();
     }
 }
