@@ -69,6 +69,9 @@ public class Town {
 		if (infectionState == 3 && !this.infectionCluster) {
 			this.setInfectionCluster();
 		}
+		if (this.infectionCluster && this.infectionState.get(disease) < 3) {
+			this.removeInfectionCluster();
+		}
 		return true;
 	}
 
@@ -82,6 +85,9 @@ public class Town {
 			if (this.infectionState.get(disease) > 0) {
 				this.infectionState.replace(disease, this.getInfectionState(disease) - 1);
 				return true;
+			}
+			if (this.infectionCluster && this.infectionState.get(disease) < 3) {
+				this.removeInfectionCluster();
 			}
 		}
 		return false;
@@ -176,6 +182,13 @@ public class Town {
 	 */
 	public void setInfectionCluster() {
 		this.infectionCluster = true;
+	}
+
+	/**
+	 * Remove the infection cluster
+	 */
+	public void removeInfectionCluster() {
+		this.infectionCluster = false;
 	}
 
 	/**
