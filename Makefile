@@ -10,6 +10,10 @@ compil2:
 exec2:
 	java -cp jars/json.jar:classes pandemic.Main2
 
+short:
+	javac -classpath jars/json.jar:src -d classes src/pandemic/ShortPathTest.java
+	java -cp jars/json.jar:classes pandemic.ShortPathTest
+
 clean:
 	rm -rf ./classes/* ./test/pandemic/*.class ./test/pandemic/cards/*.class ./test/pandemic/jsonreader/*.class 
 

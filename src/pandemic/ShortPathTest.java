@@ -2,16 +2,15 @@ package pandemic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.Stack;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import pandemic.player.*;
 import pandemic.actions.*;
 
-public class Main2 {
-    public static void main(String[] args) {
-		Map map = new Map();
+public class ShortPathTest {
+    public static void main(String [] args) {
+        Map map = new Map();
 		Game game = null;
 		try {
 			map.setMapWithJSON("json/villes48.json");
@@ -38,7 +37,16 @@ public class Main2 {
             ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3, p4));
 
 			game = new Game(map, players, diseases, actions);
+
+            Town initialTown = map.getTownByName("ville-1");
+            Town finalTown = map.getTownByName("ville-34");
+            Stack<Town> shortestPath = game.shortestPath(initialTown, finalTown);
+            String res = initialTown.getName();
+            while (!shortestPath.isEmpty()) {
+				Town t = shortestPath.pop();
+                res += " --> " + t.getName();
+            }
+            System.out.println(res);
 		}
-			game.run();
-	}
+    }
 }

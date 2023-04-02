@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
@@ -333,12 +334,37 @@ public class Game {
     }
 
     /**
+	 * Give a String that describes the infections states in all the towns of the map
+	 * 
+	 * @return The String describing all the states
+	 */
+	public String toStringInfectionState(Player p) {
+		String res = "";
+		for (Town town : this.map.getTowns()) {
+			int cpt = 0;
+			String townRes = "";
+			HashMap<Disease, Integer> diseases = town.getAllInfectionState();
+			for (Disease disease : diseases.keySet()) {
+				if (diseases.get(disease) > 0) {
+					cpt++;
+					townRes += disease.getName() + " : " + diseases.get(disease) + " / ";
+				}
+			}
+			if (cpt > 0) {
+				res += town.getName() + " infection state : " + townRes + "Shortest path" + this.shortestPathToString(p.getTown(), town) + "\n";
+				cpt = 0;
+			}
+		}
+		return res;
+	}
+
+    /**
      * Print the state of the game for the player p
      * 
      * @param p The player who is playing
      */
     public void print(Player p) {
-        System.out.println(this.map.toStringInfectionState());
+        System.out.println(this.toStringInfectionState(p));
         System.out.println("_____________________________________\n");
         System.out.println("\n Player to play : " + p.getName() + "\n");
 
@@ -360,29 +386,57 @@ public class Game {
         boolean cardFinal = false;
         while (!this.loose() && !this.win() && !cardFinal) {
             for (Player player : this.players) {
-                this.print(player);
-                player.chooseAction(sc);
-                this.print(player);
-                player.chooseAction(sc);
-                this.print(player);
-                player.chooseAction(sc);
-                this.print(player);
-                player.chooseAction(sc);
-                boolean i = player.pickPlayerCard(playerCardsStack);
+                for (int i = 0; i < 4; i++) {
+                    this.print(player);
+                    player.chooseAction(sc);
+                    this.computeClustersNumber();
+                    this.computeGlobalInfectionState();
+                }
+                player.pickPlayerCard(playerCardsStack);
                 boolean j = player.pickPlayerCard(playerCardsStack);
-                if (!i || !j) {
+                if (!j) {
                     cardFinal = true;
                     System.out.println("You have lost");
-                } else {
-                    this.startInfectionPhase(1);
-                    INITIAL_INFECTION_STATE++;
                 }
                 if (this.loose() || this.win()) {
                     System.exit(0);
                 }
             }
+            INITIAL_INFECTION_STATE++;
             this.startInfectionPhase(this.globalInfectionState);
         }
         sc.close();
+    }
+
+
+    public Stack<Town> shortestPath(Town t1, Town t2) {
+        ArrayList<Node> toVisit = new ArrayList<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
+        Node root = new Node(null, t1);
+        toVisit.add(root);
+        while (!toVisit.isEmpty()) {
+            Node current = toVisit.remove(0);
+            visited.add(current);
+            if (current.getCurrent() == t2) {
+                return current.getPath();
+            }
+            for (Town t : current.getCurrent().getNeighbors()) {
+                Node next = new Node(current, t);
+                if (!visited.contains(next)) {
+                    toVisit.add(next);
+                }
+            }
+        }
+        return null;
+    }
+
+    public String shortestPathToString(Town t1, Town t2) {
+        Stack<Town> path = shortestPath(t1, t2);
+        String res = ""; 
+        while (!path.isEmpty()) {
+            Town t = path.pop();
+            res += " --> " + t.getName();
+        }
+        return res;
     }
 }
