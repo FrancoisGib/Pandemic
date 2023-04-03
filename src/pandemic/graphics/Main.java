@@ -1,14 +1,7 @@
 package pandemic.graphics;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.event.*;
+import java.awt.Color;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -33,13 +26,19 @@ public class Main extends JFrame {
 			System.out.println("File not found");
 		}
         ArrayList<Town> towns = map.getTowns();
-        Player p = new Player("Player", Role.GLOBETROTTER);
+        Player p = new Player("Player", Role.EXPERT);
         p.setTown(towns.get(0));
         JPanel pan = new JPanel();
         JPanel totalGui = new JPanel();
-        pan.setSize(200, 720);
+        pan.setSize(300, 720);
         pan.setLocation(0, 0);
+        pan.setBackground(Color.BLACK);
         totalGui.setLayout(null);
+
+        JLabel playerTown = new JLabel("<html><p>"+ p.getTownName() + "</p></html>", SwingConstants.CENTER);
+        playerTown.setBounds(1000, 20, 200, 100);
+        totalGui.add(playerTown);
+
         ArrayList<Town> movableTowns = new ArrayList<Town>();
         if (p.getRole() == Role.GLOBETROTTER) {
             movableTowns = map.getTowns();
@@ -47,28 +46,21 @@ public class Main extends JFrame {
         else {
             movableTowns = p.getTown().getNeighbors();
         }
-        for (Town t : movableTowns) {
-            JButton btn = new JButton(t.getName());
-            townButton instance = new townButton(this, t, p);
-            btn.addActionListener(instance);
-            pan.add(btn);
-        }
-
-        totalGui.add(pan);
-
         
+        new MovableTownsComp(pan, movableTowns, playerTown, p);
+        totalGui.add(pan);
+        
+        Graphs graph = new Graphs("dsqdsqddfsdq \n fdnds", this.getGraphics());
+        graph.setBounds(700, 500, 500, 500);
+        JLabel l = new JLabel("<html><p>"+ map.toString() + "</p></html>", SwingConstants.CENTER);
+        l.setBounds(320, 20, 700, 700);
+        totalGui.add(l);
+        totalGui.add(graph);
+        this.add(totalGui);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
         this.setSize(1280, 720);
-
-        Graphs graph = new Graphs();
-        graph.drawString(getGraphics(), "fhsdufdshnfdsfnsdfsd\nhdzsbdhsdshq\nhdbsqdhqsd");
-        graph.setSize(WIDTH/2, HEIGHT);
-        graph.setLocation(1200, 500);
-        totalGui.add(graph);
-        totalGui.setOpaque(true);
-        this.add(totalGui);
         System.out.println(p.getTownName());
     }
     

@@ -39,6 +39,12 @@ public class Main2 {
 
 			game = new Game(map, players, diseases, actions);
 		}
+		try {
 			game.run();
+		}
+		catch (IOException e) {
+			System.out.println("error");
+		}
+			
 	}
 }

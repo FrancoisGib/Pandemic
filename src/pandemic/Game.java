@@ -334,29 +334,31 @@ public class Game {
     }
 
     /**
-	 * Give a String that describes the infections states in all the towns of the map
-	 * 
-	 * @return The String describing all the states
-	 */
-	public String toStringInfectionState(Player p) {
-		String res = "";
-		for (Town town : this.map.getTowns()) {
-			int cpt = 0;
-			String townRes = "";
-			HashMap<Disease, Integer> diseases = town.getAllInfectionState();
-			for (Disease disease : diseases.keySet()) {
-				if (diseases.get(disease) > 0) {
-					cpt++;
-					townRes += disease.getName() + " : " + diseases.get(disease) + " / ";
-				}
-			}
-			if (cpt > 0) {
-				res += town.getName() + " infection state : " + townRes + "Shortest path" + this.shortestPathToString(p.getTown(), town) + "\n";
-				cpt = 0;
-			}
-		}
-		return res;
-	}
+     * Give a String that describes the infections states in all the towns of the
+     * map
+     * 
+     * @return The String describing all the states
+     */
+    public String toStringInfectionState(Player p) {
+        String res = "";
+        for (Town town : this.map.getTowns()) {
+            int cpt = 0;
+            String townRes = "";
+            HashMap<Disease, Integer> diseases = town.getAllInfectionState();
+            for (Disease disease : diseases.keySet()) {
+                if (diseases.get(disease) > 0) {
+                    cpt++;
+                    townRes += disease.getName() + " : " + diseases.get(disease) + " / ";
+                }
+            }
+            if (cpt > 0) {
+                res += town.getName() + " infection state : " + townRes + "Shortest path"
+                        + this.shortestPathToString(p.getTown(), town) + "\n";
+                cpt = 0;
+            }
+        }
+        return res;
+    }
 
     /**
      * Print the state of the game for the player p
@@ -408,7 +410,6 @@ public class Game {
         sc.close();
     }
 
-
     public Stack<Town> shortestPath(Town t1, Town t2) {
         ArrayList<Node> toVisit = new ArrayList<Node>();
         HashSet<Node> visited = new HashSet<Node>();
@@ -432,7 +433,7 @@ public class Game {
 
     public String shortestPathToString(Town t1, Town t2) {
         Stack<Town> path = shortestPath(t1, t2);
-        String res = ""; 
+        String res = "";
         while (!path.isEmpty()) {
             Town t = path.pop();
             res += " --> " + t.getName();
