@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
@@ -46,6 +47,8 @@ public class Game {
 
     private ArrayList<Action> actions;
 
+    private Scanner sc;
+
     /**
      * Builds a game to be played
      * 
@@ -60,6 +63,7 @@ public class Game {
         this.actions = actions;
         this.players = players;
         this.diseases = diseases;
+        this.sc = new Scanner(System.in);
         this.initGame();
     }
 
@@ -97,8 +101,8 @@ public class Game {
             playerCards.add(card);
         }
         ArrayList<Card> infectionCards = new ArrayList<>(playerCards);
-        this.playerCardsStack = new CardsStack(playerCards, true);
-        this.infectionCardsStack = new CardsStack(infectionCards, false);
+        this.playerCardsStack = new CardsStack(playerCards);
+        this.infectionCardsStack = new CardsStack(infectionCards);
     }
 
     public void initActions() {
@@ -114,12 +118,12 @@ public class Game {
         int cpt = 4 - this.players.size() + 2; // Number of cards per player initially.
         for (Player player : this.players) {
             for (int i = 0; i < cpt; i++) {
-                player.pickPlayerCard(this.playerCardsStack);
+                this.pickPlayerCard(player);
             }
         }
         ArrayList<Stack<Card>> splitCards = this.playerCardsStack.splitCards(4);
         for (Stack<Card> cStack : splitCards) {
-            cStack.add(new Card());
+            cStack.add(new Card(null, null));
         }
         this.playerCardsStack.mergeStacks(splitCards);
     }
@@ -182,19 +186,21 @@ public class Game {
                 Town town = this.map.getTownByName(card.getTownName());
                 Disease disease = card.getDisease();
                 if (town.isInfected(disease)) {
-                    if (town.getInfectionState(disease) == 3 && !town.isCluster()) {
-                        town.setInfectionCluster();
-                    } else {
-                        town.updateInfectionState(disease);
+                    if (town.getInfectionState(disease) == 3) {
+                        if (!town.isCluster(disease)) {
+                            town.setInfectionCluster(disease);
+                        }
+                        this.propagation(town, disease);
                     }
-                } else {
-                    town.setInfectionState(1, disease);
                 }
-            }
-        }
-        this.propagation();
+                else {
+                    town.updateInfectionState(disease);
+                    disease.placeCube();    
+                }
         this.computeGlobalInfectionState();
         this.computeClustersNumber();
+    }
+        }
     }
 
     /**
@@ -228,11 +234,7 @@ public class Game {
      * @return True if the game is lost, else false
      */
     public boolean loose() {
-        if (this.clustersNumber > MAX_CLUSTERS_NUMBER
-                || this.infectionCardsStack.discardSize() + this.infectionCardsStack.stackSize() == 0) {
-            System.out.println("Loose " + this.clustersNumber);
-            System.out.println("Loose nb cartes infections " + this.infectionCardsStack.discardSize()
-                    + this.infectionCardsStack.stackSize());
+        if (this.clustersNumber > MAX_CLUSTERS_NUMBER || this.infectionCardsStack.discardSize() + this.infectionCardsStack.stackSize() == 0) {
             return true;
         }
         return false;
@@ -295,16 +297,53 @@ public class Game {
     public void pickInfectionCard() {
         Card card = this.infectionCardsStack.pickCard();
         if (card != null) {
-            this.infectionCardsStack.pickCard().getTown().updateInfectionState(card.getDisease());
+            card.getTown().updateInfectionState(card.getDisease());
             this.computeGlobalInfectionState();
         }
     }
 
     /**
+	 * Pick a card into a cardStack, if the player has already 6 cards, the card is
+	 * discarded
+	 * 
+	 * @param player The Player who picks a card
+	 * @return True if the player picked the card successfully, else false (the
+	 *         CardsStack is empty)
+	 */
+	public boolean pickPlayerCard(Player player) {
+		Card card = this.playerCardsStack.pickCard();
+        ArrayList<Card> playerCards = player.getCards();
+		if (card == null) {
+			return false;
+		}
+        if (card.getTown() == null) {
+            INITIAL_INFECTION_STATE++;
+            this.startInfectionPhase(1);
+            this.infectionCardsStack.resetStack();
+            return true;
+        }
+
+		if (playerCards.size() == 7) {
+			playerCards.remove(0);
+		} else {
+			player.getCards().add(card);
+		}
+		return true;
+	}
+
+    /**
      * Propagate the diseases from the clusters to the neighboring towns
      */
-    public void propagation() {
-        HashMap<Town, ArrayList<Disease>> propTowns = new HashMap<Town, ArrayList<Disease>>();
+    public void propagation(Town town, Disease disease) {
+        for (Town neighbor : town.getNeighbors()) {
+            neighbor.updateInfectionState(disease);
+            if (neighbor.isCluster(disease)) {
+                this.propagation(town, disease);
+            }
+        }
+
+
+        /**HashMap<Town, ArrayList<Disease>> propTowns = new HashMap<Town, ArrayList<Disease>>();
         for (Town town : this.map.getTowns()) {
             if (town.isCluster()) {
                 ArrayList<Disease> clusterDiseases = town.getClusterDisease();
@@ -330,7 +369,7 @@ public class Game {
             }
         }
         this.computeGlobalInfectionState();
-        this.computeClustersNumber();
+        this.computeClustersNumber();*/
     }
 
     /**
@@ -383,31 +422,29 @@ public class Game {
      * 
      * @param sc The scanner of the game to make all decisions
      */
-    public void run() throws IOException {
-        Scanner sc = new Scanner(System.in);
-        boolean cardFinal = false;
-        while (!this.loose() && !this.win() && !cardFinal) {
+    public boolean run() {
+        while (!this.loose() && !this.win()) {
             for (Player player : this.players) {
                 for (int i = 0; i < 4; i++) {
                     this.print(player);
-                    player.chooseAction(sc);
+                    this.chooseAction(player);
                     this.computeClustersNumber();
                     this.computeGlobalInfectionState();
                 }
-                player.pickPlayerCard(playerCardsStack);
-                boolean j = player.pickPlayerCard(playerCardsStack);
+                this.pickPlayerCard(player);
+                boolean j = this.pickPlayerCard(player);
                 if (!j) {
-                    cardFinal = true;
                     System.out.println("You have lost");
-                }
-                if (this.loose() || this.win()) {
-                    System.exit(0);
                 }
             }
             INITIAL_INFECTION_STATE++;
             this.startInfectionPhase(this.globalInfectionState);
         }
         sc.close();
+        if (this.loose()) {
+            return false;
+        }
+        return true;
     }
 
     public Stack<Town> shortestPath(Town t1, Town t2) {
@@ -440,4 +477,54 @@ public class Game {
         }
         return res;
     }
+
+    /**
+	 * Choose an action to do
+	 * 
+	 * @param sc The scanner to choose the action
+	 */
+	public void chooseAction(Player player) {
+		String print = "Choose an action by entering a number !\n";
+		ArrayList<Action> availableActions = new ArrayList<Action>();
+		int i = 1;
+		Iterator<Action> it = this.actions.iterator();
+		while (it.hasNext()) {
+			Action action = it.next();
+			if (action.requirements(player)) {
+				availableActions.add(action);
+				print += i + " -> " + action.getDescription() + "\n";
+				i++;
+			}
+		}
+		print += i + " -> " + "Do nothing";
+		System.out.println(print);
+		int actionNumber = -1; 
+        String act = "";
+		while (actionNumber == -1) {
+			act = sc.next();
+			try {
+				actionNumber = Integer.parseInt(act)-1;
+			}
+			catch (NumberFormatException e) {
+				System.out.println("Not an integer, retry");
+			}
+		}
+		int availableActionsNumber = availableActions.size();
+		if (actionNumber < availableActionsNumber) {
+			int res = availableActions.get(actionNumber).runWithChoice(player, this.sc);
+			if (res == -1) {
+				availableActions.get(actionNumber).runWithChoice(player, this.sc);
+			}
+			else if (res == 1) {
+				this.chooseAction(player);
+			}
+		}
+		else {
+			if (actionNumber > availableActionsNumber) {
+				System.out.println("Number out of range, retry \n");
+				this.chooseAction(player);
+			}
+		}
+	}
+
 }

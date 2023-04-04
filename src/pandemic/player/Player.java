@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Map.Entry;
@@ -128,59 +129,12 @@ public class Player {
 	}
 
 	/**
-	 * Choose an action to do
+	 * Give the player's cards
 	 * 
-	 * @param sc The scanner to choose the action
+	 * @return The player's cards
 	 */
-	public void chooseAction(Scanner sc) throws IOException {
-		String print = "Choose an action by entering a number !\n";
-		ArrayList<Action> availableActions = new ArrayList<Action>();
-		int i = 1;
-		Iterator<Action> it = this.actions.iterator();
-		while (it.hasNext()) {
-			Action action = it.next();
-			if (action.requirements(this)) {
-				availableActions.add(action);
-				print += i + " -> " + action.getDescription() + "\n";
-				i++;
-			}
-		}
-		print += i + " -> " + "Do nothing";
-		System.out.println(print);
-        int actionNumber =  sc.nextInt()-1;  
-		int availableActionsSize = availableActions.size();
-		if (actionNumber < availableActionsSize) {
-			int res = availableActions.get(actionNumber).run(this, sc);
-			if (res == -1) {
-				availableActions.get(actionNumber).run(this, sc);
-			}
-			else if (res == 1) {
-				this.chooseAction(sc);
-			}
-		}
-	}
-
-	/**
-	 * Pick a card into a cardStack, if the player has already 6 cards, the card is
-	 * discarded
-	 * 
-	 * @param cards The CardsStack to pick a card in
-	 * @return True if the player picked the card successfully, else false (the
-	 *         CardsStack is empty)
-	 */
-	public boolean pickPlayerCard(CardsStack cards) {
-		Card card = cards.pickCard();
-		if (card == null) {
-			return false;
-		}
-		if (card.getTown() != null) {
-			if (this.cards.size() == 6) {
-				cards.discardCard(card);
-			} else {
-				this.cards.add(card);
-			}
-		}
-		return true;
+	public ArrayList<Card> getCards() {
+		return this.cards;
 	}
 
 	/**

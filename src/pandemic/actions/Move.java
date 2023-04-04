@@ -18,7 +18,16 @@ public class Move implements Action {
         return this.description;
     }
 
-    public int run(Player player, Scanner sc) {
+    public int run(Player player, Object o) {
+        player.setTown((Town)o);
+        return 0;
+    }
+
+    public boolean requirements(Player player) {
+        return true;
+    }
+
+    public int runWithChoice(Player player, Scanner sc) {
         System.out.println("Choose a city to move on, here the list of cities :\n\n");
         String res = "";
         HashSet<Town> movableTowns = new HashSet<Town>();
@@ -37,17 +46,10 @@ public class Move implements Action {
 		}
         for (Town newTown : movableTowns) {
             if (townName.equals(newTown.getName())) {
-				player.setTown(newTown);;
-				return 0;
+                return this.run(player, newTown);
 			}
         }
         System.out.println("This town doesn't exist, retry");
 		return -1;
     }
-
-    public boolean requirements(Player player) {
-        return true;
-    }
 }
-
-

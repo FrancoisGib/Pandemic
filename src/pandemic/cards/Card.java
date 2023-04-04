@@ -23,14 +23,6 @@ public class Card {
 	}
 
 	/**
-	 * Builds a Card for the game, this constructor is used to build an epidemic card in the game which is different from a player card
-	 */
-	public Card() {
-		this.town = null;
-		this.disease = null;
-	}
-
-	/**
 	 * Get the Card's town name
 	 * 
 	 * @return The card's town name

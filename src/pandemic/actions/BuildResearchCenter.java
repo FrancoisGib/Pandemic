@@ -20,7 +20,7 @@ public class BuildResearchCenter implements Action {
         return this.description;
     }
 
-    public int run(Player player, Scanner sc) {
+    public int run(Player player, Object o) {
         Town playerTown = player.getTown();
         boolean res = playerTown.buildResearchCenter();
         if (res) {
@@ -41,5 +41,9 @@ public class BuildResearchCenter implements Action {
             return false;
         }
         return player.getRole() == Role.EXPERT ? true : player.getCardsByTown(playerTown).size() > 0; 
+    }
+
+    public int runWithChoice(Player player, Scanner sc) {
+        return this.run(player, null);
     }
 }

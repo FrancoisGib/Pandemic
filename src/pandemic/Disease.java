@@ -2,6 +2,8 @@ package pandemic;
 
 /* The class that represents diseases in the game */
 public class Disease {
+    public static final int INITIAL_CUBES_NUMBER = 24;
+
 
     /* The name of the disease */
     private String name;
@@ -11,6 +13,9 @@ public class Disease {
 
     /* The initial sector of the disease */
     private int sector;
+
+    /* The number of cubes left for the disease */
+    private int cubes;
 
     /**
      * Builds a disease for the game
@@ -22,6 +27,7 @@ public class Disease {
         this.name = name;
         this.cured = false;
         this.sector = sector;
+        this.cubes = INITIAL_CUBES_NUMBER;
     }
 
     /**
@@ -62,5 +68,23 @@ public class Disease {
      */
     public boolean isCured() {
         return this.cured;
+    }
+
+    /**
+     * Give the number of cubes left for the disease
+     * 
+     * @return The number of cubes left for the disease
+     */
+    public int getCube() {
+        return this.cubes;
+    }
+
+
+    public boolean placeCube() {
+        if (this.cubes == 0) {
+            return false;
+        }
+        this.cubes--;
+        return true;
     }
 }

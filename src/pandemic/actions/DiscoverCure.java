@@ -22,18 +22,8 @@ public class DiscoverCure implements Action {
         return this.description;
     }
 
-    public int run(Player player, Scanner sc) {
-        Town playerTown = player.getTown();
-        HashMap<Disease, Integer> diseases = playerTown.getAllInfectionState();
-        String print = "Choose a disease to find a cure of :";
-        HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();
-        for (Disease disease : diseases.keySet()) {
-            diseasesByName.put(disease.getName(), disease);
-            print += disease.getName() + " / ";
-        }
-        System.out.println(print);
-        String diseaseName = sc.next();
-        Disease chosenDisease = diseasesByName.get(diseaseName);
+    public int run(Player player, Object o) {
+        Disease chosenDisease = (Disease)o;
         if (chosenDisease == null) {
             System.out.println("This disease does not exist or the town is not infected by it, retry");
             return -1;
@@ -69,5 +59,24 @@ public class DiscoverCure implements Action {
             }
         }
         return false;
+    }
+
+    public int runWithChoice(Player player, Scanner sc) {
+        Town playerTown = player.getTown();
+        HashMap<Disease, Integer> diseases = playerTown.getAllInfectionState();
+        String print = "Choose a disease to find a cure of :";
+        HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();
+        for (Disease disease : diseases.keySet()) {
+            diseasesByName.put(disease.getName(), disease);
+            print += disease.getName() + " / ";
+        }
+        System.out.println(print);
+        String diseaseName = sc.next();
+        Disease chosenDisease = diseasesByName.get(diseaseName);
+        if (chosenDisease == null) {
+            System.out.println("This disease does not exist or the town is not infected by it, retry");
+            return -1;
+        }
+        return this.run(player, chosenDisease);
     }
 }
