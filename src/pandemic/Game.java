@@ -1,16 +1,12 @@
 package pandemic;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.Map.Entry;
 
 import pandemic.player.Player;
 import pandemic.actions.Action;
@@ -95,7 +91,7 @@ public class Game {
                     found = true;
                 }
             }
-            town.setInfectionState(0, disease);
+            town.setInfectionState(disease, 0);
             Card card = new Card(town, disease);
             playerCards.add(card);
         }
@@ -140,7 +136,7 @@ public class Game {
         for (int i = 3; i > 0; i--) {
             for (int j = 0; j < 3; j++) {
                 Card card = this.infectionCardsStack.pickCard();
-                card.getTown().setInfectionState(i, card.getDisease());
+                card.getTown().setInfectionState(card.getDisease(), i);
             }
         }
         this.computeGlobalInfectionState();
@@ -249,7 +245,7 @@ public class Game {
         Disease disease = card.getDisease();
         if (!disease.isCured()) {
             this.infectionCardsStack.discardCard(card);
-            town.updateInfectionState(disease);
+            town.setInfectionState(disease, 1);
             if (town.isCluster(disease)) {
                 this.propagation(town, disease);
             }
@@ -278,26 +274,33 @@ public class Game {
             this.infectionCardsStack.resetStack();
             return true;
         }
-
 		if (playerCards.size() == 7) {
             String res = "You have 7 cards in your hand, you must discard one, choose : \n";
             int i = 1;
             for (Card c : playerCards) {
                 res += i + " -> " + c.getTownName() + " " + c.getDiseaseName() + " / ";
+                i++;
             }
             System.out.println(res + "\n");
             int choice = -1; 
             String act = "";
-            while (choice < 1 && choice > 7) {
+            String error = "Put an integer between 1 and 7 :\n";
+            while (choice == -1) {
                 act = sc.next();
                 try {
-                    choice = Integer.parseInt(act);
+                    int value = Integer.parseInt(act);
+                    if (value < 1 || value > 7) {
+                        System.out.println(error);
+                    }
+                    else {
+                        choice = value-1;
+                    }
                 }
                 catch (NumberFormatException e) {
-                    System.out.println("Put an integer between 1 and 7 :\n");
+                    System.out.println(error);
                 }
             }
-			Card removedCard = playerCards.remove(choice-1);
+			Card removedCard = playerCards.remove(choice);
             System.out.println("The card with town " + removedCard.getTownName() + " and disease " + removedCard.getDiseaseName() + " has been removed from your hand\n");
 		}
         player.getCards().add(card);
@@ -315,7 +318,7 @@ public class Game {
             Town currentTown = toVisit.remove(0);
             visited.add(currentTown);
             for (Town neighbor : town.getNeighbors()) {
-                neighbor.updateInfectionState(disease);
+                neighbor.setInfectionState(disease, 1);;
                 if (neighbor.isCluster(disease) && !visited.contains(neighbor)) {
                     toVisit.add(neighbor);
                 }
@@ -380,6 +383,11 @@ public class Game {
                     this.print(player);
                     this.chooseAction(player);
                 }
+                this.pickPlayerCard(player);
+                this.pickPlayerCard(player);
+                this.pickPlayerCard(player);
+                this.pickPlayerCard(player);
+                this.pickPlayerCard(player);
                 this.pickPlayerCard(player);
                 boolean j = this.pickPlayerCard(player);
                 if (!j) {

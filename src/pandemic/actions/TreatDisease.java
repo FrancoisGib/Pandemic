@@ -33,13 +33,13 @@ public class TreatDisease implements Action {
         int cpt = 0;
         if (player.getRole() == Role.DOCTOR) {
             cpt = playerTown.getInfectionState(chosenDisease);
-            playerTown.setInfectionState(0, chosenDisease);
+            playerTown.setInfectionState(chosenDisease, 0);
             for (int i = 0; i < cpt; i++) {
                 chosenDisease.removeCube();
             }
         }
         else {
-            playerTown.decreaseInfectionState(chosenDisease);
+            playerTown.setInfectionState(chosenDisease, -1);
             cpt = 1;
         }
         System.out.println("\nThe current town infection state for the disease " + chosenDisease.getName() + " has been decreased by " + cpt + ", it is now of " + playerTown.getInfectionState(chosenDisease)+ "\n");

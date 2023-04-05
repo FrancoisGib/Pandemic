@@ -60,90 +60,45 @@ public class Town {
 	 * @param infectionState The infection state to apply
 	 * @param disease        The disease to set the town infection state for
 	 */
-	public void setInfectionState(int n, Disease disease) {
-		int formerInfectionState = this.infectionState.get(disease);
+	public void setInfectionState(Disease disease, int n) {
+		int formerInfectionState = 0;
+		if (this.infectionState.containsKey(disease)) {
+			formerInfectionState = this.infectionState.get(disease);
+		}
 		int newInfectionState = -1;
 		if (!this.infectionCluster.containsKey(disease)) {
 			this.infectionCluster.put(disease, false);
 		}
 		if (n == 0) {
+			for (int i = 0; i < formerInfectionState; i++) {
+				disease.removeCube();
+			} 
 			this.infectionState.put(disease, 0);
 		}
 		else {
 			newInfectionState = this.infectionState.get(disease) + n;
 			if (newInfectionState <= 3 && newInfectionState >= 0) {
 				this.infectionState.put(disease, newInfectionState);
+				if (n < 0) {
+					for (int i = 0; i < -n; i++) {
+						disease.removeCube();
+					}
+				}
+				else {
+					for (int i = 0; i < n; i++) {
+						disease.placeCube();
+					}
+				}
 			}
 		}
-		if (formerInfectionState == 3 && newInfectionState == -1) {
+		if (formerInfectionState == 3 && n > 0) {
 			this.infectionCluster.put(disease, true);
 		}
 		else {
 			this.infectionCluster.put(disease, false);
 		}
 	}
-		
 
-		/**int diff = newInfectionState;
-		if (this.infectionState.containsKey(disease)) {
-			diff = this.infectionState.get(disease) - newInfectionState;
-			this.infectionState.replace(disease, newInfectionState);
-		}
-		else {
-			this.infectionState.put(disease, newInfectionState);
-		}
-		for (int i = 0; i < diff; i++) {
-			disease.placeCube();
-		}
-		if (newInfectionState < 3) {
-			this.infectionCluster.put(disease, false);
-		}
-		else {
-			this.infectionCluster.put(disease, true);
-		}
-		return true;*/
-	}
-
-	/**
-	 * Decrease the town infection state for the specified disease
-	 * 
-	 * @param disease The disease to decrease the town infection state
-	 */
-	public boolean decreaseInfectionState(Disease disease) {
-		if (this.infectionState.containsKey(disease)) {
-			if (this.infectionState.get(disease) > 0) {
-				this.infectionState.replace(disease, this.infectionState.get(disease) - 1);
-				disease.removeCube();
-			}
-			if (this.infectionCluster.get(disease)) {
-				this.removeInfectionCluster(disease);
-			}
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Update the infection state of the town for the disease in parameters
-	 * 
-	 * @param disease The disease to update the town infection state
-	 */
-	public void updateInfectionState(Disease disease) {
-		if (this.infectionState.containsKey(disease)) {
-			int inf = this.infectionState.get(disease);
-			if (inf == 3 && this.infectionCluster.get(disease) == false) {
-				this.infectionCluster.put(disease, true);
-			}
-			else if (inf < 3) {
-				this.infectionState.replace(disease, inf + 1);
-				disease.placeCube();
-			}
-		} else {
-			this.infectionState.put(disease, 1);
-			this.infectionCluster.put(disease, false);
-			disease.placeCube();
-		}
-	}
 
 	/**
 	 * Get the Town's neighbors
