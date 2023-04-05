@@ -1,19 +1,14 @@
 package pandemic.player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.Iterator;
-import java.util.Scanner;
 import java.util.Map.Entry;
 
 import pandemic.Town;
 import pandemic.cards.Card;
-import pandemic.cards.CardsStack;
 import pandemic.Disease;
-import pandemic.actions.Action;
 
 /* The class that defines a Player in the game */
 public class Player {
@@ -22,8 +17,6 @@ public class Player {
 	private final String name;
 
 	private final Role role; 
-
-	private ArrayList<Action> actions;
 
 	/* The town where the Player is */
 	private Town town;
@@ -40,7 +33,6 @@ public class Player {
 	public Player(String name, Role role) {
 		this.name = name;
 		this.role = role;
-		this.actions = null;
 		this.town = null;
 		this.cards = new ArrayList<Card>();
 	}
@@ -52,10 +44,6 @@ public class Player {
 	 */
 	public void setTown(Town town) {
 		this.town = town;
-	}
-
-	public void setActions(ArrayList<Action> actions) {
-		this.actions = actions;
 	}
 
 	/**

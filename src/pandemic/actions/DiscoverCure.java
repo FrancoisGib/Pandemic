@@ -36,10 +36,9 @@ public class DiscoverCure implements Action {
                 for (Card card : cards) { // Discard the cards used to cure the disease
                     player.discardCard(card);
                 }
-                System.out.println("The disease " + chosenDisease.getName() + " has been cured");
                 return 0;
             }
-            System.out.println("The disease " + chosenDisease.getName() + " was already cured");
+            System.out.println("The disease " + chosenDisease.getName() + " has already been cured");
             return 1;
         }
         return 1;

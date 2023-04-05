@@ -47,6 +47,7 @@ public class Disease {
     public boolean cure() {
         if (!this.cured) {
             this.cured = true;
+            System.out.println("\nDisease " + this.name + " cured\n");
             return true;
         }
         return false;
@@ -81,10 +82,19 @@ public class Disease {
 
 
     public boolean placeCube() {
+        this.cubes--;
         if (this.cubes == 0) {
             return false;
         }
-        this.cubes--;
         return true;
+    }
+
+    public void removeCube() {
+        if (this.cubes == INITIAL_CUBES_NUMBER) {
+            this.cure();
+        }
+        else {
+            this.cubes++;
+        }
     }
 }

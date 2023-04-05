@@ -63,10 +63,15 @@ public class CardsStack {
      * @return The popped card, null if the discarded stack and the stack are empty
      */
     public Card pickCard() {
-        if (!this.stack.empty()) {
-            return this.stack.pop();
+        if (this.stack.isEmpty()) {
+            if (this.discardStack.isEmpty()) {
+                return null;
+            }
+            else {
+                this.resetStack();
+            }
         }
-        return null;
+        return this.stack.pop();
     }
 
     /**

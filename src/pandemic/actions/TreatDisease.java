@@ -30,12 +30,19 @@ public class TreatDisease implements Action {
     public int run(Player player, Object o) {
         Disease chosenDisease = (Disease)o;
         Town playerTown = player.getTown();
+        int cpt = 0;
         if (player.getRole() == Role.DOCTOR) {
+            cpt = playerTown.getInfectionState(chosenDisease);
             playerTown.setInfectionState(0, chosenDisease);
+            for (int i = 0; i < cpt; i++) {
+                chosenDisease.removeCube();
+            }
         }
         else {
             playerTown.decreaseInfectionState(chosenDisease);
+            cpt = 1;
         }
+        System.out.println("\nThe current town infection state for the disease " + chosenDisease.getName() + " has been decreased by " + cpt + ", it is now of " + playerTown.getInfectionState(chosenDisease)+ "\n");
         return 0;
     }
 
@@ -81,7 +88,6 @@ public class TreatDisease implements Action {
             chosenDisease = diseasesByName.get(diseaseName);
         }
         if (chosenDisease != null) {
-            System.out.println("\nThe current town infection state for the disease " + chosenDisease.getName() + " has been decreased by 1, it is now of " + playerTown.getInfectionState(chosenDisease));
             return this.run(player, chosenDisease); 
         }
         System.out.println("\nThis town is not infected by this disease, nothing happened");

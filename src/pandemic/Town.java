@@ -60,23 +60,48 @@ public class Town {
 	 * @param infectionState The infection state to apply
 	 * @param disease        The disease to set the town infection state for
 	 */
-	public boolean setInfectionState(int infectionState, Disease disease) {
+	public void setInfectionState(int n, Disease disease) {
+		int formerInfectionState = this.infectionState.get(disease);
+		int newInfectionState = -1;
+		if (!this.infectionCluster.containsKey(disease)) {
+			this.infectionCluster.put(disease, false);
+		}
+		if (n == 0) {
+			this.infectionState.put(disease, 0);
+		}
+		else {
+			newInfectionState = this.infectionState.get(disease) + n;
+			if (newInfectionState <= 3 && newInfectionState >= 0) {
+				this.infectionState.put(disease, newInfectionState);
+			}
+		}
+		if (formerInfectionState == 3 && newInfectionState == -1) {
+			this.infectionCluster.put(disease, true);
+		}
+		else {
+			this.infectionCluster.put(disease, false);
+		}
+	}
+		
+
+		/**int diff = newInfectionState;
 		if (this.infectionState.containsKey(disease)) {
-			this.infectionState.replace(disease, infectionState);
-		} else {
-			this.infectionState.put(disease, infectionState);
+			diff = this.infectionState.get(disease) - newInfectionState;
+			this.infectionState.replace(disease, newInfectionState);
 		}
-		boolean clust = false;
-		if (this.infectionCluster.containsKey(disease)) {
-			clust = true;
+		else {
+			this.infectionState.put(disease, newInfectionState);
 		}
-		if (infectionState == 3 && !clust) {
-			this.setInfectionCluster(disease);
+		for (int i = 0; i < diff; i++) {
+			disease.placeCube();
 		}
-		if (clust && this.infectionState.get(disease) < 3) {
-			this.removeInfectionCluster(disease);
+		if (newInfectionState < 3) {
+			this.infectionCluster.put(disease, false);
 		}
-		return true;
+		else {
+			this.infectionCluster.put(disease, true);
+		}
+		return true;*/
 	}
 
 	/**
@@ -87,12 +112,13 @@ public class Town {
 	public boolean decreaseInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			if (this.infectionState.get(disease) > 0) {
-				this.infectionState.replace(disease, this.getInfectionState(disease) - 1);
-				return true;
+				this.infectionState.replace(disease, this.infectionState.get(disease) - 1);
+				disease.removeCube();
 			}
-			if (this.infectionCluster.get(disease) && this.infectionState.get(disease) < 3) {
+			if (this.infectionCluster.get(disease)) {
 				this.removeInfectionCluster(disease);
 			}
+			return true;
 		}
 		return false;
 	}
@@ -105,14 +131,17 @@ public class Town {
 	public void updateInfectionState(Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			int inf = this.infectionState.get(disease);
-			if (inf == 3 && !this.infectionCluster.get(disease)) {
-				this.setInfectionCluster(disease);
+			if (inf == 3 && this.infectionCluster.get(disease) == false) {
+				this.infectionCluster.put(disease, true);
 			}
 			else if (inf < 3) {
 				this.infectionState.replace(disease, inf + 1);
+				disease.placeCube();
 			}
 		} else {
 			this.infectionState.put(disease, 1);
+			this.infectionCluster.put(disease, false);
+			disease.placeCube();
 		}
 	}
 
@@ -182,17 +211,10 @@ public class Town {
 	}
 
 	/**
-	 * Set the town has a cluster
-	 */
-	public void setInfectionCluster(Disease disease) {
-		this.infectionCluster.put(disease, true);
-	}
-
-	/**
 	 * Remove the infection cluster
 	 */
 	public void removeInfectionCluster(Disease disease) {
-		this.infectionCluster.remove(disease);
+		this.infectionCluster.replace(disease, false);
 	}
 
 	/**
@@ -204,7 +226,7 @@ public class Town {
 		if (!this.infectionCluster.containsKey(disease)) {
 			return false;
 		}
-		return true;
+		return this.infectionCluster.get(disease);
 	}
 
 	/**
