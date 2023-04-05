@@ -175,6 +175,7 @@ Correction de Town pour pouvoir y mettre plusieurs maladies (nous pensions qu'un
 Changements dans CardStack ainsi que création de l'exception NoSuchDiseaseException (similaire à NoSuchTownException mais pour les maladies).
 
 ## Semaine 9
+Changements dans Town encore, pour avoir plusieurs clusters à la fois si besoin, ainsi que changements dans cardstack, la défausse sera gérée plus haut dans game (plus besoin du boolean discard), actions modifiées afin de récupérer la valeur de l'action avant puis lancer la méthode run d'une action avec celle-ci. Quelques fix sur le scanner de game pour gérer un mauvais input du joueur, quelques fonctions inutiles supprimées et d'autres simplifiées (setInfectionState par exemple).
 
 ## Semaine 10
 
