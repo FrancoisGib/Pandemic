@@ -60,7 +60,7 @@ public class DiscoverCure implements Action {
         return false;
     }
 
-    public int runWithChoice(Player player, Scanner sc) {
+    public int chooseParameter(Player player, Scanner sc) {
         Town playerTown = player.getTown();
         HashMap<Disease, Integer> diseases = playerTown.getAllInfectionState();
         String print = "Choose a disease to find a cure of :";

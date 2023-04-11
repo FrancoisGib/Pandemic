@@ -27,7 +27,7 @@ public class Move implements Action {
         return true;
     }
 
-    public int runWithChoice(Player player, Scanner sc) {
+    public int chooseParameter(Player player, Scanner sc) {
         System.out.println("Choose a city to move on, here the list of cities :\n\n");
         String res = "";
         HashSet<Town> movableTowns = new HashSet<Town>();

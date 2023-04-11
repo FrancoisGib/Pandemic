@@ -23,11 +23,11 @@ public class PlayerTest {
 
     @Before
 	public void init() {
-		this.player = new Doctor("Player");
+		this.player = new Player("Player", Role.DOCTOR);
         this.town = new Town("Town", 0);
         this.disease = new Disease("Disease", 0);
         this.card = new Card(this.town, this.disease);
-        this.cardsStack = new CardsStack(new ArrayList<Card>(Arrays.asList(this.card)), true);
+        this.cardsStack = new CardsStack(new ArrayList<Card>(Arrays.asList(this.card)));
 	}
 
     public void movableTownsTest() {
@@ -40,9 +40,9 @@ public class PlayerTest {
     }
 
     public void getTownCardsNumberTest() {
-        assertSame(0, this.player.getTownCardsNumber(this.town));
-        this.player.pickPlayerCard(this.cardsStack);
-        assertSame(1, this.player.getTownCardsNumber(this.town));
+        assertSame(0, this.player.getCardsByTown(this.town).size());
+        this.player.addCard(this.card);
+        assertSame(1, this.player.getCardsByTown(this.town).size());
     }
 
 

@@ -175,6 +175,7 @@ Correction de Town pour pouvoir y mettre plusieurs maladies (nous pensions qu'un
 Changements dans CardStack ainsi que création de l'exception NoSuchDiseaseException (similaire à NoSuchTownException mais pour les maladies).
 
 ## Semaine 9
+Changements de quelques méthodes dans game, création de certains Tests, update des UML ainsi que réflexion sur certaines améliorations (supprimer certaines méthodes presque inutiles ou simplifiables), reflexion pour move (rechercher les villes atteignables avec le nombre d'actions restantes pour faciliter les déplacements sur de longues distances). 
 
 ## Semaine 10
 

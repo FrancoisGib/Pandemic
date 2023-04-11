@@ -58,7 +58,7 @@ public class TreatDisease implements Action {
         return cpt > 0;
     }
 
-    public int runWithChoice(Player player, Scanner sc) {
+    public int chooseParameter(Player player, Scanner sc) {
         Town playerTown = player.getTown();
         HashMap<Disease, Integer> diseases = playerTown.getAllInfectionState();
         HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();

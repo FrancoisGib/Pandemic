@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Stack;
 
 import org.junit.Before;
@@ -36,43 +37,15 @@ public class CardsStackTest {
         Disease d3 = new Disease("SIDA",3);
         Disease d4 = new Disease("CHIKUNGUNYA",4);
         Disease d5 = new Disease("GRIPPE",4);
-        Card c1 = new Card(t1,d1);
-        Card c2 = new Card(t2,d2);
-        Card c3 = new Card(t3,d3);
-        Card c4 = new Card(t4,d4);
-        Card c5 = new Card(t5,d5);
-        this.cards = new ArrayList<Card>(Arrays.asList(c1,c2,c3,c4,c5));
-        this.cardStack1 = new CardsStack(cards,true);
-        this.cardStack2 = new CardsStack(cards,true);
-        this.cardStack3 = new CardsStack(cards,true);
-    }
-
-    @Test
-   public void TestinitStack(){
-        for (int i = 0; i < this.cards.size(); i++) {
-            assertTrue(this.cardStack1.getCardStack().search(this.cards.get(i))!= -1);   
-        }
-   }
-
-   @Test
-   public void TestDiscardSize(){
-    assertEquals(0, this.cardStack3.discardSize());
-    this.cardStack3.discardCard(this.c2);
-    assertEquals(1,this.cardStack3.discardSize());
-   }
-
-   @Test
-   public void TestStackSize(){
-    assertEquals(0,this.cardStack3.stackSize());
         this.c1 = new Card(t1,d1);
         this.c2 = new Card(t2,d2);
         this.c3 = new Card(t3,d3);
         this.c4 = new Card(t4,d4);
         this.c5 = new Card(t5,d5);
         this.cards = new ArrayList<Card>(Arrays.asList(this.c1, this.c2, this.c3, this.c4, this.c5));
-        this.cardsStack1 = new CardsStack(cards,true);
-        this.cardsStack2 = new CardsStack(cards,true);
-        this.cardsStack3 = new CardsStack(cards,true);
+        this.cardsStack1 = new CardsStack(cards);
+        this.cardsStack2 = new CardsStack(cards);
+        this.cardsStack3 = new CardsStack(cards);
     }
 
     @Test
@@ -86,7 +59,8 @@ public class CardsStackTest {
     @Test
     public void discardCardTest(){
         assertEquals(0, this.cardsStack3.discardSize());
-        this.cardsStack3.discardCard(this.c2);
+        Card card = this.cardsStack3.pickCard();
+        this.cardsStack3.discardCard(card);
         assertEquals(1,this.cardsStack3.discardSize());
     }
 
@@ -96,7 +70,7 @@ public class CardsStackTest {
         Card card = this.cardsStack1.pickCard();
         assertSame(4, this.cardsStack1.stackSize());
 
-        CardsStack emptyCardsStack = new CardsStack(new ArrayList<Card>(), true);
+        CardsStack emptyCardsStack = new CardsStack(new ArrayList<Card>());
         assertSame(null, emptyCardsStack.pickCard());
 
         Card pickedCard = this.cardsStack2.pickCard(); // test when there's no cards remaining in the stack, so the stack is refilled with the discard stack
@@ -133,7 +107,7 @@ public class CardsStackTest {
         Stack<Card> stack5 = new Stack<Card>();
         stack5.push(c5);
         ArrayList<Stack<Card>> stackOfStack = new ArrayList<Stack<Card>>(Arrays.asList(stack1, stack2, stack3, stack4, stack5));
-        CardsStack newCardsStack = new CardsStack(new ArrayList<Card>(), true);
+        CardsStack newCardsStack = new CardsStack(new ArrayList<Card>());
         newCardsStack.mergeStacks(stackOfStack);
         Stack<Card> stackOfNewCardsStack = newCardsStack.getCardStack();
         for (Stack<Card> stackOfCards : stackOfStack) {
@@ -141,6 +115,23 @@ public class CardsStackTest {
                 Card card = stackOfCards.pop();
                 assertTrue(stackOfNewCardsStack.search(card) != -1);
             }
+        }
+    }
+
+    @Test
+    public void splitCardsTest() {
+        CardsStack cardsStack = new CardsStack(this.cards); 
+        ArrayList<Stack<Card>> splitCards = cardsStack.splitCards(4);
+        assertSame(4, splitCards.size());
+        boolean res = false;
+        for (Card card : this.cards) {
+            for (Stack<Card> stack : splitCards) {
+                if (stack.contains(card)) {
+                    res = true;
+                }
+            }
+            assertTrue(res);
+            res = false;
         }
     }
 

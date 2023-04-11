@@ -12,5 +12,5 @@ public interface Action {
 
     String getDescription();
 
-    int runWithChoice(Player player, Scanner sc);
+    int chooseParameter(Player player, Scanner sc);
 }

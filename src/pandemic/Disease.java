@@ -80,7 +80,6 @@ public class Disease {
         return this.cubes;
     }
 
-
     public boolean placeCube() {
         this.cubes--;
         if (this.cubes == 0) {
@@ -90,10 +89,7 @@ public class Disease {
     }
 
     public void removeCube() {
-        if (this.cubes == INITIAL_CUBES_NUMBER) {
-            this.cure();
-        }
-        else {
+        if (this.cubes != INITIAL_CUBES_NUMBER) {
             this.cubes++;
         }
     }

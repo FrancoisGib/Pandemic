@@ -50,7 +50,6 @@ public class Town {
 		if (this.infectionState.containsKey(disease)) {
 			return this.infectionState.get(disease);
 		}
-		System.out.println("This town is not infected by " + disease.getName());
 		return -1;
 	}
 
@@ -64,6 +63,9 @@ public class Town {
 		int formerInfectionState = 0;
 		if (this.infectionState.containsKey(disease)) {
 			formerInfectionState = this.infectionState.get(disease);
+		}
+		else {
+			this.infectionState.put(disease, 0);
 		}
 		int newInfectionState = -1;
 		if (!this.infectionCluster.containsKey(disease)) {

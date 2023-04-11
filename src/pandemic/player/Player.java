@@ -140,7 +140,7 @@ public class Player {
 		}
 		return townCards;
 	}
-
+	
 	/**
 	 * Give a disease cards the player has in hand
 	 * 
@@ -166,6 +166,10 @@ public class Player {
 	 */
 	public boolean discardCard(Card card) {
 		return this.cards.remove(card);
+	}
+
+	public void addCard(Card card) {
+		this.cards.add(card);
 	}
 
 	/**

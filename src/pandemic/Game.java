@@ -192,7 +192,7 @@ public class Game {
      */
     public boolean win() {
         for (Disease disease : this.diseases) {
-            if (!disease.isCured()) {
+            if (!disease.isCured() && disease.getCube() == Disease.INITIAL_CUBES_NUMBER) {
                 return false;
             }
         }
@@ -300,10 +300,11 @@ public class Game {
                     System.out.println(error);
                 }
             }
-			Card removedCard = playerCards.remove(choice);
+			Card removedCard = playerCards.get(choice);
+            player.discardCard(removedCard);
             System.out.println("The card with town " + removedCard.getTownName() + " and disease " + removedCard.getDiseaseName() + " has been removed from your hand\n");
 		}
-        player.getCards().add(card);
+        player.addCard(card);
 		return true;
 	}
 
@@ -383,11 +384,6 @@ public class Game {
                     this.print(player);
                     this.chooseAction(player);
                 }
-                this.pickPlayerCard(player);
-                this.pickPlayerCard(player);
-                this.pickPlayerCard(player);
-                this.pickPlayerCard(player);
-                this.pickPlayerCard(player);
                 this.pickPlayerCard(player);
                 boolean j = this.pickPlayerCard(player);
                 if (!j) {
@@ -469,9 +465,9 @@ public class Game {
 		}
 		int availableActionsNumber = availableActions.size();
 		if (actionNumber < availableActionsNumber) {
-			int res = availableActions.get(actionNumber).runWithChoice(player, this.sc);
+			int res = availableActions.get(actionNumber).chooseParameter(player, this.sc);
 			if (res == -1) {
-				availableActions.get(actionNumber).runWithChoice(player, this.sc);
+				availableActions.get(actionNumber).chooseParameter(player, this.sc);
 			}
 			else if (res == 1) {
 				this.chooseAction(player);

@@ -43,7 +43,7 @@ public class BuildResearchCenter implements Action {
         return player.getRole() == Role.EXPERT ? true : player.getCardsByTown(playerTown).size() > 0; 
     }
 
-    public int runWithChoice(Player player, Scanner sc) {
+    public int chooseParameter(Player player, Scanner sc) {
         return this.run(player, null);
     }
 }
