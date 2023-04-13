@@ -1,0 +1,15 @@
+{
+    "cities": {
+        "ville-1": 1,
+        "ville-2": 2
+    },
+    "neighbors": {
+        "ville-1": [
+            "ville-2"
+        ],
+        "ville-2": [
+            "ville-1",
+            "ville-3"
+        ]
+    }
+}

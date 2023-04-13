@@ -1,0 +1,2 @@
+Main-class: pandemic.Main
+Class-Path jars/java.jar
