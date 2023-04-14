@@ -136,6 +136,7 @@ public class Map {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Give a String that describes the infections states in all the towns of the map
 	 * 
 	 * @return The String describing all the states
@@ -161,6 +162,8 @@ public class Map {
 	}
 
 	/**
+=======
+>>>>>>> François
 	 * Get the number of clusters in the map
 	 * 
 	 * @return The number of clusters
@@ -168,9 +171,13 @@ public class Map {
     public int getClustersNumber() {
 		int cpt = 0;
         for (Town town : this.towns) {
+<<<<<<< HEAD
             if (town.isCluster()) {
 				cpt++;
 			}
+=======
+			cpt += town.getClusterDisease().size();
+>>>>>>> François
         }
 		return cpt;
     }

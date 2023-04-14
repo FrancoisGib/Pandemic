@@ -23,6 +23,7 @@ public class Card {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Builds a Card for the game, this constructor is used to build an epidemic card in the game which is different from a player card
 	 */
 	public Card() {
@@ -40,6 +41,17 @@ public class Card {
 	}
 
 	/**
+=======
+	 * Get the Card's town name
+	 * 
+	 * @return The card's town name
+	 */
+	public String getTownName() {
+		return this.town.getName();
+	}
+
+	/**
+>>>>>>> François
 	 * Give the associated town of the card
 	 * 
 	 * @return The town associated to this card

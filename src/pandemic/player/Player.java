@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+<<<<<<< HEAD
 import java.util.Scanner;
+=======
+>>>>>>> François
 import java.util.Map.Entry;
 
 import pandemic.Town;
 import pandemic.cards.Card;
+<<<<<<< HEAD
 import pandemic.cards.CardsStack;
 import pandemic.Disease;
 
@@ -23,6 +27,23 @@ public abstract class Player {
 
 	/* The cards the player has in hands */
 	protected ArrayList<Card> cards;
+=======
+import pandemic.Disease;
+
+/* The class that defines a Player in the game */
+public class Player {
+
+	/* The Player's name */
+	private final String name;
+
+	private final Role role; 
+
+	/* The town where the Player is */
+	private Town town;
+
+	/* The cards the player has in hands */
+	private ArrayList<Card> cards;
+>>>>>>> François
 
 	/**
 	 * Builds a player for the game (it is an abstract class, so a player can't be
@@ -30,8 +51,14 @@ public abstract class Player {
 	 * 
 	 * @param name The name of the player
 	 */
+<<<<<<< HEAD
 	public Player(String name) {
 		this.name = name;
+=======
+	public Player(String name, Role role) {
+		this.name = name;
+		this.role = role;
+>>>>>>> François
 		this.town = null;
 		this.cards = new ArrayList<Card>();
 	}
@@ -55,12 +82,25 @@ public abstract class Player {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Give the role of the player
+	 * 
+	 * @return The role of the player
+	 */
+	public Role getRole() {
+		return this.role;
+	}
+
+	/**
+>>>>>>> François
 	 * Add the neighbors of a town to an HashSet
 	 * 
 	 * @param town         The town to get neighbors
 	 * @param movableTowns The HashSet of towns to add the neighbors in
 	 */
 	public void movableTowns(Town town, HashSet<Town> movableTowns) {
+<<<<<<< HEAD
 		for (Town neighbor : town.getNeighbors()) {
 			movableTowns.add(neighbor);
 		}
@@ -157,6 +197,33 @@ public abstract class Player {
 			System.out.println("The town you're on doesn't have a research center, build one to find a cure.");
 		}
 		return false;
+=======
+		if (this.role != Role.GLOBETROTTER) {
+			for (Town neighbor : town.getNeighbors()) {
+				movableTowns.add(neighbor);
+			}
+		}
+		else {
+			boolean res = true;
+			while (res) {
+				ArrayList<Town> neighbors = town.getNeighbors();
+				for(Town t : neighbors) {
+					if (movableTowns.contains(t)) {
+						res = false;
+					}
+					else {
+						movableTowns.add(t);
+						this.movableTowns(t, movableTowns);
+						res = true;
+					}
+				}
+				if (!res) {
+					break;
+				}
+			}
+		}
+
+>>>>>>> François
 	}
 
 	/**
@@ -178,6 +245,7 @@ public abstract class Player {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Make the player move from this town to another
 	 * 
 	 * @param sc The scanner used to choose the town the player want to move on
@@ -303,6 +371,14 @@ public abstract class Player {
 			}
 		}
 		return true;
+=======
+	 * Give the player's cards
+	 * 
+	 * @return The player's cards
+	 */
+	public ArrayList<Card> getCards() {
+		return this.cards;
+>>>>>>> François
 	}
 
 	/**
@@ -320,7 +396,11 @@ public abstract class Player {
 		}
 		return townCards;
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> François
 	/**
 	 * Give a disease cards the player has in hand
 	 * 
@@ -348,6 +428,13 @@ public abstract class Player {
 		return this.cards.remove(card);
 	}
 
+<<<<<<< HEAD
+=======
+	public void addCard(Card card) {
+		this.cards.add(card);
+	}
+
+>>>>>>> François
 	/**
 	 * Give a string to print in the console, to visualize the cards the player has
 	 * 

@@ -13,20 +13,16 @@ public class CardsStack {
     /* The stack of discarded cards if the stack is discarded */
     private Stack<Card> discardStack;
 
-    /* The boolean to tell if a stack is discarded or not */
-    private boolean discard;
-
     /**
      * Builds a CardsStack for the game
      * 
      * @param cards The stack's cards
      * @param discard The boolean telling if a stack is discarded or not
      */
-    public CardsStack(ArrayList<Card> cards, boolean discard) {
+    public CardsStack(ArrayList<Card> cards) {
         this.stack = new Stack<Card>();
         this.initStack(cards);
         this.discardStack = new Stack<Card>();
-        this.discard = discard;
     }
 
     /**
@@ -67,15 +63,15 @@ public class CardsStack {
      * @return The popped card, null if the discarded stack and the stack are empty
      */
     public Card pickCard() {
-        if (!this.stack.empty()) {
-            return this.stack.pop();
-        } else {
-            if (this.discard && !this.discardStack.isEmpty()) {
+        if (this.stack.isEmpty()) {
+            if (this.discardStack.isEmpty()) {
+                return null;
+            }
+            else {
                 this.resetStack();
-                return this.pickCard();
             }
         }
-        return null;
+        return this.stack.pop();
     }
 
     /**

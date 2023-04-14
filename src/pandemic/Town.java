@@ -24,7 +24,11 @@ public class Town {
 	private boolean researchCenter;
 
 	/* The boolean telling if the town is a cluster or not */
+<<<<<<< HEAD
 	private boolean infectionCluster;
+=======
+	private HashMap<Disease, Boolean> infectionCluster;
+>>>>>>> François
 
 	/**
 	 * Builds a Town
@@ -38,7 +42,11 @@ public class Town {
 		this.neighbors = new ArrayList<Town>();
 		this.sector = sector;
 		this.researchCenter = false;
+<<<<<<< HEAD
 		this.infectionCluster = false;
+=======
+		this.infectionCluster = new HashMap<Disease, Boolean>();
+>>>>>>> François
 	}
 
 	/**
@@ -50,7 +58,10 @@ public class Town {
 		if (this.infectionState.containsKey(disease)) {
 			return this.infectionState.get(disease);
 		}
+<<<<<<< HEAD
 		System.out.println("This town is not infected by " + disease.getName());
+=======
+>>>>>>> François
 		return -1;
 	}
 
@@ -60,6 +71,7 @@ public class Town {
 	 * @param infectionState The infection state to apply
 	 * @param disease        The disease to set the town infection state for
 	 */
+<<<<<<< HEAD
 	public void setInfectionState(int infectionState, Disease disease) {
 		if (this.infectionState.containsKey(disease)) {
 			this.infectionState.replace(disease, infectionState);
@@ -109,6 +121,45 @@ public class Town {
 			this.setInfectionCluster();
 		}
 	}
+=======
+	public void setInfectionState(Disease disease, int n) {
+		int formerInfectionState = this.infectionState.containsKey(disease) ? formerInfectionState = this.infectionState.get(disease) : 0;
+		this.infectionState.put(disease, formerInfectionState);
+		int newInfectionState = -1;
+		if (!this.infectionCluster.containsKey(disease)) {
+			this.infectionCluster.put(disease, false);
+		}
+		if (n == 0) {
+			for (int i = 0; i < formerInfectionState; i++) {
+				disease.removeCube();
+			} 
+			this.infectionState.put(disease, 0);
+		}
+		else {
+			newInfectionState = this.infectionState.get(disease) + n;
+			if (newInfectionState <= 3 && newInfectionState >= 0) {
+				this.infectionState.put(disease, newInfectionState);
+				if (n < 0) {
+					for (int i = 0; i < -n; i++) {
+						disease.removeCube();
+					}
+				}
+				else {
+					for (int i = 0; i < n; i++) {
+						disease.placeCube();
+					}
+				}
+			}
+		}
+		if (formerInfectionState < 3) {
+			this.infectionCluster.put(disease, false);
+		}
+		else if (formerInfectionState == 3 && n > 0) {
+			this.infectionCluster.put(disease, true);
+		}
+	}
+
+>>>>>>> François
 
 	/**
 	 * Get the Town's neighbors
@@ -176,10 +227,17 @@ public class Town {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Set the town has a cluster
 	 */
 	public void setInfectionCluster() {
 		this.infectionCluster = true;
+=======
+	 * Remove the infection cluster
+	 */
+	public void removeInfectionCluster(Disease disease) {
+		this.infectionCluster.replace(disease, false);
+>>>>>>> François
 	}
 
 	/**
@@ -187,8 +245,16 @@ public class Town {
 	 * 
 	 * @return True if the town is a cluster, else false
 	 */
+<<<<<<< HEAD
 	public boolean isCluster() {
 		return this.infectionCluster;
+=======
+	public boolean isCluster(Disease disease) {
+		if (!this.infectionCluster.containsKey(disease)) {
+			return false;
+		}
+		return this.infectionCluster.get(disease);
+>>>>>>> François
 	}
 
 	/**
@@ -211,6 +277,7 @@ public class Town {
 	 */
 	public ArrayList<Disease> getClusterDisease() {
 		ArrayList<Disease> clusterDiseases = new ArrayList<Disease>();
+<<<<<<< HEAD
 		if (this.isCluster()) {
 			Iterator<Entry<Disease, Integer>> iterator = this.infectionState.entrySet().iterator();
 			while (iterator.hasNext()) {
@@ -220,6 +287,12 @@ public class Town {
 				}
 			}
 			return clusterDiseases;
+=======
+		for (Disease disease : this.infectionCluster.keySet()) {
+			if (this.isCluster(disease)) {
+				clusterDiseases.add(disease);
+			}
+>>>>>>> François
 		}
 		return clusterDiseases;
 	}

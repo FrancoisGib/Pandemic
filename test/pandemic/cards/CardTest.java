@@ -21,7 +21,11 @@ public class CardTest {
         this.town = new Town("Toronto",0);
         this.disease = new Disease("COVID-19",3);
         this.card1 = new Card(town, disease);
+<<<<<<< HEAD
         this.card2 = new Card();
+=======
+        this.card2 = new Card(null, null);
+>>>>>>> François
     }
 
     @Test
