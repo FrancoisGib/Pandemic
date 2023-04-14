@@ -2,26 +2,16 @@ package pandemic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-<<<<<<< HEAD
-import java.util.Scanner;
-=======
->>>>>>> François
 
 import java.io.FileNotFoundException;
 
 import pandemic.player.*;
-<<<<<<< HEAD
-=======
 import pandemic.actions.*;
->>>>>>> François
 
 public class Main2 {
     public static void main(String[] args) {
 		Map map = new Map();
-<<<<<<< HEAD
-=======
 		Game game = null;
->>>>>>> François
 		try {
 			map.setMapWithJSON("json/villes48.json");
 		}
@@ -31,26 +21,6 @@ public class Main2 {
 		catch(FileNotFoundException e) {
 			System.out.println("File not found");
 		}
-<<<<<<< HEAD
-		finally {
-			Disease d1 = new Disease("EBOLA", 0);
-			Disease d2 = new Disease("SIDA", 1);
-			Disease d3 = new Disease("CORONAVIRUS", 2);
-			Disease d4 = new Disease("CHIKUNGUNYA", 3);
-            ArrayList<Disease> diseases = new ArrayList<Disease>(Arrays.asList(d1, d2, d3, d4));
-
-			Player p1 = new Globetrotter("Globetrotter");
-			Player p2 = new Expert("Expert");
-			Player p3 = new Scientist("Scientist");
-			Player p4 = new Doctor("Doctor");
-            ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3, p4));
-
-			Game game = new Game(map, players, diseases);
-
-			game.run(new Scanner(System.in));
-		}
-	}
-=======
 		Disease d1 = new Disease("EBOLA", 0);
 		Disease d2 = new Disease("SIDA", 1);
 		Disease d3 = new Disease("CORONAVIRUS", 2);
@@ -68,5 +38,4 @@ public class Main2 {
 		game = new Game(map, players, diseases, actions);
 		game.run();
 		}
->>>>>>> François
 }

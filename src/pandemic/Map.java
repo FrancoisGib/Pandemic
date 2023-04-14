@@ -136,34 +136,6 @@ public class Map {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Give a String that describes the infections states in all the towns of the map
-	 * 
-	 * @return The String describing all the states
-	 */
-	public String toStringInfectionState() {
-		String res = "";
-		for (Town town : this.towns) {
-			int cpt = 0;
-			String townRes = "";
-			HashMap<Disease, Integer> diseases = town.getAllInfectionState();
-			for (Disease disease : diseases.keySet()) {
-				if (diseases.get(disease) > 0) {
-					cpt++;
-					townRes += disease.getName() + " : " + diseases.get(disease) + " / ";
-				}
-			}
-			if (cpt > 0) {
-				res += town.getName() + " infection state : " + townRes + "\n";
-				cpt = 0;
-			}
-		}
-		return res;
-	}
-
-	/**
-=======
->>>>>>> François
 	 * Get the number of clusters in the map
 	 * 
 	 * @return The number of clusters
@@ -171,13 +143,7 @@ public class Map {
     public int getClustersNumber() {
 		int cpt = 0;
         for (Town town : this.towns) {
-<<<<<<< HEAD
-            if (town.isCluster()) {
-				cpt++;
-			}
-=======
 			cpt += town.getClusterDisease().size();
->>>>>>> François
         }
 		return cpt;
     }

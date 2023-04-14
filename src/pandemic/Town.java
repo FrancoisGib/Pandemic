@@ -24,11 +24,7 @@ public class Town {
 	private boolean researchCenter;
 
 	/* The boolean telling if the town is a cluster or not */
-<<<<<<< HEAD
-	private boolean infectionCluster;
-=======
 	private HashMap<Disease, Boolean> infectionCluster;
->>>>>>> François
 
 	/**
 	 * Builds a Town
@@ -42,11 +38,7 @@ public class Town {
 		this.neighbors = new ArrayList<Town>();
 		this.sector = sector;
 		this.researchCenter = false;
-<<<<<<< HEAD
-		this.infectionCluster = false;
-=======
 		this.infectionCluster = new HashMap<Disease, Boolean>();
->>>>>>> François
 	}
 
 	/**
@@ -58,10 +50,6 @@ public class Town {
 		if (this.infectionState.containsKey(disease)) {
 			return this.infectionState.get(disease);
 		}
-<<<<<<< HEAD
-		System.out.println("This town is not infected by " + disease.getName());
-=======
->>>>>>> François
 		return -1;
 	}
 
@@ -71,57 +59,6 @@ public class Town {
 	 * @param infectionState The infection state to apply
 	 * @param disease        The disease to set the town infection state for
 	 */
-<<<<<<< HEAD
-	public void setInfectionState(int infectionState, Disease disease) {
-		if (this.infectionState.containsKey(disease)) {
-			this.infectionState.replace(disease, infectionState);
-		} else {
-			this.infectionState.put(disease, infectionState);
-		}
-		if (infectionState == 3 && !this.infectionCluster) {
-			this.setInfectionCluster();
-		}
-	}
-
-	/**
-	 * Decrease the town infection state for the specified disease
-	 * 
-	 * @param disease The disease to decrease the town infection state
-	 */
-	public void decreaseInfectionState(Disease disease) {
-		if (this.infectionState.containsKey(disease)) {
-			if (this.infectionState.get(disease) > 0) {
-				this.infectionState.replace(disease, this.getInfectionState(disease) - 1);
-				System.out.println("\nThe current town infection state for the disease " + disease.getName()
-						+ " has been decreased by 1, it is now of " + this.getInfectionState(disease));
-			} else {
-				System.out.println("\nThe global infection state for this disease is 0 in this town");
-
-			}
-		} else {
-			System.out.println("\nThis town is not infected by " + disease.getName() + " , nothing happened");
-		}
-	}
-
-	/**
-	 * Update the infection state of the town for the disease in parameters
-	 * 
-	 * @param disease The disease to update the town infection state
-	 */
-	public void updateInfectionState(Disease disease) {
-		if (this.infectionState.containsKey(disease)) {
-			int inf = this.infectionState.get(disease);
-			if (inf < 3) {
-				this.infectionState.replace(disease, inf + 1);
-			}
-		} else {
-			this.infectionState.put(disease, 1);
-		}
-		if (this.infectionState.get(disease) == 3 && !this.infectionCluster) {
-			this.setInfectionCluster();
-		}
-	}
-=======
 	public void setInfectionState(Disease disease, int n) {
 		int formerInfectionState = this.infectionState.containsKey(disease) ? formerInfectionState = this.infectionState.get(disease) : 0;
 		this.infectionState.put(disease, formerInfectionState);
@@ -159,7 +96,6 @@ public class Town {
 		}
 	}
 
->>>>>>> François
 
 	/**
 	 * Get the Town's neighbors
@@ -227,17 +163,10 @@ public class Town {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Set the town has a cluster
-	 */
-	public void setInfectionCluster() {
-		this.infectionCluster = true;
-=======
 	 * Remove the infection cluster
 	 */
 	public void removeInfectionCluster(Disease disease) {
 		this.infectionCluster.replace(disease, false);
->>>>>>> François
 	}
 
 	/**
@@ -245,16 +174,11 @@ public class Town {
 	 * 
 	 * @return True if the town is a cluster, else false
 	 */
-<<<<<<< HEAD
-	public boolean isCluster() {
-		return this.infectionCluster;
-=======
 	public boolean isCluster(Disease disease) {
 		if (!this.infectionCluster.containsKey(disease)) {
 			return false;
 		}
 		return this.infectionCluster.get(disease);
->>>>>>> François
 	}
 
 	/**
@@ -277,22 +201,10 @@ public class Town {
 	 */
 	public ArrayList<Disease> getClusterDisease() {
 		ArrayList<Disease> clusterDiseases = new ArrayList<Disease>();
-<<<<<<< HEAD
-		if (this.isCluster()) {
-			Iterator<Entry<Disease, Integer>> iterator = this.infectionState.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Entry<Disease, Integer> mapEntry = (Entry<Disease, Integer>) iterator.next();
-				if (mapEntry.getValue() == 3) {
-					clusterDiseases.add(mapEntry.getKey());
-				}
-			}
-			return clusterDiseases;
-=======
 		for (Disease disease : this.infectionCluster.keySet()) {
 			if (this.isCluster(disease)) {
 				clusterDiseases.add(disease);
 			}
->>>>>>> François
 		}
 		return clusterDiseases;
 	}

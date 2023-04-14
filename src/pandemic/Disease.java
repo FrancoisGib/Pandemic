@@ -4,10 +4,6 @@ package pandemic;
 public class Disease {
     public static final int INITIAL_CUBES_NUMBER = 24;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> François
     /* The name of the disease */
     private String name;
 
@@ -17,12 +13,9 @@ public class Disease {
     /* The initial sector of the disease */
     private int sector;
 
-<<<<<<< HEAD
-=======
     /* The number of cubes left for the disease */
     private int cubes;
 
->>>>>>> François
     /**
      * Builds a disease for the game
      * 
@@ -33,10 +26,7 @@ public class Disease {
         this.name = name;
         this.cured = false;
         this.sector = sector;
-<<<<<<< HEAD
-=======
         this.cubes = INITIAL_CUBES_NUMBER;
->>>>>>> François
     }
 
     /**
@@ -56,10 +46,7 @@ public class Disease {
     public boolean cure() {
         if (!this.cured) {
             this.cured = true;
-<<<<<<< HEAD
-=======
             System.out.println("\nDisease " + this.name + " cured\n");
->>>>>>> François
             return true;
         }
         return false;
@@ -82,8 +69,6 @@ public class Disease {
     public boolean isCured() {
         return this.cured;
     }
-<<<<<<< HEAD
-=======
 
     /**
      * Give the number of cubes left for the disease
@@ -107,5 +92,4 @@ public class Disease {
             this.cubes++;
         }
     }
->>>>>>> François
 }
