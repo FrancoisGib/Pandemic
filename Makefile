@@ -15,7 +15,7 @@ short:
 	java -cp jars/json.jar:classes pandemic.ShortPathTest
 
 clean:
-	rm -rf ./classes/* ./test/pandemic/*.class ./test/pandemic/cards/*.class ./test/pandemic/jsonreader/*.class 
+	rm -rf ./classes/* ./test/pandemic/*.class ./test/pandemic/cards/*.class ./test/pandemic/jsonreader/*.class ./test/pandemic/actions/*.class
 
 test_compil:
 	javac -classpath jars/json.jar:src -d classes src/pandemic/Main2.java
