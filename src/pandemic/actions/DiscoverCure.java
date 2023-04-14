@@ -33,8 +33,8 @@ public class DiscoverCure implements Action {
         if (cards.size() >= required) {
             boolean cured = chosenDisease.cure();
             if (cured) {
-                for (Card card : cards) { // Discard the cards used to cure the disease
-                    player.discardCard(card);
+                for (int i = 0; i < required; i++) { // Discard the cards used to cure the disease
+                    player.discardCard(cards.get(i));
                 }
                 return 0;
             }

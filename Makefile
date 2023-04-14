@@ -23,6 +23,7 @@ test_compil:
 	javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/jsonreader/*.java
 	javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/cards/*.java
 	javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/player/*.java
+	javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/actions/*.java
 
 test:
 	java -jar jars/test.jar -cp classes:test:jars/json.jar --scan-classpath --disable-banner
