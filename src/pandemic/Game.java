@@ -107,7 +107,7 @@ public class Game {
         int cpt = 4 - this.players.size() + 2; // Number of cards per player initially.
         for (Player player : this.players) {
             for (int i = 0; i < cpt; i++) {
-                this.pickPlayerCard(player);
+                this.pickPlayerCard(player, false);
             }
         }
         ArrayList<Stack<Card>> splitCards = this.playerCardsStack.splitCards(4);
@@ -153,8 +153,6 @@ public class Game {
         for (int i = 0; i < tempo; i++) {
             this.pickInfectionCard();
         }
-        this.computeGlobalInfectionState();
-        this.computeClustersNumber();
     }
 
     /**
@@ -182,7 +180,12 @@ public class Game {
         if (this.clustersNumber > MAX_CLUSTERS_NUMBER) {
             return true;
         }
-        return false;
+        for (Disease d : this.diseases) {
+            if (d.getCube() != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -192,7 +195,7 @@ public class Game {
      */
     public boolean win() {
         for (Disease disease : this.diseases) {
-            if (!disease.isCured() && disease.getCube() == Disease.INITIAL_CUBES_NUMBER) {
+            if (!disease.isCured()) {
                 return false;
             }
         }
@@ -262,7 +265,7 @@ public class Game {
 	 * @return True if the player picked the card successfully, else false (the
 	 *         CardsStack is empty)
 	 */
-	public boolean pickPlayerCard(Player player) {
+	public boolean pickPlayerCard(Player player, boolean random) {
 		Card card = this.playerCardsStack.pickCard();
         ArrayList<Card> playerCards = player.getCards();
 		if (card == null) {
@@ -283,6 +286,9 @@ public class Game {
             }
             System.out.println(res + "\n");
             int choice = -1; 
+            if (random) {
+                choice = (int)Math.floor(Math.random()*7);
+            }
             String act = "";
             String error = "Put an integer between 1 and 7 :\n";
             while (choice == -1) {
@@ -370,40 +376,6 @@ public class Game {
         System.out.println(" " + town.toString() + "\n");
         System.out.println(" " + p.cardToString() + "\n\n");
         System.out.println("_____________________________________\n");
-    }
-
-    /**
-     * Run the game while the game is not won or lost
-     * 
-     * @param sc The scanner of the game to make all decisions
-     */
-    public boolean run(boolean random) {
-        while (!this.loose() && !this.win()) {
-            for (Player player : this.players) {
-                for (int i = 0; i < 4; i++) {
-                    this.print(player);
-                    if (random) {
-                        this.chooseActionRandom(player);
-                    }
-                    else {
-                        this.chooseAction(player);
-                    }
-                }
-                this.pickPlayerCard(player);
-                boolean j = this.pickPlayerCard(player);
-                if (!j) {
-                    System.out.println("You have lost");
-                }
-            }
-            INITIAL_INFECTION_STATE++;
-            this.startInfectionPhase(this.globalInfectionState);
-        }
-        sc.close();
-        if (this.loose()) {
-            this.toStringInfectionState(null);
-            return false;
-        }
-        return true;
     }
 
     public Stack<Town> shortestPath(Town t1, Town t2) {
@@ -518,6 +490,47 @@ public class Game {
 				this.chooseActionRandom(player);
 			}
 		}
+    }
+
+    /**
+     * Run the game while the game is not won or lost
+     * 
+     * @param sc The scanner of the game to make all decisions
+     */
+    public boolean run(boolean random) {
+        while (true) {
+            for (Player player : this.players) {
+                this.computeClustersNumber();
+                this.computeGlobalInfectionState();
+                if (this.loose() || this.win()) {
+                    sc.close();
+                    if (this.win()) {
+                        System.out.println("You have won");
+                        return true;
+                    }
+                    else {
+                        System.out.println(this.toStringInfectionState(player));
+                        System.out.println("You have lost");
+                        System.out.println("\n The number of cluster is : " + this.clustersNumber + "\n");
+                        System.out.println(" The global infection state is : " + this.globalInfectionState + "\n");
+                        return false;
+                    }
+                }
+                for (int i = 0; i < 4; i++) {
+                    this.print(player);
+                    if (random) {
+                        this.chooseActionRandom(player);
+                    }
+                    else {
+                        this.chooseAction(player);
+                    }
+                }
+                this.pickPlayerCard(player, true);
+                this.pickPlayerCard(player, true);
+            }
+            INITIAL_INFECTION_STATE++;
+            this.startInfectionPhase(this.globalInfectionState);
+        }
     }
 
 }

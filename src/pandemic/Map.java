@@ -143,11 +143,7 @@ public class Map {
     public int getClustersNumber() {
 		int cpt = 0;
         for (Town town : this.towns) {
-			for (Disease disease : town.getAllInfectionState().keySet()) {
-				if (town.isCluster(disease)) {
-					cpt++;
-				}
-			}
+			cpt += town.getClusterDisease().size();
         }
 		return cpt;
     }

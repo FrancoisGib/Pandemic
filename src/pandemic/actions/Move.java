@@ -74,6 +74,7 @@ public class Move implements Action {
             newTown = it.next();
             index--;
         }
+        System.out.println("You chose to move on the town " + newTown.getName() + "\n");
         return this.run(player, newTown);
     }
 }

@@ -95,6 +95,7 @@ public class DiscoverCure implements Action {
             System.out.println("This disease does not exist or the town is not infected by it, retry");
             return -1;
         }
+        System.out.println("You chose to discover a cure for the disease " + chosenDisease.getName() + "\n");
         return this.run(player, chosenDisease);
     }
 }

@@ -113,6 +113,7 @@ public class TreatDisease implements Action {
             chosenDisease = it.next();
             index--;
         }
+        System.out.println("You chose to treat the disease " + chosenDisease.getName() + "\n");
         return this.run(player, chosenDisease); 
     }
 }

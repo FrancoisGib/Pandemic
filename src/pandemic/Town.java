@@ -60,13 +60,8 @@ public class Town {
 	 * @param disease        The disease to set the town infection state for
 	 */
 	public void setInfectionState(Disease disease, int n) {
-		int formerInfectionState = 0;
-		if (this.infectionState.containsKey(disease)) {
-			formerInfectionState = this.infectionState.get(disease);
-		}
-		else {
-			this.infectionState.put(disease, 0);
-		}
+		int formerInfectionState = this.infectionState.containsKey(disease) ? formerInfectionState = this.infectionState.get(disease) : 0;
+		this.infectionState.put(disease, formerInfectionState);
 		int newInfectionState = -1;
 		if (!this.infectionCluster.containsKey(disease)) {
 			this.infectionCluster.put(disease, false);
@@ -93,11 +88,11 @@ public class Town {
 				}
 			}
 		}
-		if (formerInfectionState == 3 && n > 0) {
-			this.infectionCluster.put(disease, true);
-		}
-		else {
+		if (formerInfectionState < 3) {
 			this.infectionCluster.put(disease, false);
+		}
+		else if (formerInfectionState == 3 && n > 0) {
+			this.infectionCluster.put(disease, true);
 		}
 	}
 

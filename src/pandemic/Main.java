@@ -11,7 +11,6 @@ import pandemic.actions.*;
 public class Main {
     public static void main(String[] args) {
 		Map map = new Map();
-		Game game = null;
 		try {
 			map.setMapWithJSON("json/villes48.json");
 		}
@@ -34,8 +33,8 @@ public class Main {
 		Player p3 = new Player("Scientist", Role.SCIENTIST);
 		Player p4 = new Player("Doctor", Role.DOCTOR);
 		ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3, p4));
-
-		game = new Game(map, players, diseases, actions);
+		Game game = new Game(map, players, diseases, actions);
 		game.run(true);
-		}
+	}
 }
+
