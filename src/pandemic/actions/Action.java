@@ -13,4 +13,6 @@ public interface Action {
     String getDescription();
 
     int chooseParameter(Player player, Scanner sc);
+
+    int chooseRandomParameter(Player player);
 }

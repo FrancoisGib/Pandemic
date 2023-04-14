@@ -377,12 +377,17 @@ public class Game {
      * 
      * @param sc The scanner of the game to make all decisions
      */
-    public boolean run() {
+    public boolean run(boolean random) {
         while (!this.loose() && !this.win()) {
             for (Player player : this.players) {
                 for (int i = 0; i < 4; i++) {
                     this.print(player);
-                    this.chooseAction(player);
+                    if (random) {
+                        this.chooseActionRandom(player);
+                    }
+                    else {
+                        this.chooseAction(player);
+                    }
                 }
                 this.pickPlayerCard(player);
                 boolean j = this.pickPlayerCard(player);
@@ -480,5 +485,39 @@ public class Game {
 			}
 		}
 	}
+
+    public void chooseActionRandom(Player player) {
+        String print = "Actions available : \n";
+        ArrayList<Action> availableActions = new ArrayList<Action>();
+		int i = 1;
+		Iterator<Action> it = this.actions.iterator();
+		while (it.hasNext()) {
+			Action action = it.next();
+			if (action.requirements(player)) {
+				availableActions.add(action);
+				print += i + " -> " + action.getDescription() + "\n";
+				i++;
+			}
+		}
+        print += i + " -> " + "Do nothing";
+		System.out.println(print);
+        int availableActionsNumber = availableActions.size();
+		int actionNumber = (int)Math.floor(Math.random()*availableActionsNumber); 
+		if (actionNumber < availableActionsNumber) {
+			int res = availableActions.get(actionNumber).chooseRandomParameter(player);
+			if (res == -1) {
+				availableActions.get(actionNumber).chooseRandomParameter(player);
+			}
+			else if (res == 1) {
+				this.chooseActionRandom(player);
+			}
+		}
+		else {
+			if (actionNumber > availableActionsNumber) {
+				System.out.println("Number out of range, retry \n");
+				this.chooseActionRandom(player);
+			}
+		}
+    }
 
 }

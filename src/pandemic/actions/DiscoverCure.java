@@ -78,4 +78,23 @@ public class DiscoverCure implements Action {
         }
         return this.run(player, chosenDisease);
     }
+
+    public int chooseRandomParameter(Player player) {
+        Town playerTown = player.getTown();
+        ArrayList<Disease> diseasesList = new ArrayList<Disease>();
+        HashMap<Disease, Integer> diseases = playerTown.getAllInfectionState();
+        String print = "Choose a disease to find a cure of :";
+        for (Disease disease : diseases.keySet()) {
+            print += disease.getName() + " / ";
+            diseasesList.add(disease);
+        }
+        System.out.println(print);
+
+        Disease chosenDisease = diseasesList.get((int)Math.floor(Math.random()*diseasesList.size()));
+        if (chosenDisease == null) {
+            System.out.println("This disease does not exist or the town is not infected by it, retry");
+            return -1;
+        }
+        return this.run(player, chosenDisease);
+    }
 }

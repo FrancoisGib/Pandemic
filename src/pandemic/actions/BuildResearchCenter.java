@@ -46,4 +46,8 @@ public class BuildResearchCenter implements Action {
     public int chooseParameter(Player player, Scanner sc) {
         return this.run(player, null);
     }
+
+    public int chooseRandomParameter(Player player) {
+        return this.run(player, null);
+    }
 }

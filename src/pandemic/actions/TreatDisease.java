@@ -93,4 +93,26 @@ public class TreatDisease implements Action {
         System.out.println("\nThis town is not infected by this disease, nothing happened");
         return 1;
     }
+
+    public int chooseRandomParameter(Player player) {
+        Town playerTown = player.getTown();
+        HashMap<Disease, Integer> diseases = playerTown.getAllInfectionState();
+        HashMap<String, Disease> diseasesByName = new HashMap<String, Disease>();
+        String print = "";
+        for (Disease disease : diseases.keySet()) {
+            if (diseases.get(disease) > 0) {
+                diseasesByName.put(disease.getName(), disease);
+                print += disease.getName() + " / ";
+            }
+        }
+        System.out.println(print);
+        int index = (int)Math.floor(Math.random()*diseases.size());
+        Iterator<Disease> it = diseases.keySet().iterator();
+        Disease chosenDisease = it.next();
+        while (index > 0) {
+            chosenDisease = it.next();
+            index--;
+        }
+        return this.run(player, chosenDisease); 
+    }
 }
