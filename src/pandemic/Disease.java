@@ -4,6 +4,7 @@ package pandemic;
 public class Disease {
     public static final int INITIAL_CUBES_NUMBER = 24;
 
+
     /* The name of the disease */
     private String name;
 

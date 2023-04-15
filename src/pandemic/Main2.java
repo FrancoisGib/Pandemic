@@ -36,6 +36,6 @@ public class Main2 {
 		ArrayList<Player> players = new ArrayList<Player>(Arrays.asList(p1, p2, p3, p4));
 
 		game = new Game(map, players, diseases, actions);
-		game.run();
+		game.run(false);
 		}
 }

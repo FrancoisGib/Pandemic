@@ -117,19 +117,6 @@ Nous n'avons pas de difficultés à résoudre pour cette partie du projet, cepen
 ## Livrable 2
 Modélisation des cartes, des joueurs et des rôles
 
-<<<<<<< HEAD
-Nous avons choisi de réaliser les cartes avec une classe Card et la gestion des cartes dans le jeu est assuré par la classe CardsStack dans le package cards.
-Les joueurs sont représentés par une classe abstraite Player et les différents rôles hérites donc de cette classe, on a les rôles Doctor, Globetrotter, Expert et Scientist.
-
-### Atteinte des objectifs
-L'initialisation du jeu se fait dans la classe Game, il faut l'initialiser avec une map, des joueurs et des maladies.
-
-Se fait ensuite une succession d'actions qui initialiseront le jeu :
-- initCards -> Initialise les cartes du jeu et met en place les paquets de carte.
-- initPlayersHand -> Initialise la main de chacun des joueurs et sépare les cartes joueurs en 4 paquets, puis les rassemble en ajoutant 4 cartes epidémie et enfin mélange le paquet de cartes.
-- initInitialTown -> Choisi une ville parmi toutes les villes et place tous les joueurs dessus.
-- initialInfection -> Réalise l'infection initiale du jeu en prenant 9 cartes dans le paquet des cartes infection avec ce schéma d'infection : 3 premières : 1 cube, 3 suivantes : 2 cube, 3 dernières : 3 cubes.
-=======
 Nous avons choisi de réaliser les cartes avec une classe **Card** et la gestion des cartes dans le jeu est assuré par la classe **CardsStack** dans le package cards.
 Les joueurs sont représentés par une classe abstraite **Player** et les différents rôles hérites donc de cette classe, on a les rôles Doctor, Globetrotter, Expert et Scientist.
 
@@ -141,7 +128,6 @@ Se fait ensuite une succession d'actions qui initialiseront le jeu :
 - ***initPlayersHand*** -> Initialise la main de chacun des joueurs et sépare les cartes joueurs en 4 paquets, puis les rassemble en ajoutant 4 cartes epidémie et enfin mélange le paquet de cartes.
 - ***initInitialTown*** -> Choisi une ville parmi toutes les villes et place tous les joueurs dessus.
 - ***initialInfection*** -> Réalise l'infection initiale du jeu en prenant 9 cartes dans le paquet des cartes infection avec ce schéma d'infection : 3 premières : 1 cube, 3 suivantes : 2 cube, 3 dernières : 3 cubes.
->>>>>>> François
 
 Après cette succession d'actions, le jeu peut enfin commencer.
 
@@ -191,11 +177,7 @@ Correction de Town pour pouvoir y mettre plusieurs maladies (nous pensions qu'un
 Changements dans CardStack ainsi que création de l'exception NoSuchDiseaseException (similaire à NoSuchTownException mais pour les maladies).
 
 ## Semaine 9
-<<<<<<< HEAD
-Changements dans Town encore, pour avoir plusieurs clusters à la fois si besoin, ainsi que changements dans cardstack, la défausse sera gérée plus haut dans game (plus besoin du boolean discard), actions modifiées afin de récupérer la valeur de l'action avant puis lancer la méthode run d'une action avec celle-ci. Quelques fix sur le scanner de game pour gérer un mauvais input du joueur, quelques fonctions inutiles supprimées et d'autres simplifiées (setInfectionState par exemple).
-=======
 Changements de quelques méthodes dans game, création de certains Tests, update des UML ainsi que réflexion sur certaines améliorations (supprimer certaines méthodes presque inutiles ou simplifiables), reflexion pour move (rechercher les villes atteignables avec le nombre d'actions restantes pour faciliter les déplacements sur de longues distances). 
->>>>>>> François
 
 ## Semaine 10
 
