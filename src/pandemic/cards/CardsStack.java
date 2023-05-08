@@ -4,20 +4,19 @@ import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Random;
 
-/* The class that defines a stack of card in the game */
+/** The class that defines a stack of card in the game */
 public class CardsStack {
 
-    /* The stack of cards */
+    /** The stack of cards */
     private Stack<Card> stack;
 
-    /* The stack of discarded cards if the stack is discarded */
+    /** The stack of discarded cards if the stack is discarded */
     private Stack<Card> discardStack;
 
     /**
      * Builds a CardsStack for the game
      * 
      * @param cards The stack's cards
-     * @param discard The boolean telling if a stack is discarded or not
      */
     public CardsStack(ArrayList<Card> cards) {
         this.stack = new Stack<Card>();
@@ -111,7 +110,6 @@ public class CardsStack {
                 this.discardStack.push(card);
             }
         }
-        System.out.println(this.discardStack.size());
         this.resetStack(); // shuffle the new stack
     }
 

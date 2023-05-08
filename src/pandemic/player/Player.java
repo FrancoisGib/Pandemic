@@ -10,18 +10,18 @@ import pandemic.Town;
 import pandemic.cards.Card;
 import pandemic.Disease;
 
-/* The class that defines a Player in the game */
+/** The class that defines a Player in the game */
 public class Player {
 
-	/* The Player's name */
+	/** The Player's name */
 	private final String name;
 
 	private final Role role; 
 
-	/* The town where the Player is */
+	/** The town where the Player is */
 	private Town town;
 
-	/* The cards the player has in hands */
+	/** The cards the player has in hands */
 	private ArrayList<Card> cards;
 
 	/**
@@ -29,6 +29,7 @@ public class Player {
 	 * initialized but this constructor is used by the inherited classes)
 	 * 
 	 * @param name The name of the player
+	 * @param role The role of the player
 	 */
 	public Player(String name, Role role) {
 		this.name = name;
@@ -205,5 +206,4 @@ public class Player {
 		}
 		return res;
 	}
-
 }

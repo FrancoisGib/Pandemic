@@ -1,20 +1,19 @@
 package pandemic;
 
-/* The class that represents diseases in the game */
+/** The class that represents diseases in the game */
 public class Disease {
     public static final int INITIAL_CUBES_NUMBER = 24;
 
-
-    /* The name of the disease */
+    /** The name of the disease */
     private String name;
 
-    /* The status of the disease, true if the disease is cured, else false */
+    /** The status of the disease, true if the disease is cured, else false */
     private boolean cured;
 
-    /* The initial sector of the disease */
+    /** The initial sector of the disease */
     private int sector;
 
-    /* The number of cubes left for the disease */
+    /** The number of cubes left for the disease */
     private int cubes;
 
     /**
@@ -47,7 +46,6 @@ public class Disease {
     public boolean cure() {
         if (!this.cured) {
             this.cured = true;
-            System.out.println("\nDisease " + this.name + " cured\n");
             return true;
         }
         return false;

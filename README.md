@@ -15,80 +15,55 @@
 # Commandes
 
 Les commandes sont à éxécuter dans le dossier du projet. (Pas classes ou src).
+Si une commande du makefile ne s'exécute pas, il faut rajouter le flag -B
 
 ## Compilation :
 
-```
-javac -classpath jars/json.jar:src -d classes src/pandemic/Main.java
-```
-
-Ou à partir du Makefile :
-
-```
-make main
+```bash
+make cls
 ```
 
 ## Execution :
 
+```bash
+java -cp jars/json.jar:classes pandemic.Main villes48.json 4
 ```
-java -cp jars/json.jar:classes pandemic.Main
+
+Pour pouvoir jouer soi-même au jeu, il faut rajouter un autre argument quelconque.
+```bash
+java -cp jars/json.jar:classes pandemic.Main villes48.json 4 1
 ```
 
 ## Documentation :
 
-```
-javadoc -classpath jars/json.jar:src -d docs -subpackages pandemic
+```bash
+make doc
 ```
 
 ## Tests :
 
 ### Compilation :
 
-```
-javac -classpath jars/json.jar:src -d classes src/pandemic/Main2.java
-javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/*.java
-javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/jsonreader/*.java
-javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/cards/*.java
-javac -classpath classes:jars/junit-4.13.2.jar test/pandemic/player/*.java
-```
-
-Ou à partir du Makefile :
-
-```
-make test_compil
-```
-
-### Execution :
-
-```
-java -jar jars/test.jar \
--cp classes:test:jars/json.jar --scan-classpath --disable-banner
-```
-
-Ou à partir du Makefile :
-
-```
+```bash
 make test
 ```
 
 ## JAR :
 
-### Extraire :
-
-```
-cd classes; jar xvf ../jars/json.jar; cd ..
-```
-
 ### Créer JAR :
 
-```
-jar cvfm appli.jar manifest.txt -C classes pandemic -C classes org
+```bash
+make jeu.jar
 ```
 
 ### Execution :
 
+```bash
+java -jar jar/jeu.jar villes48.json 4
 ```
-java -jar appli.jar
+
+```bash
+java -jar jar/jeu.jar villes48.json 3
 ```
 
 # Livrables
@@ -143,6 +118,7 @@ Les disease ont aussi subit des changements liés au nombre de cubes disponibles
 Les objectifs sont atteints, il ne reste plus que quelques détails à régler, notamment le nombre de clusters maximal ainsi que certaines conditions de défaites.
 
 ## Livrable 4
+Les derniers détails ont été réglés, nous avons terminé les dernières méthodes de tests ainsi que la documentation. Certaines classes et méthodes ont été simplifiées en terme de complexité de code (notamment certaines actions et la classe game). Nous avons rendu le jeu plus ergonomique pour être joué dans le terminal.
 
 ### Atteinte des objectifs
 
@@ -180,7 +156,10 @@ Changements dans CardStack ainsi que création de l'exception NoSuchDiseaseExcep
 Changements de quelques méthodes dans game, création de certains Tests, update des UML ainsi que réflexion sur certaines améliorations (supprimer certaines méthodes presque inutiles ou simplifiables), reflexion pour move (rechercher les villes atteignables avec le nombre d'actions restantes pour faciliter les déplacements sur de longues distances). 
 
 ## Semaine 10
+Optimisations de certaines méthodes et actions (surtout move), code de dernières méthodes de tests.
 
 ## Semaine 11
+Derniers fix du jeu et réécriture des diagrammes UML (version finale)
 
 ## Semaine 12
+Préparation de la soutenance.
