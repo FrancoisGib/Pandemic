@@ -191,11 +191,6 @@ public class Game {
                 res = true;
             }
         }
-        if (res) {
-            System.out.println("You have lost");
-            System.out.println("\n The number of cluster is : " + this.clustersNumber + "\n");
-            System.out.println(" The global infection state is : " + this.globalInfectionState + "\n");
-        }
         return res;
     }
 
@@ -206,7 +201,6 @@ public class Game {
      */
     public boolean win() {
         if (this.diseases.size() == 0) {
-            System.out.println("You have won");
             return true;
         }
         return false;
@@ -569,9 +563,13 @@ public class Game {
                     if (this.lose() || this.win()) {
                         sc.close();
                         if (this.win()) {
+                            System.out.println("You have won");
                             return true;
                         }
                         else {
+                            System.out.println("You have lost");
+                            System.out.println("\n The number of cluster is : " + this.clustersNumber + "\n");
+                            System.out.println(" The global infection state is : " + this.globalInfectionState + "\n");
                             System.out.println(this.toStringInfectionState(player, false));
                             return false;
                         }
@@ -600,11 +598,13 @@ public class Game {
 
     /** Remove the diseases who has been cured */
     public void removeCuredDiseases() {
+        ArrayList<Disease> remainingDiseases = new ArrayList<Disease>();
         for (Disease disease : this.diseases) {
-            if (disease.isCured() && disease.getCube() == Disease.INITIAL_CUBES_NUMBER) {
-                this.diseases.remove(disease);
+            if (!(disease.isCured() && disease.getCube() == Disease.INITIAL_CUBES_NUMBER)) {
+                remainingDiseases.add(disease);
             }
         }
+        this.diseases = remainingDiseases;
     }
 
     /**
